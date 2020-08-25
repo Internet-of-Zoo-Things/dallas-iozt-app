@@ -1,0 +1,201 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Typography, Badge } from '../primitives'
+
+<Meta title="Typography" component={Typography} />
+
+# Typography
+Helix typography documentation.
+
+## Examples
+<br />
+
+### Default Types
+<Preview>
+  <Story name="Default Typography">
+    <>
+      <Typography variant="h1">Heading 1</Typography>
+      <Typography variant="h2">Heading 2</Typography>
+      <Typography variant="h3">Heading 3</Typography>
+      <Typography variant="h4">Heading 4</Typography>
+      <Typography variant="h5">Heading 5</Typography>
+      <Typography variant="h6">Heading 6</Typography>
+      <Typography variant="body">Body</Typography>
+      <Typography variant="subtitle">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Italics Typography
+<Preview>
+  <Story name="Italics Typography">
+    <>
+      <Typography variant="h1" italic>Heading 1</Typography>
+      <Typography variant="h2" italic>Heading 2</Typography>
+      <Typography variant="h3" italic>Heading 3</Typography>
+      <Typography variant="h4" italic>Heading 4</Typography>
+      <Typography variant="h5" italic>Heading 5</Typography>
+      <Typography variant="h6" italic>Heading 6</Typography>
+      <Typography variant="body" italic>Body</Typography>
+      <Typography variant="subtitle" italic>Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Hairline Typography
+<Preview>
+  <Story name="Hairline Typography">
+    <>
+      <Typography variant="h1" weight="hairline">Heading 1</Typography>
+      <Typography variant="h2" weight="hairline">Heading 2</Typography>
+      <Typography variant="h3" weight="hairline">Heading 3</Typography>
+      <Typography variant="h4" weight="hairline">Heading 4</Typography>
+      <Typography variant="h5" weight="hairline">Heading 5</Typography>
+      <Typography variant="h6" weight="hairline">Heading 6</Typography>
+      <Typography variant="body" weight="hairline">Body</Typography>
+      <Typography variant="subtitle" weight="hairline">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Thin Typography
+<Preview>
+  <Story name="Thin Typography">
+    <>
+      <Typography variant="h1" weight="thin">Heading 1</Typography>
+      <Typography variant="h2" weight="thin">Heading 2</Typography>
+      <Typography variant="h3" weight="thin">Heading 3</Typography>
+      <Typography variant="h4" weight="thin">Heading 4</Typography>
+      <Typography variant="h5" weight="thin">Heading 5</Typography>
+      <Typography variant="h6" weight="thin">Heading 6</Typography>
+      <Typography variant="body" weight="thin">Body</Typography>
+      <Typography variant="subtitle" weight="thin">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Light Typography
+<Preview>
+  <Story name="Light Typography">
+    <>
+      <Typography variant="h1" weight="light">Heading 1</Typography>
+      <Typography variant="h2" weight="light">Heading 2</Typography>
+      <Typography variant="h3" weight="light">Heading 3</Typography>
+      <Typography variant="h4" weight="light">Heading 4</Typography>
+      <Typography variant="h5" weight="light">Heading 5</Typography>
+      <Typography variant="h6" weight="light">Heading 6</Typography>
+      <Typography variant="body" weight="light">Body</Typography>
+      <Typography variant="subtitle" weight="light">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Bold Typography
+<Preview>
+  <Story name="Bold Typography">
+    <>
+      <Typography variant="h1" weight="bold">Heading 1</Typography>
+      <Typography variant="h2" weight="bold">Heading 2</Typography>
+      <Typography variant="h3" weight="bold">Heading 3</Typography>
+      <Typography variant="h4" weight="bold">Heading 4</Typography>
+      <Typography variant="h5" weight="bold">Heading 5</Typography>
+      <Typography variant="h6" weight="bold">Heading 6</Typography>
+      <Typography variant="body" weight="bold">Body</Typography>
+      <Typography variant="subtitle" weight="bold">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Extra Bold Typography
+<Preview>
+  <Story name="Extra Bold Typography">
+    <>
+      <Typography variant="h1" weight="extrabold">Heading 1</Typography>
+      <Typography variant="h2" weight="extrabold">Heading 2</Typography>
+      <Typography variant="h3" weight="extrabold">Heading 3</Typography>
+      <Typography variant="h4" weight="extrabold">Heading 4</Typography>
+      <Typography variant="h5" weight="extrabold">Heading 5</Typography>
+      <Typography variant="h6" weight="extrabold">Heading 6</Typography>
+      <Typography variant="body" weight="extrabold">Body</Typography>
+      <Typography variant="subtitle" weight="extrabold">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Black Typography
+<Preview>
+  <Story name="Black Typography">
+    <>
+      <Typography variant="h1" weight="black">Heading 1</Typography>
+      <Typography variant="h2" weight="black">Heading 2</Typography>
+      <Typography variant="h3" weight="black">Heading 3</Typography>
+      <Typography variant="h4" weight="black">Heading 4</Typography>
+      <Typography variant="h5" weight="black">Heading 5</Typography>
+      <Typography variant="h6" weight="black">Heading 6</Typography>
+      <Typography variant="body" weight="black">Body</Typography>
+      <Typography variant="subtitle" weight="black">Subtitle</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Links Typography
+<Preview>
+  <Story name="Links Typography">
+    <>
+      <Typography href="https://google.com" className="text-lg" variant="link" italic>Link 1</Typography>
+      <Typography href="https://google.com" className="text-lg" variant="link" weight="thin">Link 2</Typography>
+      <Typography href="https://google.com" className="text-secondary text-lg" variant="link" weight="bold">Link 3</Typography>
+      <Typography href="https://google.com" className="text-secondary text-lg" variant="link">Link 4</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Typography w/ Icons
+<Preview>
+  <Story name="Typography w/ Icons">
+    <>
+      <Typography variant="body" className="flex items-center text-secondary mt-2" iconProps={{ icon: 'align-left', className:'mr-2' }}>Details</Typography>
+      <Typography variant="body" className="flex items-center text-secondary mt-2" iconProps={{ icon: 'help', className:'mr-2' }}>Are you sure?</Typography>
+      <Typography variant="body" className="flex items-center text-secondary mt-2" iconProps={{ icon: 'info-sign', className:'mr-2' }}>About us</Typography>
+      <Typography variant="body" className="flex items-center text-secondary mt-2" iconProps={{ icon: 'tick-circle', className:'mr-2' }}>Correct!</Typography>
+    </>
+  </Story>
+</Preview>
+
+### Icons
+#### [Props Documentation](https://blueprintjs.com/docs/#core/components/icon)
+#### [List of Icons](https://blueprintjs.com/docs/#icons)
+
+<Preview>
+  <Story name="Icons">
+    <>
+      <Typography variant="icon" className="text-secondary mr-2" icon="align-left" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="help" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="info-sign" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="tick-circle" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="add" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="add-to-artifact" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="filter-open" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="git-merge" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="git-pull" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="graph-remove" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="reset" />
+      <Typography variant="icon" className="text-secondary mr-2" icon="sort" />
+    </>
+  </Story>
+</Preview>
+
+#### Icons w/ Badges
+<Preview>
+  <Story name="Icons w/Badge">
+    <>
+      <Typography badgeProps={{ className: 'p-2', value:'14' }} variant="icon" className="text-secondary mr-2" icon="align-left" iconSize={18} />
+      <Typography badgeProps={{ className: 'p-2', value: '1', intent: 'dark-red' }} variant="icon" className="text-secondary mr-2" icon="notifications" iconSize={18} />
+      <Typography badgeProps={{ className: 'p-2', value: '12', intent: 'blue' }} variant="icon" className="text-secondary mr-2" icon="info-sign" iconSize={18} />
+      <Typography badgeProps={{ className: 'p-2', value: '99+', intent: 'green' }} variant="icon" className="text-secondary mr-2" icon="tick-circle" iconSize={18} />
+      <Typography badgeProps={{ className: 'p-2', value: '1', intent: 'dark-yellow' }} variant="icon" className="text-secondary mr-2" icon="add" iconSize={18} />
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Typography} />
