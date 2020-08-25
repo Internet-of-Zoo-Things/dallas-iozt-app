@@ -2,18 +2,20 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Router from 'next/router'
+import { Spinner } from '@blueprintjs/core'
 import Footer from './Footer'
 import { Typography } from '../primitives'
-import { Spinner } from '@blueprintjs/core'
 
 const _ = ({
   loading,
   loadingMessage,
   children,
   title,
-  error
+  error,
+  user
 }) => {
   if (error) {
+    console.error(error)
     const code = error.networkError ? error.networkError.statusCode : 500
     const msg = error.networkError && error.networkError.result.errors.length !== 0
       ? error.networkError.result.errors[0].message
@@ -25,7 +27,7 @@ const _ = ({
   return (
     <>
       <Head>
-        <title>{title} | IoZT</title>
+        <title>{title || 'Page'} | IoZT</title>
       </Head>
       <div className="flex flex-col w-screen min-h-screen justify-between">
         <div>
@@ -33,12 +35,12 @@ const _ = ({
             ? <Spinner className="flex items-center h-full justify-center">
               <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
             </Spinner>
-            : <div className="container mx-auto px-4 flex flex-col">
+            : <div className="container mx-auto px-2 flex flex-col bg-background">
               { children }
             </div>
           }
         </div>
-        <Footer />
+        <Footer user={user} />
       </div>
     </>
   )
@@ -55,7 +57,9 @@ _.propTypes = {
   /* Classname for children */
   className: PropTypes.string,
   /** Error object used for error handling */
-  error: PropTypes.object
+  error: PropTypes.object,
+  /** Currently signed-in user */
+  user: PropTypes.object
 }
 
 export default _

@@ -9,12 +9,6 @@ const resolvers = require('./resolvers')
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
 
-const getUrl = () => (process.env.NODE_ENV === 'development'
-  ? `http://localhost:${process.env.PORT}`
-  : process.env.NODE_ENV === 'test'
-    ? `${process.env.TEST_URL || 'http://localhost'}:${process.env.PORT}`
-    : `${process.env.PROD_URL || 'http://localhost'}:${process.env.PORT}`)
-
 const app = next({ dev })
 const handle = app.getRequestHandler()
 const apolloServer = new ApolloServer({
@@ -22,7 +16,7 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
-    const user = { user_name: 'test', name: 'Test User', role: 'Admin' }
+    const user = { username: 'test', name: 'Test User', role: 'Admin' }
     return {
       req, res, user
     }
@@ -47,8 +41,8 @@ app.prepare()
 
     server.listen(port, (err) => {
       if (err) throw err
-      console.warn(`> UI ready on ${getUrl()}`)
-      console.warn(`> GraphQL API ready on ${getUrl()}${apolloServer.graphqlPath}`)
+      console.warn(`> UI ready on ${`http://localhost:${process.env.PORT}`}`)
+      console.warn(`> GraphQL API ready on ${`http://localhost:${process.env.PORT}${apolloServer.graphqlPath}`}`)
     })
   })
   .catch((ex) => {

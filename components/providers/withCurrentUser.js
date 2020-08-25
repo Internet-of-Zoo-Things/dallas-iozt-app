@@ -9,7 +9,7 @@ export function withCurrentUser(Component) {
     })
     return (
       <>
-        <Component user={data ? data.activeUser : { attuid: null, name: 'User' }} error={error} loading={loading} {...props} />
+        <Component user={data} error={error} loading={loading} {...props} />
       </>
     )
   }
