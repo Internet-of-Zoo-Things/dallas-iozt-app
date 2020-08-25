@@ -8,7 +8,7 @@ const ErrorPage = ({ statusCode }) => {
   const params = router.query
 
   return (
-    <ErrorView code={statusCode || params.code || 'Client'} desc={params.desc} msg={params.msg} />
+    <ErrorView code={statusCode || params.code || 'Client'} msg={params.msg} />
   )
 }
 ErrorPage.propTypes = {
