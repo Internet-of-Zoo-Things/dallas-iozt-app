@@ -1,0 +1,34 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Tooltip, Position, Typography } from '../primitives'
+
+<Meta title="Tooltip" component={Tooltip} />
+
+# Tooltips
+
+## Examples
+<br />
+
+### Default Tooltip
+<Preview>
+  <Story name="Default Tooltip">
+    <>
+      <Tooltip content="I improve accessibility in this application!">
+        <Typography variant="body">Hover over me!</Typography>
+      </Tooltip>
+    </>
+  </Story>
+</Preview>
+
+### Changing Position
+<Preview>
+  <Story name="Changing Position">
+    <div className="my-16">
+      <Tooltip content="I improve accessibility in this application!" position={Position.BOTTOM}>
+        <Typography variant="body">Hover over me!</Typography>
+      </Tooltip>
+    </div>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Tooltip} />

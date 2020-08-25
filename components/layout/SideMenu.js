@@ -35,6 +35,10 @@ const IconButton = styled(Button)`
   &&& {
     ${tw`hover:bg-primary-darker hover:opacity-100`}
   }
+
+  &:focus {
+    box-shadow: none !important;
+  }
 `
 
 const Logo = styled.img`

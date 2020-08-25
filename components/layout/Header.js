@@ -13,6 +13,10 @@ const IconButton = styled(Button)`
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   height: 100%;
+  
+  &:focus {
+    box-shadow: none !important;
+  }
 `
 
 const NotificationContainer = styled.div`

@@ -1,0 +1,44 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Card, Button } from '../primitives'
+
+<Meta title="Card" component={Card} />
+
+# Cards
+
+## Examples
+<br />
+
+### Default Card
+<Preview>
+  <Story name="Default Card">
+    <>
+      <Card>
+        <div className="flex flex-col justify-center items-center">
+          Hello, I am a card that contains information!
+          <div className="mt-3">
+            <Button>Click for more</Button>
+          </div>
+        </div>
+      </Card>
+    </>
+  </Story>
+</Preview>
+
+### Card with Header
+<Preview>
+  <Story name="Card with Header">
+    <>
+      <Card header="Card with header">
+        <div className="flex flex-col justify-center items-center">
+          Hello, I am a card that contains information!
+          <div className="mt-3">
+            <Button>Click for more</Button>
+          </div>
+        </div>
+      </Card>
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Card} />
