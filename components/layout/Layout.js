@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Router from 'next/router'
 import { Spinner } from '@blueprintjs/core'
 import Footer from './Footer'
+import Header from './Header'
 import { Typography } from '../primitives'
 
 const _ = ({
@@ -29,13 +30,14 @@ const _ = ({
       <Head>
         <title>{title || 'Page'} | IoZT</title>
       </Head>
-      <div className="flex flex-col w-screen min-h-screen justify-between">
+      <div className="flex flex-col w-screen min-h-screen justify-between bg-background">
         <div>
+          <Header user={user} />
           { loading
             ? <Spinner className="flex items-center h-full justify-center">
               <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
             </Spinner>
-            : <div className="container mx-auto px-2 flex flex-col bg-background">
+            : <div className="container px-4 flex flex-col">
               { children }
             </div>
           }

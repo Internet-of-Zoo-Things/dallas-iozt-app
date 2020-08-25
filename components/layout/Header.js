@@ -1,10 +1,15 @@
 import React from 'react'
 import { Typography } from '../primitives'
 
-const _ = (props) => (
-  <div {...props}>
-    <div className="flex flex-row bg-primary justify-between items-center">
-      <Typography variant="body">test header</Typography>
+const _ = () => (
+  <div className="flex justify-start items-center bg-primary text-white h-12 px-4">
+    {/* left-aligned */}
+    <div className="flex flex-grow">
+      <Typography variant="h6">Dashboard</Typography>
+    </div>
+    {/* right-aligned */}
+    <div className="flex flex-row">
+      icons here
     </div>
   </div>
 )
