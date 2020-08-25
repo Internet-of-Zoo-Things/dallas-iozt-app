@@ -14,7 +14,10 @@ const Styled_ = styled(Button)`
     ${(props) => {
     if (props.outline) {
       return tw`text-primary bg-white border border-solid border-primary disabled:hover:bg-white`
-    } if (!props.minimal) {
+    } if (props.minimal) {
+      return tw`text-primary hover:opacity-100`
+    }
+    if (!props.minimal) {
       return tw`text-white bg-primary disabled:hover:bg-primary`
     }
   }}

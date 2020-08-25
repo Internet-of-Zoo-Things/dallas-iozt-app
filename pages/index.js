@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import withApollo from '../components/apollo'
 import { Layout } from '../components/layout'
-import { Typography } from '../components/primitives'
 import { withCurrentUser } from '../components/providers'
+import DashboardComponent from '../components/pages/Dashboard/Dashboard'
 
 const Dashboard = ({ user }) => (
   <Layout title="Dashboard" user={user && user.activeUser}>
-    <Typography variant="h1" className="text-primary">Welcome to IoZT!</Typography>
+    <DashboardComponent />
   </Layout>
 )
 Dashboard.propTypes = {

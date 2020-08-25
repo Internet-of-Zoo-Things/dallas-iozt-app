@@ -40,7 +40,7 @@ const _ = ({
               ? <Spinner className="flex items-center h-full justify-center">
                 <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
               </Spinner>
-              : <div className="container px-4 py-4 flex flex-col">
+              : <div className="container px-4 py-6 flex flex-col">
                 { children }
               </div>
             }
