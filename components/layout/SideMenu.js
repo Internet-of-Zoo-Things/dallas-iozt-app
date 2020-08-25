@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
 import { withRouter } from 'next/router'
 import { Typography, Button, StyledLink } from '../primitives'
+import useWindowSize from '../../utils/hooks/useWindowSize'
+
+/* this corresponds to the tailwindcss "small" identifier */
+const RESIZE_WIDTH = 768
 
 const routes = [
   {
@@ -75,7 +79,12 @@ MenuLink.propTypes = {
 }
 
 const _ = ({ router }) => {
-  const [open, setOpen] = useState(true)
+  const window = useWindowSize()
+  const [open, setOpen] = useState(window.width > RESIZE_WIDTH || !window.width)
+
+  useEffect(() => {
+    setOpen(window.width > RESIZE_WIDTH)
+  }, [window])
 
   return (
     <div className={`flex flex-col ${open ? 'w-64' : 'w-16'}`}>
