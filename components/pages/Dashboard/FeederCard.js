@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import tw from 'twin.macro'
+import { Elevation } from '@blueprintjs/core'
 import { Typography, Button, Card } from '../../primitives'
 
 const IconButton = styled(Button)`
@@ -9,7 +10,7 @@ const IconButton = styled(Button)`
 `
 
 const FeederCard = ({ name, status }) => (
-  <Card header={name ? name.toUpperCase() : undefined}>
+  <Card header={name ? name.toUpperCase() : undefined} className="w-1/2" elevation={Elevation.ONE}>
     <div className="flex flex-col justify-center items-center">
       <Typography variant="h3" weight="thin">{status}</Typography>
       <div className="flex flex-row pt-3">

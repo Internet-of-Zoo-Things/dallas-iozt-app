@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { Elevation } from '@blueprintjs/core'
 import { Typography, Button, Card } from '../../primitives'
 import { UserRoles } from '../../../utils/models'
 import RegisterUserDialog from './RegisterUserDialog'
@@ -16,7 +17,7 @@ const Users = ({ user, allUsers }) => {
         </Button>
       </div>
       {/* user table */}
-      <Card className="w-full mt-8">
+      <Card className="w-full mt-8" elevation={Elevation.ONE}>
         <table className="bp3-html-table .modifier w-full">
           <thead>
             <tr>
