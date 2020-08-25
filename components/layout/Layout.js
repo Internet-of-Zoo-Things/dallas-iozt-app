@@ -35,7 +35,7 @@ const _ = ({
         <SideMenu />
         <div className="flex flex-col flex-grow justify-between bg-background">
           <div>
-            <Header user={user} title={title} />
+            <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} />
             { loading
               ? <Spinner className="flex items-center h-full justify-center">
                 <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
