@@ -10,7 +10,7 @@ export default function createApolloClient(initialState, ctx) {
       uri: `${process.env.URL}/graphql`,
       credentials: 'include',
       headers: {
-        cookie: ctx && ctx.req.headers.cookie
+        cookie: ctx && ctx.req && ctx.req.headers.cookie
       },
       fetch
     }),

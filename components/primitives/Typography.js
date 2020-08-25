@@ -39,7 +39,7 @@ const H6 = styled.h6`
   ${fontTypes}
 `
 const Body = styled.p`
-  ${tw`text-lg font-medium`}
+  ${tw`text-base font-medium`}
   ${fontTypes}
 `
 const Subtitle = styled.span`
