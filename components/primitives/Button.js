@@ -7,7 +7,7 @@ import { Button } from '@blueprintjs/core'
 const Styled_ = styled(Button)`
   &&& {
     background-image: none;
-    ${tw`hover:opacity-75 disabled:opacity-75 outline-none shadow-none`}
+    ${tw`disabled:opacity-75 outline-none shadow-none`}
     .bp3-icon {
       color: inherit;
     }
@@ -18,7 +18,7 @@ const Styled_ = styled(Button)`
       return tw`text-primary hover:opacity-100`
     }
     if (!props.minimal) {
-      return tw`text-white bg-primary disabled:hover:bg-primary`
+      return tw`text-white bg-primary hover:bg-primary-darker disabled:hover:bg-primary`
     }
   }}
   }

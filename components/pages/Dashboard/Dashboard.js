@@ -1,6 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { Typography, Button } from '../../primitives'
+import FeederCard from './FeederCard'
 
 const Dashboard = () => (
   <div className="flex flex-col">
@@ -16,11 +16,11 @@ const Dashboard = () => (
         <Typography variant="body">Add Feeder</Typography>
       </Button>
     </div>
+    {/* feeders */}
+    <div className="flex flex-row mt-8">
+      <FeederCard status="Activated" name="Feeder 1" />
+    </div>
   </div>
 )
-Dashboard.propTypes = {
-  /** Currently signed-in user */
-  user: PropTypes.object
-}
 
 export default Dashboard

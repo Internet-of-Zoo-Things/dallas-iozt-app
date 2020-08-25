@@ -1,17 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import tw from 'twin.macro'
 import { Typography, Button } from '../primitives'
 
 const IconButton = styled(Button)`
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   height: 100%;
-
-  &&& {
-    ${tw`hover:bg-primary-darker hover:opacity-100`}
-  }
 `
 
 const _ = ({ title }) => (
