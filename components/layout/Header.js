@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
+import { Popover } from '@blueprintjs/core'
 import {
   Typography,
   Button,
-  Popover,
   StyledLink
 } from '../primitives'
 

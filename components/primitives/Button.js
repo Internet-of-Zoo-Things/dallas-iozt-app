@@ -29,7 +29,18 @@ const Styled_ = styled(Button)`
         }
       }
       if (props.outline) {
-        return tw`text-primary bg-white border border-solid border-primary disabled:hover:bg-white`
+        switch (props.intent) {
+          case 'primary': {
+            return tw`text-primary bg-white border border-solid border-primary disabled:hover:bg-white`
+          }
+          case 'warning': {
+            return tw`text-warning bg-white border border-solid border-warning disabled:hover:bg-white`
+          }
+          case 'danger': {
+            return tw`text-danger bg-white border border-solid border-danger disabled:hover:bg-white`
+          }
+          default: return tw`text-primary bg-white border border-solid border-primary disabled:hover:bg-white`
+        }
       }
       if (props.minimal) {
         return tw`text-primary hover:opacity-100`

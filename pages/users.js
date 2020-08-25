@@ -7,7 +7,7 @@ import UsersComponent from '../components/pages/Users/Users'
 
 const Users = ({ user }) => (
   <Layout title="Users" user={user && user.activeUser}>
-    <UsersComponent user={user ? user.activeUser : null} allUsers={/* fixme: add data */ [user ? user.activeUser : null]} />
+    <UsersComponent user={user ? user.activeUser : null} allUsers={/* fixme: add data */ user ? [user.activeUser] : undefined} />
   </Layout>
 )
 Users.propTypes = {
