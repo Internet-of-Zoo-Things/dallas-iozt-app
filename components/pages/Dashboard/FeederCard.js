@@ -17,7 +17,7 @@ const FeederCard = ({ name, status }) => (
           <IconButton icon="cell-tower" />
         </div>
         <div className="px-2">
-          <IconButton icon="trash" />
+          <IconButton icon="trash" intent="danger" />
         </div>
       </div>
     </div>

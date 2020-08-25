@@ -1,0 +1,91 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Button } from '../primitives'
+
+<Meta title="Button" component={Button} />
+
+# Buttons
+
+## Examples
+<br />
+
+### Default Button
+<Preview>
+  <Story name="Default Button">
+    <>
+      <Button>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Minimal Button
+<Preview>
+  <Story name="Minimal Button">
+    <>
+      <Button minimal>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Outlined Button
+<Preview>
+  <Story name="Outlined Button">
+    <>
+      <Button outline>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Large Button
+<Preview>
+  <Story name="Large Button">
+    <>
+      <Button large>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Button with Icon
+<Preview>
+  <Story name="Button with Icon">
+    <>
+      <Button icon="trash">Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Button intents
+<Preview>
+  <Story name="Button intents">
+    <>
+      <Button intent="primary" style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button intent="warning" style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button intent="danger" style={{ marginRight: '1rem' }}>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Disabled Buttons
+<Preview>
+  <Story name="Disabled Buttons">
+    <>
+      <Button disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button minimal disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button outline disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button intent="primary" disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button intent="warning" disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+      <Button intent="danger" disabled style={{ marginRight: '1rem' }}>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+### Loading Button
+<Preview>
+  <Story name="Loading Button">
+    <>
+      <Button loading>Click me!</Button>
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Button} />
