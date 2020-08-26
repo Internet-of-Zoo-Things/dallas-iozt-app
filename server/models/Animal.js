@@ -2,22 +2,17 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const User = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
+const Animal = new Schema({
   name: {
     type: String,
     required: true
   },
-  role: {
+  dsecription: {
+    type: String
+  },
+  intake: {
     type: String,
     required: true
-  },
-  email: {
-    type: String
   },
   created_at: {
     type: Date,
@@ -29,4 +24,4 @@ const User = new Schema({
   }
 })
 
-module.exports = mongoose.model('user', User)
+module.exports = mongoose.model('animal', Animal)

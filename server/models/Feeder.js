@@ -2,22 +2,18 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
-const User = new Schema({
-  username: {
+const Feeder = new Schema({
+  name: {
     type: String,
     required: true,
     unique: true
   },
-  name: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    required: true
-  },
-  email: {
+  description: {
     type: String
+  },
+  status: {
+    type: String,
+    required: true
   },
   created_at: {
     type: Date,
@@ -29,4 +25,4 @@ const User = new Schema({
   }
 })
 
-module.exports = mongoose.model('user', User)
+module.exports = mongoose.model('feeder', Feeder)

@@ -10,7 +10,7 @@ const IconButton = styled(Button)`
 `
 
 const FeederCard = ({ name, status }) => (
-  <Card header={name ? name.toUpperCase() : undefined} className="w-1/2" elevation={Elevation.ONE}>
+  <Card header={name ? name.toUpperCase() : undefined} className="w-1/3" elevation={Elevation.ONE}>
     <div className="flex flex-col justify-center items-center">
       <Typography variant="h3" weight="thin">{status}</Typography>
       <div className="flex flex-row pt-3">
