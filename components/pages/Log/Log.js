@@ -6,7 +6,7 @@ import moment from 'moment'
 import tw from 'twin.macro'
 import { Typography, Card } from '../../primitives'
 
-const DateContainer = styled.div`
+const NoWrap = styled.div`
   width: min-content;
   white-space: nowrap;
   ${tw`flex flex-col`}
@@ -15,7 +15,7 @@ const DateContainer = styled.div`
 const Users = ({ logs }) => (
   <div className="flex flex-col">
     {/* user table */}
-    <Card className="w-full mt-8" elevation={Elevation.ONE}>
+    <Card className="w-full" elevation={Elevation.ONE}>
       <table className="bp3-html-table .modifier w-full">
         <thead>
           <tr>
@@ -29,12 +29,16 @@ const Users = ({ logs }) => (
             logs.map((log, i) => (
               <tr key={i}>
                 <td>
-                  <DateContainer>
+                  <NoWrap>
                     <Typography variant="subtitle">{moment(log.timestamp).format()}</Typography>
                     <Typography variant="subtitle" className="text-gray">{moment(log.timestamp).fromNow()}</Typography>
-                  </DateContainer>
+                  </NoWrap>
                 </td>
-                <td>{log.username}</td>
+                <td>
+                  <NoWrap>
+                    {log.username}
+                  </NoWrap>
+                </td>
                 <td>{log.message}</td>
               </tr>
             ))

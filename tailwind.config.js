@@ -36,7 +36,13 @@ module.exports = {
     fill: (theme) => theme('colors'),
     backgroundColor: (theme) => theme('colors'),
     textColor: (theme) => theme('colors'),
-    borderColor: (theme) => theme('colors')
+    borderColor: (theme) => theme('colors'),
+    inset: {
+      0: 0,
+      auto: 'auto',
+      16: '4rem',
+      64: '16rem'
+    }
   },
   variants: {
     borderColor: ['hover', 'disabled'],

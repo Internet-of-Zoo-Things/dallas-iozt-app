@@ -23,8 +23,8 @@ const NotificationContainer = styled.div`
   ${tw`h-16 w-full p-3 border-b border-background-darker flex items-center`}
 `
 
-const _ = ({ title, notifications, user }) => (
-  <div className="flex justify-start items-center bg-primary text-white h-12 px-4 border-b border-primary-darker">
+const _ = ({ title, notifications, open }) => (
+  <div className={`flex justify-start items-center bg-primary text-white h-12 px-4 border-b border-primary-darker fixed top-0 right-0 left-${open ? '64' : '16'}`}>
     {/* left-aligned */}
     <div className="flex flex-grow">
       <Typography variant="h6">{title}</Typography>
@@ -74,11 +74,14 @@ const _ = ({ title, notifications, user }) => (
 _.propTypes = {
   title: PropTypes.string,
   notifications: PropTypes.array,
-  user: PropTypes.object
+  user: PropTypes.object,
+  /** whether the side menu is open */
+  open: PropTypes.bool
 }
 _.defaultProps = {
   title: 'Dallas IoZT',
-  notifications: []
+  notifications: [],
+  open: true
 }
 
 export default _

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Router from 'next/router'
@@ -7,6 +7,10 @@ import Footer from './Footer'
 import Header from './Header'
 import SideMenu from './SideMenu'
 import { Typography } from '../primitives'
+import useWindowSize from '../../utils/hooks/useWindowSize'
+
+/* this corresponds to the tailwindcss "small" identifier */
+const RESIZE_WIDTH = 768
 
 const _ = ({
   loading,
@@ -26,16 +30,25 @@ const _ = ({
     return <></>
   }
 
+  const window = useWindowSize()
+  const [open, setOpen] = useState(window.width > RESIZE_WIDTH || !window.width)
+
+  useEffect(() => {
+    setOpen(window.width > RESIZE_WIDTH)
+  }, [window])
+
   return (
     <>
       <Head>
         <title>{title || 'Page'} | IoZT</title>
       </Head>
-      <div className="flex flex-row w-screen min-h-screen">
-        <SideMenu />
-        <div className="flex flex-col flex-grow justify-between bg-background">
+      <div className="flex flex-row w-screen h-screen">
+        <SideMenu open={open} setOpen={setOpen} />
+        <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
           <div>
-            <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} />
+            <div className="mb-12">
+              <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} open={open} />
+            </div>
             { loading
               ? <Spinner className="flex items-center h-full justify-center">
                 <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
