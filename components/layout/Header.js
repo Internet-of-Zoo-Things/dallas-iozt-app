@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
-import { Popover } from '@blueprintjs/core'
+import { Popover, Position } from '@blueprintjs/core'
 import {
   Typography,
   Button,
@@ -23,7 +23,12 @@ const NotificationContainer = styled.div`
   ${tw`h-16 w-full p-3 border-b border-background-darker flex items-center`}
 `
 
-const _ = ({ title, notifications, open }) => (
+const _ = ({
+  title,
+  notifications,
+  open,
+  user
+}) => (
   <div className={`flex justify-start items-center bg-primary text-white h-12 px-4 border-b border-primary-darker fixed top-0 right-0 left-${open ? '64' : '16'}`}>
     {/* left-aligned */}
     <div className="flex flex-grow">
@@ -65,9 +70,41 @@ const _ = ({ title, notifications, open }) => (
             </div>
           </div>
         }
+        position={Position.BOTTOM}
         className="h-12"
       />
-      <IconButton icon="user" />
+      <Popover
+        target={
+          <IconButton icon="user" className="h-12" />
+        }
+        content={
+          <div className="w-64">
+            <div className="flex flex-col justify-center items-center pb-3">
+              <div className="flex flex-col justify-center items-center my-3">
+                <div className="flex justify-center items-end">
+                  <Typography variant="body">
+                    { user.name }
+                  </Typography>
+                  <Typography variant="subtitle" className="text-gray ml-1">
+                    ({ user.username })
+                  </Typography>
+                </div>
+                <Typography variant="subtitle" className="text-gray mt-1">
+                  { user.role }
+                </Typography>
+              </div>
+              <Button minimal fill icon="cog">
+                Settings
+              </Button>
+              <Button minimal fill intent="danger" icon="log-out">
+                Sign Out
+              </Button>
+            </div>
+          </div>
+        }
+        position={Position.BOTTOM}
+        className="h-12"
+      />
     </div>
   </div>
 )
