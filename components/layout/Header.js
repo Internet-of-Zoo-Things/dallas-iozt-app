@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
-import { Popover, Position } from '@blueprintjs/core'
+import { Popover, Position, Spinner } from '@blueprintjs/core'
 import {
   Typography,
   Button,
@@ -80,25 +80,31 @@ const _ = ({
         content={
           <div className="w-64">
             <div className="flex flex-col justify-center items-center pb-3">
-              <div className="flex flex-col justify-center items-center my-3">
-                <div className="flex justify-center items-end">
-                  <Typography variant="body">
-                    { user.name }
-                  </Typography>
-                  <Typography variant="subtitle" className="text-gray ml-1">
-                    ({ user.username })
-                  </Typography>
-                </div>
-                <Typography variant="subtitle" className="text-gray mt-1">
-                  { user.role }
-                </Typography>
-              </div>
-              <Button minimal fill icon="cog">
-                Settings
-              </Button>
-              <Button minimal fill intent="danger" icon="log-out">
-                Sign Out
-              </Button>
+              {
+                user
+                  ? <>
+                    <div className="flex flex-col justify-center items-center my-3">
+                      <div className="flex justify-center items-end">
+                        <Typography variant="body">
+                          { user.name }
+                        </Typography>
+                        <Typography variant="subtitle" className="text-gray ml-1">
+                          ({ user.username })
+                        </Typography>
+                      </div>
+                      <Typography variant="subtitle" className="text-gray mt-1">
+                        { user.role }
+                      </Typography>
+                    </div>
+                    <Button minimal fill icon="cog">
+                      Settings
+                    </Button>
+                    <Button minimal fill intent="danger" icon="log-out">
+                      Sign Out
+                    </Button>
+                  </>
+                  : <Spinner />
+              }
             </div>
           </div>
         }

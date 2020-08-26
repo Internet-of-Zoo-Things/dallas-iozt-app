@@ -1,4 +1,3 @@
-
 const User = {
   Query: {
     async activeUser(parent, args, { user }) {

@@ -3,12 +3,33 @@ const { ApolloServer } = require('apollo-server-express')
 const cors = require('cors')
 const express = require('express')
 const next = require('next')
+const mongoose = require('mongoose')
+
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
+const mongo = process.env.DB_URL
 
+/* connect to the db */
+mongoose.connect(mongo, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}).catch(() => {
+  console.error('Failed to connect to Mongo')
+})
+mongoose.connection.on('open', () => {
+  console.warn(`Successfully connected to Mongo at ${mongo}`)
+})
+mongoose.connection.on('error', (err) => {
+  console.error('Mongo error:')
+  console.error(err)
+})
+
+/* set up apollo graphql */
 const app = next({ dev })
 const handle = app.getRequestHandler()
 const apolloServer = new ApolloServer({
@@ -28,6 +49,7 @@ const corsOptions = {
   credentials: true
 }
 
+/* prepare the api */
 app.prepare()
   .then(() => {
     const server = express()
