@@ -1,8 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Typography, Button } from '../../primitives'
 import FeederCard from './FeederCard'
+import Schedule from './Schedule'
 
-const Dashboard = () => (
+const Dashboard = ({ user, schedule }) => (
   <div className="flex flex-col">
     {/* buttons */}
     <div className="flex flex-row flex-wrap">
@@ -22,16 +24,25 @@ const Dashboard = () => (
         <div className="w-full border-b border-border mb-4 text-center">
           <Typography variant="h4" className="text-dark-gray mb-1">Feeders</Typography>
         </div>
-        <FeederCard status="Activated" name="Feeder 1" className="w-full" />
+        <FeederCard status="Activated" name="Feeder 1" className="w-full mb-4" />
+        <FeederCard status="Activated" name="Feeder 2" className="w-full mb-4" />
       </div>
       {/* Schedule */}
       <div className="flex flex-col flex-grow items-center">
         <div className="w-full border-b border-border mb-4 text-center">
           <Typography variant="h4" className="text-dark-gray mb-1">Schedule</Typography>
         </div>
+        <Schedule schedule={schedule} user={user} />
       </div>
     </div>
   </div>
 )
+Dashboard.propTypes = {
+  user: PropTypes.object,
+  schedule: PropTypes.array
+}
+Dashboard.defaultProps = {
+  schedule: []
+}
 
 export default Dashboard

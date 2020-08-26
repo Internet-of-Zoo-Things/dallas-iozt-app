@@ -1,0 +1,99 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Tag } from '../primitives'
+
+<Meta title="Tag" component={Tag} />
+
+# Tags
+
+## Examples
+<br />
+
+### Default Tag
+<Preview>
+  <Story name="Default Tag">
+    <>
+      <Tag>
+        Testing
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Round Tag
+<Preview>
+  <Story name="Round Tag">
+    <>
+      <Tag round>
+        I'm rounded!
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Removable Tag
+<Preview>
+  <Story name="Removable Tag">
+    <>
+      <Tag onRemove={() => { alert('I can\'t believe you\'ve done this...') }}>
+        Please don't delete me!
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Colored Tags
+<Preview>
+  <Story name="Colored Tags">
+    <>
+      <Tag className="mr-2 bg-primary">
+        Testing
+      </Tag>
+      <Tag className="mr-2 bg-dark-gray">
+        Testing
+      </Tag>
+      <Tag className="mr-2 bg-warning">
+        Testing
+      </Tag>
+      <Tag className="mr-2 bg-danger">
+        Testing
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Large Tag
+<Preview>
+  <Story name="Largee Tag">
+    <>
+      <Tag large>
+        Hello
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Generated Color Tags
+<Preview>
+  <Story name="Generated Color Tags">
+    <>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="asdf">
+        Hello
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="werq">
+        Hello
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="bcxvbxc">
+        Hello
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="ertw">
+        Hello
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="bcxdfsgvbxc">
+        Hello
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Tag} />

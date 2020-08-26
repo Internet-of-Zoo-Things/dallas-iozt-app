@@ -8,6 +8,7 @@ import {
   Button,
   StyledLink
 } from '../primitives'
+import { UserRoles } from '../../utils/models'
 
 const IconButton = styled(Button)`
   padding-left: 1.25rem;
@@ -93,7 +94,7 @@ const _ = ({
                         </Typography>
                       </div>
                       <Typography variant="subtitle" className="text-gray mt-1">
-                        { user.role }
+                        { UserRoles[user.role].name }
                       </Typography>
                     </div>
                     <Button minimal fill icon="cog">
