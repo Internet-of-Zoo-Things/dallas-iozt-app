@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react'
 import { createGlobalStyle } from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
-import { usePrevious } from '../../utils/functions'
+import { usePrevious } from '../../utils/functions/ui'
 
 const GlobalStyles = createGlobalStyle`
   && {

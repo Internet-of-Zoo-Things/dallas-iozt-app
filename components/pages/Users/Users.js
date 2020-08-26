@@ -4,6 +4,7 @@ import { Elevation } from '@blueprintjs/core'
 import { Typography, Button, Card } from '../../primitives'
 import { UserRoles } from '../../../utils/models'
 import RegisterUserDialog from './RegisterUserDialog'
+import { compareUserRoles } from '../../../utils/functions/ui'
 
 const Users = ({ user, allUsers }) => {
   const [registerDialog, setRegisterDialog] = useState(false)
@@ -32,12 +33,12 @@ const Users = ({ user, allUsers }) => {
               allUsers.map((u, i) => (
                 <tr key={i}>
                   <td>{u.username}</td>
-                  <td>{u.role}</td>
+                  <td>{UserRoles[u.role].name}</td>
                   <td>{u.name}</td>
                   <td>
                     {
                       /* editable for admins or self */
-                      user.role === UserRoles.ADMIN.name || u.username === user.username
+                      compareUserRoles(user.role, UserRoles.ADMIN) >= 0 || u.username === user.username
                         ? <Button minimal icon="edit" />
                         : null
                     }
@@ -56,7 +57,7 @@ Users.propTypes = {
   /** Currently signed-in user */
   user: PropTypes.object,
   /** List of all users */
-  allUsers: PropTypes.object
+  allUsers: PropTypes.array
 }
 Users.defaultProps = {
   allUsers: []

@@ -50,7 +50,7 @@ const Users = ({ logs }) => (
 )
 Users.propTypes = {
   /** List of system logs */
-  logs: PropTypes.object
+  logs: PropTypes.array
 }
 Users.defaultProps = {
   logs: []

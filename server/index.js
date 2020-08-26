@@ -7,6 +7,7 @@ const mongoose = require('mongoose')
 
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
+const models = require('./models')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -37,9 +38,9 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
-    const user = { username: 'test', name: 'Test User', role: 'Admin' }
+    const user = { username: 'admin', name: 'Test User', role: 'ADMIN' }
     return {
-      req, res, user
+      req, res, user, models
     }
   },
   playground: { version: '1.7.25' }
