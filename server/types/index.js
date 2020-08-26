@@ -1,5 +1,6 @@
 const { gql } = require('apollo-server-express')
 const User = require('./User')
+const Log = require('./Log')
 
 const types = gql`
   type Query {
@@ -12,6 +13,7 @@ const types = gql`
     _empty: String
   }
   ${User}
+  ${Log}
 `
 
 module.exports = types

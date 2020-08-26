@@ -38,7 +38,7 @@ const Users = ({ user, allUsers }) => {
                   <td>
                     {
                       /* editable for admins or self */
-                      compareUserRoles(user.role, UserRoles.ADMIN) >= 0 || u.username === user.username
+                      (compareUserRoles(user.role, UserRoles.ADMIN) >= 0 && u.role !== 'ROOT') || u.username === user.username
                         ? <Button minimal icon="edit" />
                         : null
                     }

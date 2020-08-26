@@ -1,10 +1,10 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { GET_USER } from '../../utils/graphql/queries'
+import { ACTIVE_USER } from '../../utils/graphql/queries'
 
 export function withCurrentUser(Component) {
   return function withCurrentUserComponent(props) {
-    const { data, error, loading } = useQuery(GET_USER, {
+    const { data, error, loading } = useQuery(ACTIVE_USER, {
       onError: (e) => console.error(e)
     })
     return (
