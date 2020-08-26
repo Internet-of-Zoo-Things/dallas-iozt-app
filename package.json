@@ -5,9 +5,6 @@
   "scripts": {
     "dev": "nodemon server",
     "storybook": "start-storybook",
-    "k8s-deploy": "node k8s.config.js deploy",
-    "k8s-build": "node k8s.config.js build",
-    "deploy": "node k8s.config.js build_deploy",
     "lint": "eslint \"components/**/*.js\" \"pages/**/*.js\" \"server/**/*.js\" \"utils/**/*.js\"",
     "build": "next build",
     "start": "node server"
