@@ -43,7 +43,18 @@ const Styled_ = styled(Button)`
         }
       }
       if (props.minimal) {
-        return tw`text-primary hover:opacity-100`
+        switch (props.intent) {
+          case 'primary': {
+            return tw`text-primary hover:opacity-100`
+          }
+          case 'warning': {
+            return tw`text-warning hover:opacity-100`
+          }
+          case 'danger': {
+            return tw`text-danger hover:opacity-100`
+          }
+          default: return tw`text-primary hover:opacity-100`
+        }
       }
     }}
   }

@@ -17,6 +17,10 @@ const Styled_ = styled(Tooltip)`
     .bp3-popover-arrow-fill {
       ${tw`fill-primary`}
     }
+    
+    .bp3-popover-target {
+      ${tw`w-full h-full`}
+    }
   }
 `
 

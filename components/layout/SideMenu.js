@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
 import { withRouter } from 'next/router'
-import { Typography, Button, StyledLink } from '../primitives'
+import { Typography, Button, StyledLink, Tooltip } from '../primitives'
 import useWindowSize from '../../utils/hooks/useWindowSize'
 
 /* this corresponds to the tailwindcss "small" identifier */
@@ -113,6 +113,25 @@ const _ = ({ router }) => {
           ))
         }
       </div>
+      {
+        process.env.NODE_ENV !== 'production'
+          ? <div className="flex w-full h-12">
+            <Tooltip content={
+              <div className="p-3 w-48 break-normal text-center">
+                <Typography variant="body">
+                  Please create a new issue at this link and tag it as a <strong>Bug</strong>!
+                </Typography>
+              </div>
+            } className="w-full h-full">
+              <div className="w-full h-full">
+                <StyledLink href="https://wishlist.web.att.com/ioztapp" external>
+                  <Button minimal fill className="h-full">Report a bug</Button>
+                </StyledLink>
+              </div>
+            </Tooltip>
+          </div>
+          : null
+      }
     </div>
   )
 }
