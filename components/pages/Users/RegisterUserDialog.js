@@ -76,7 +76,7 @@ const Users = ({ isOpen, close }) => {
             labelInfo="(required)"
           >
             <InputGroup
-              placeholder="Enter your password on more time..."
+              placeholder="Enter your password one more time..."
               rightElement={lockButton}
               type={showPassword ? 'text' : 'password'}
             />

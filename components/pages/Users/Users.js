@@ -37,7 +37,7 @@ const Users = ({ user, allUsers }) => {
                   <td>
                     {
                       /* editable for admins or self */
-                      user.role === UserRoles.ADMIN || u.username === user.username
+                      user.role === UserRoles.ADMIN.name || u.username === user.username
                         ? <Button minimal icon="edit" />
                         : null
                     }
