@@ -1,7 +1,6 @@
 /* eslint-disable no-bitwise */
 import React from 'react'
 import styled, { css } from 'styled-components'
-import tw from 'twin.macro'
 import PropTypes from 'prop-types'
 import { Tag } from '@blueprintjs/core'
 

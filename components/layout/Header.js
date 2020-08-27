@@ -25,13 +25,6 @@ const Divider = styled(Navbar.Divider)`
   border-color: #ffffff60;
 `
 
-const Logo = styled.img`
-  position: fixed;
-  top: -1rem;
-  left: 1rem;
-  height: 4rem;
-`
-
 const NotificationContainer = styled.div`
   ${tw`h-16 w-full p-3 border-b border-background-darker flex items-center`}
 `
@@ -62,8 +55,8 @@ const _ = ({
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
       <Navbar.Heading className="flex items-center">
-        Dallas Zoo IoT
-        <Tag className="ml-2 bg-semi-transparent text-gray">
+        <Typography variant="h6" weight="">Dallas Zoo Iot</Typography>
+        <Tag className="ml-3 bg-semi-transparent text-gray">
           <Typography variant="subtitle" weight="bold">BETA</Typography>
         </Tag>
       </Navbar.Heading>
