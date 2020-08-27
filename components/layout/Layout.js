@@ -32,15 +32,16 @@ const _ = ({
       </Head>
       <div className="flex flex-row w-screen h-screen">
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
-          <div>
+          <div className="h-full">
             <Header user={user} currentPage={title} notifications={[{ message: 'This is a test notification!' }]} />
-            { loading
-              ? <Spinner className="flex items-center h-full justify-center">
-                <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
-              </Spinner>
-              : <div className="p-12 flex flex-col">
-                <div className="relative z-20">{ children }</div>
-              </div>
+            {
+              loading
+                ? <Spinner className="flex items-center h-full justify-center m-auto">
+                  <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
+                </Spinner>
+                : <div className="p-12 flex flex-col">
+                  <div className="relative z-20">{ children }</div>
+                </div>
             }
           </div>
           <Footer user={user} />
