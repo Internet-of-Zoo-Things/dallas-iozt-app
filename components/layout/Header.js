@@ -8,7 +8,8 @@ import {
 import {
   Typography,
   Button,
-  StyledLink
+  StyledLink,
+  Tag
 } from '../primitives'
 import { UserRoles } from '../../utils/models'
 
@@ -60,7 +61,12 @@ const _ = ({
 }) => (
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
-      <Navbar.Heading>Dallas Zoo IoT</Navbar.Heading>
+      <Navbar.Heading className="flex items-center">
+        Dallas Zoo IoT
+        <Tag className="ml-2 bg-semi-transparent text-gray">
+          <Typography variant="subtitle" weight="bold">BETA</Typography>
+        </Tag>
+      </Navbar.Heading>
       <Divider />
       <div className="ml-1 flex">
         {

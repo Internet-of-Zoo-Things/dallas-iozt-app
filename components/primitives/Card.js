@@ -5,8 +5,6 @@ import tw from 'twin.macro'
 import { Card } from '@blueprintjs/core'
 
 const Styled_ = styled(Card)`
-  width: 30rem;
-
   &&& {
     ${tw`p-0`}
   }
@@ -16,12 +14,12 @@ const _ = ({ children, header, ...props }) => (
   <Styled_ {...props}>
     {
       header
-        ? <div className="flex border-b border-background-darker py-3">
+        ? <div className="flex border-b border-background-darker">
           {header}
         </div>
         : null
     }
-    <div className={header ? 'pb-4' : 'py-4'}>
+    <div className={header && (Array.isArray(children)) ? 'pb-4' : 'py-4'}>
       {
         Array.isArray(children)
           ? children.map((c, i) => (

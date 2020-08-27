@@ -3,19 +3,9 @@ import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Router from 'next/router'
 import { Spinner } from '@blueprintjs/core'
-import styled from 'styled-components'
 import Footer from './Footer'
 import Header from './Header'
 import { Typography } from '../primitives'
-
-const Swoosh = styled.div`
-  position: fixed;
-  overflow: hidden;
-  width: 100%;
-  transform: scaleY(-1);
-  left: 0;
-  bottom: 0;
-`
 
 const _ = ({
   loading,
@@ -50,11 +40,6 @@ const _ = ({
               </Spinner>
               : <div className="p-12 flex flex-col">
                 <div className="relative z-20">{ children }</div>
-                {/* <Swoosh>
-                  <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" className="fill-primary">
-                    <path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style={{ stroke: 'none', opacity: 0.3 }}></path>
-                  </svg>
-                </Swoosh> */}
               </div>
             }
           </div>

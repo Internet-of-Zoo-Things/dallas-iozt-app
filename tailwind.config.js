@@ -21,6 +21,7 @@ module.exports = {
       danger: '#cb282a',
       'danger-hover': '#aa2224',
       transparent: 'transparent',
+      'semi-transparent': '#ffffffc0',
       white: '#fff',
       black: '#000',
       gray: '#777777',
