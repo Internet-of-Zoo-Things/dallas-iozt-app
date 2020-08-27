@@ -24,7 +24,7 @@ module.exports = {
       white: '#fff',
       black: '#000',
       gray: '#777777',
-      'dark-gray': '#333333',
+      'dark-gray': '#555555',
       border: '#ccc'
     },
     backgroundOpacity: {

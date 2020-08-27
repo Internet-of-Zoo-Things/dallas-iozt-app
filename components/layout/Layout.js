@@ -43,18 +43,18 @@ const _ = ({
       <div className="flex flex-row w-screen h-screen">
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
           <div>
-            <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} />
+            <Header user={user} currentPage={title} notifications={[{ message: 'This is a test notification!' }]} />
             { loading
               ? <Spinner className="flex items-center h-full justify-center">
                 <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
               </Spinner>
               : <div className="p-12 flex flex-col">
                 <div className="relative z-20">{ children }</div>
-                <Swoosh>
+                {/* <Swoosh>
                   <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" className="fill-primary">
                     <path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style={{ stroke: 'none', opacity: 0.3 }}></path>
                   </svg>
-                </Swoosh>
+                </Swoosh> */}
               </div>
             }
           </div>

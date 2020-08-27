@@ -20,6 +20,10 @@ const Popover = styled(_Popover)`
   }
 `
 
+const Divider = styled(Navbar.Divider)`
+  border-color: #ffffff60;
+`
+
 const Logo = styled.img`
   position: fixed;
   top: -1rem;
@@ -34,41 +38,43 @@ const NotificationContainer = styled.div`
 const routes = [
   {
     href: '/',
-    title: 'Dashboard',
+    currentPage: 'Dashboard',
     icon: 'dashboard'
   },
   {
     href: '/users',
-    title: 'Users',
+    currentPage: 'Users',
     icon: 'user'
   },
   {
     href: '/log',
-    title: 'Log',
+    currentPage: 'Log',
     icon: 'document'
   }
 ]
 
 const _ = ({
-  title,
+  currentPage,
   notifications,
   user
 }) => (
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
       <Navbar.Heading>Dallas Zoo IoT</Navbar.Heading>
-      <Navbar.Divider />
-      {
-        routes.map((r, i) => (
-          <div className="mx-1" key={i}>
-            <StyledLink href={r.href}>
-              <Button icon={r.icon} active={title === r.title}>
-                <Typography variant="subtitle" weight={title === r.title ? 'bold' : undefined}>{r.title}</Typography>
-              </Button>
-            </StyledLink>
-          </div>
-        ))
-      }
+      <Divider />
+      <div className="ml-1 flex">
+        {
+          routes.map((r, i) => (
+            <div className="mx-1" key={i}>
+              <StyledLink href={r.href}>
+                <Button icon={r.icon} active={currentPage === r.currentPage}>
+                  <Typography variant="subcurrentPage" weight={currentPage === r.currentPage ? 'bold' : undefined}>{r.currentPage}</Typography>
+                </Button>
+              </StyledLink>
+            </div>
+          ))
+        }
+      </div>
     </Navbar.Group>
     <Navbar.Group align={Alignment.RIGHT}>
       <Button icon="search" />
@@ -84,13 +90,13 @@ const _ = ({
                   ? notifications.map((n, i) => (
                     <NotificationContainer key={i}>
                       <Typography variant="icon" icon="envelope" className="mr-2" />
-                      <Typography variant="subtitle" className="truncate">
+                      <Typography variant="subcurrentPage" className="truncate">
                         {n.message}
                       </Typography>
                     </NotificationContainer>
                   ))
                   : <NotificationContainer>
-                    <Typography variant="subtitle">
+                    <Typography variant="subcurrentPage">
                       No new notifications!
                     </Typography>
                   </NotificationContainer>
@@ -123,11 +129,11 @@ const _ = ({
                         <Typography variant="body">
                           { user.name }
                         </Typography>
-                        <Typography variant="subtitle" className="text-gray ml-1">
+                        <Typography variant="subcurrentPage" className="text-gray ml-1">
                           ({ user.username })
                         </Typography>
                       </div>
-                      <Typography variant="subtitle" className="text-gray mt-1">
+                      <Typography variant="subcurrentPage" className="text-gray mt-1">
                         { UserRoles[user.role].name }
                       </Typography>
                     </div>
@@ -172,13 +178,13 @@ const _ = ({
   //                 ? notifications.map((n, i) => (
   //                   <NotificationContainer key={i}>
   //                     <Typography variant="icon" icon="envelope" className="mr-2" />
-  //                     <Typography variant="subtitle" className="truncate">
+  //                     <Typography variant="subcurrentPage" className="truncate">
   //                       {n.message}
   //                     </Typography>
   //                   </NotificationContainer>
   //                 ))
   //                 : <NotificationContainer>
-  //                   <Typography variant="subtitle">
+  //                   <Typography variant="subcurrentPage">
   //                     No new notifications!
   //                   </Typography>
   //                 </NotificationContainer>
@@ -211,11 +217,11 @@ const _ = ({
   //                       <Typography variant="body">
   //                         { user.name }
   //                       </Typography>
-  //                       <Typography variant="subtitle" className="text-gray ml-1">
+  //                       <Typography variant="subcurrentPage" className="text-gray ml-1">
   //                         ({ user.username })
   //                       </Typography>
   //                     </div>
-  //                     <Typography variant="subtitle" className="text-gray mt-1">
+  //                     <Typography variant="subcurrentPage" className="text-gray mt-1">
   //                       { UserRoles[user.role].name }
   //                     </Typography>
   //                   </div>
@@ -238,14 +244,13 @@ const _ = ({
   // </div>
 )
 _.propTypes = {
-  title: PropTypes.string,
+  currentPage: PropTypes.string,
   notifications: PropTypes.array,
   user: PropTypes.object,
   /** whether the side menu is open */
   open: PropTypes.bool
 }
 _.defaultProps = {
-  title: 'Dallas IoZT',
   notifications: []
 }
 

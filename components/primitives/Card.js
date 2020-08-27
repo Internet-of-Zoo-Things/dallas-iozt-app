@@ -16,19 +16,29 @@ const _ = ({ children, header, ...props }) => (
   <Styled_ {...props}>
     {
       header
-        ? <div className="flex justify-center border-b border-background-darker py-3 text-gray">
+        ? <div className="flex border-b border-background-darker py-3">
           {header}
         </div>
         : null
     }
-    <div className="p-4">
-      {children}
+    <div className={header ? 'pb-4' : 'py-4'}>
+      {
+        Array.isArray(children)
+          ? children.map((c, i) => (
+            <div className={`flex ${i !== 0 ? 'border-t border-background-darker' : ''} py-3`} key={i}>
+              <div className="flex w-full px-6">
+                {c}
+              </div>
+            </div>
+          ))
+          : children
+      }
     </div>
   </Styled_>
 )
 _.propTypes = {
   /** optional label at the top of the card */
-  header: PropTypes.string,
+  header: PropTypes.any,
   children: PropTypes.any
 }
 
