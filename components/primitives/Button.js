@@ -17,6 +17,7 @@ const Styled_ = styled(Button)`
         /* regular filled button */
         switch (props.intent) {
           case 'primary': {
+            if (props.active) return tw`text-white bg-primary-darker disabled:hover:bg-primary`
             return tw`text-white bg-primary hover:bg-primary-darker disabled:hover:bg-primary`
           }
           case 'warning': {
@@ -67,7 +68,9 @@ _.propTypes = {
   /** Sets no background or border */
   minimal: PropTypes.bool,
   /** Sets intention of the button */
-  intent: PropTypes.oneOf(['primary', 'warning', 'danger'])
+  intent: PropTypes.oneOf(['primary', 'warning', 'danger']),
+  /** Sets button to its hover behavior */
+  active: PropTypes.bool
 }
 _.defaultProps = {
   intent: 'primary'

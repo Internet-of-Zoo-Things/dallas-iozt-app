@@ -33,7 +33,9 @@ module.exports = {
       75: '0.75',
       100: '1'
     },
-    fill: (theme) => theme('colors'),
+    fill: {
+      primary: '#3498db'
+    },
     backgroundColor: (theme) => theme('colors'),
     textColor: (theme) => theme('colors'),
     borderColor: (theme) => theme('colors'),

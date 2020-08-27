@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Router from 'next/router'
 import { Spinner } from '@blueprintjs/core'
+import styled from 'styled-components'
 import Footer from './Footer'
 import Header from './Header'
-import SideMenu from './SideMenu'
 import { Typography } from '../primitives'
-import useWindowSize from '../../utils/hooks/useWindowSize'
 
-/* this corresponds to the tailwindcss "small" identifier */
-const RESIZE_WIDTH = 768
+const Swoosh = styled.div`
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  transform: scaleY(-1);
+  left: 0;
+  bottom: 0;
+`
 
 const _ = ({
   loading,
@@ -30,31 +35,26 @@ const _ = ({
     return <></>
   }
 
-  const window = useWindowSize()
-  const [open, setOpen] = useState(window.width > RESIZE_WIDTH || !window.width)
-
-  useEffect(() => {
-    setOpen(window.width > RESIZE_WIDTH)
-  }, [window])
-
   return (
     <>
       <Head>
         <title>{title || 'Page'} | IoZT</title>
       </Head>
       <div className="flex flex-row w-screen h-screen">
-        <SideMenu open={open} setOpen={setOpen} />
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
           <div>
-            <div className="mb-12">
-              <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} open={open} />
-            </div>
+            <Header user={user} title={title} notifications={[{ message: 'This is a test notification!' }]} />
             { loading
               ? <Spinner className="flex items-center h-full justify-center">
                 <Typography variant="subtitle">{ loadingMessage || 'Loading...' }</Typography>
               </Spinner>
-              : <div className="px-6 py-6 flex flex-col">
-                { children }
+              : <div className="p-12 flex flex-col">
+                <div className="relative z-20">{ children }</div>
+                <Swoosh>
+                  <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet" className="fill-primary">
+                    <path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style={{ stroke: 'none', opacity: 0.3 }}></path>
+                  </svg>
+                </Swoosh>
               </div>
             }
           </div>

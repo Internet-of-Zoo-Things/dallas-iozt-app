@@ -18,7 +18,7 @@ const Schedule = ({ user, schedule }) => (
             ({moment(s.timestamp).fromNow()})
           </Typography>
           {
-            compareUserRoles(user.role, UserRoles.VIEWER) > 0
+            user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
               ? <Button minimal intent="danger" className="ml-5" icon="cross" />
               : null
           }

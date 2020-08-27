@@ -7,7 +7,7 @@ import Schedule from './Schedule'
 const Dashboard = ({ user, schedule }) => (
   <div className="flex flex-col">
     {/* buttons */}
-    <div className="flex flex-row flex-wrap">
+    <div className="flex flex-row justify-center flex-wrap">
       <Button minimal className="mx-1">
         <Typography variant="body">Register Time</Typography>
       </Button>
