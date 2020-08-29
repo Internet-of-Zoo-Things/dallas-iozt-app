@@ -45,7 +45,7 @@ const Users = ({ isOpen, close }) => (
             label: 'Email',
             id: 'email',
             required: false,
-            type: InputTypes.TEXT,
+            type: InputTypes.EMAIL,
             placeholder: 'Enter your email address...'
           },
           {

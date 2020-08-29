@@ -24,13 +24,11 @@ const _ = ({
       if (f.required && !data[f.id]) return false
       if (f.required && !f.validator) {
         if (f.type === InputTypes.EMAIL) return validateEmail(data[f.id])
-        return false
       }
       if (f.validator) {
-        if (!f.validator(data[f.id]) || (
-          f.type === InputTypes.EMAIL && !validateEmail(data[f.id])
-        )) return false
+        if (!f.validator(data[f.id])) return false
       }
+      if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
     }
     return true
   }
