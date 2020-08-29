@@ -19,6 +19,8 @@ const hashCode = (str) => {
   return hash
 }
 
+const makeDarker = (val) => ((val - 70 > 0) ? val - 70 : 0)
+
 const getColor = (value) => {
   const hash = hashCode(value)
   const r = (hash & 0xFF0000) >> 16
@@ -30,8 +32,9 @@ const getColor = (value) => {
 
 const Styled_ = styled(Tag)`
   ${({ color }) => color && css`
-      background-color: rgb(${color.r}, ${color.g}, ${color.b}, 0.5);
-      background-image: linear-gradient(141deg, rgba(${color.r}, ${color.g}, ${color.b}, .3) 0%, rgba(${color.r}, ${color.g}, ${color.b}, .5) 51%, rgba(${color.r}, ${color.g}, ${color.b}, .8) 75%);
+      background-color: rgb(${color.r}, ${color.g}, ${color.b}, 0.3);
+      color: rgb(${makeDarker(color.r)}, ${makeDarker(color.g)}, ${makeDarker(color.b)}, 1) !important;
+      /* background-image: linear-gradient(141deg, rgba(${color.r}, ${color.g}, ${color.b}, .3) 0%, rgba(${color.r}, ${color.g}, ${color.b}, .5) 51%, rgba(${color.r}, ${color.g}, ${color.b}, .8) 75%); */
   `}
 `
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout } from '../../layout'
+import Layout from '../../layout'
 import { Errors } from '../../../utils/models'
 import { Typography, StyledLink, Button } from '../../primitives'
 

@@ -1,0 +1,50 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Form, Button } from '../primitives'
+import { InputTypes } from '../../utils/models'
+
+<Meta title="Form" component={Form} />
+
+# Form
+
+## Examples
+<br />
+
+### Default Form
+<Preview>
+  <Story name="Default Form">
+    <>
+      <Form
+        onSubmit={(data) => console.log(data)}
+        fields={[
+          {
+            label: 'Username',
+            id: 'username',
+            required: true,
+            type: InputTypes.TEXT,
+            placeholder: 'Enter a unique username...',
+            validator: (val) => val && val.length !== 0
+          },
+          {
+            label: 'Password',
+            id: 'password-first',
+            required: true,
+            type: InputTypes.PASSWORD,
+            placeholder: 'Enter a secure password...',
+            validator: (val) => val && val.length !== 0
+          },
+          {
+            label: 'Password',
+            id: 'password-second',
+            required: true,
+            type: InputTypes.PASSWORD,
+            placeholder: 'Type in that same password one more time...',
+            validator: (val) => val && val.length !== 0
+          }
+        ]}
+      />
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Form} />

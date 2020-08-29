@@ -3,3 +3,4 @@
  */
 export { default as UserRoles } from './UserRoles'
 export { default as Errors } from './Errors'
+export { default as InputTypes } from './InputTypes'

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import withApollo from '../components/apollo'
-import { Layout } from '../components/layout'
+import Layout from '../components/layout'
 import { withCurrentUser } from '../components/providers'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
 

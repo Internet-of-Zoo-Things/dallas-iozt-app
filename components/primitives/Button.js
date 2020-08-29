@@ -70,7 +70,9 @@ _.propTypes = {
   /** Sets intention of the button */
   intent: PropTypes.oneOf(['primary', 'warning', 'danger']),
   /** Sets button to its hover behavior */
-  active: PropTypes.bool
+  active: PropTypes.bool,
+  /** If button is disabled */
+  disabled: PropTypes.bool
 }
 _.defaultProps = {
   intent: 'primary'

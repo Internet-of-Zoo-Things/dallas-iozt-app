@@ -1,5 +1,5 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
-import { Tag } from '../primitives'
+import { Tag, Typography } from '../primitives'
 
 <Meta title="Tag" component={Tag} />
 
@@ -90,6 +90,23 @@ import { Tag } from '../primitives'
       </Tag>
       <Tag large round className="mr-2 text-dark-gray" generateColor="bcxdfsgvbxc">
         Hello
+      </Tag>
+    </>
+  </Story>
+</Preview>
+
+### Tags with different typography
+<Preview>
+  <Story name="Tags with different typography">
+    <>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="asdf">
+        <Typography variant="subtitle" weight="bold">Hello</Typography>
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="asdf">
+        <Typography variant="subtitle" weight="black">Hello</Typography>
+      </Tag>
+      <Tag large round className="mr-2 text-dark-gray" generateColor="asdf">
+        <Typography variant="h6">Hello</Typography>
       </Tag>
     </>
   </Story>
