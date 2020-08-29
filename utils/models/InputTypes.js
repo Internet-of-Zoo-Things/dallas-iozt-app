@@ -1,4 +1,5 @@
 export default {
   TEXT: 'text',
-  PASSWORD: 'password'
+  PASSWORD: 'password',
+  EMAIL: 'email'
 }

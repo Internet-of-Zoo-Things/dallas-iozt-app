@@ -25,6 +25,13 @@ import { InputTypes } from '../../utils/models'
             validator: (val) => val && val.length !== 0
           },
           {
+            label: 'Email',
+            id: 'email',
+            required: true,
+            type: InputTypes.EMAIL,
+            placeholder: 'Enter your email address...'
+          },
+          {
             label: 'Password',
             id: 'password-first',
             required: true,
