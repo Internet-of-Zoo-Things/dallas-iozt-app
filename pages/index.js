@@ -20,9 +20,17 @@ const dummySchedule = [{
   feeder: 'Feeder 1'
 }]
 
+const dummyFeeders = [{
+  name: 'Feeder 1',
+  status: 'Online'
+}, {
+  name: 'Feeder 2',
+  status: 'Online'
+}]
+
 const Dashboard = ({ user }) => (
   <Layout title="Dashboard" user={user && user.activeUser}>
-    <DashboardComponent user={user && user.activeUser} schedule={dummySchedule} />
+    <DashboardComponent user={user && user.activeUser} schedule={dummySchedule} feeders={dummyFeeders} />
   </Layout>
 )
 Dashboard.propTypes = {

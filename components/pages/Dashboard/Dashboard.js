@@ -7,7 +7,12 @@ import {
 import FeederCard from './FeederCard'
 import Schedule from './Schedule'
 
-const Dashboard = ({ user, schedule }) => (
+const Dashboard = ({
+  user,
+  schedule,
+  feeders,
+  animals
+}) => (
   <div className="flex flex-row w-full">
     <div className="flex flex-col items-center w-1/3 mr-8">
       <Card
@@ -52,10 +57,17 @@ const Dashboard = ({ user, schedule }) => (
         elevation={Elevation.TWO}
         className="w-full mb-8"
       >
-        <div className="grid grid-cols-2 gap-4 mx-4">
-          <FeederCard status="Activated" name="Feeder 1" />
-          <FeederCard status="Activated" name="Feeder 2" />
-        </div>
+        {
+          feeders.length !== 0
+            ? <div className="grid grid-cols-2 gap-4 mx-4">
+              {
+                feeders.map((f, i) => (
+                  <FeederCard status={f.status} name={f.name} key={i} />
+                ))
+              }
+            </div>
+            : <Typography variant="h6" className="flex w-full justify-center text-gray">No feeders found...</Typography>
+        }
       </Card>
       <Card
         header={
@@ -82,10 +94,14 @@ const Dashboard = ({ user, schedule }) => (
 )
 Dashboard.propTypes = {
   user: PropTypes.object,
-  schedule: PropTypes.array
+  schedule: PropTypes.array,
+  feeders: PropTypes.array,
+  animals: PropTypes.array
 }
 Dashboard.defaultProps = {
-  schedule: []
+  schedule: [],
+  feeders: [],
+  animals: []
 }
 
 export default Dashboard
