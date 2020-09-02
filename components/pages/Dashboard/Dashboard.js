@@ -20,7 +20,7 @@ const Dashboard = ({ user, schedule }) => (
             <Typography variant="body">Create Daily Schedule</Typography>
           </Button>
           <Button className="my-1" icon="time" fill>
-            <Typography variant="body">Add Individual Feed</Typography>
+            <Typography variant="body">Schedule a Feed</Typography>
           </Button>
         </div>
         <div className="w-full flex flex-col items-center">

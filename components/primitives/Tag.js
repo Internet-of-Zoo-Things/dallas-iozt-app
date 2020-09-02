@@ -43,14 +43,14 @@ const _ = ({
   children,
   ...props
 }) => (
-  <Styled_ {...props} color={generateColor ? getColor(`${generateColor} wanna hear a udp joke? i don't care if you don't get it`) : undefined}>
+  <Styled_ {...props} color={generateColor ? getColor(`${children} hey wanna hear a udp joke? i don't care if you don't get it`) : undefined}>
     { children }
   </Styled_>
 )
 _.propTypes = {
   children: PropTypes.node,
-  /** generate a random muted color based on the input */
-  generateColor: PropTypes.string
+  /** generate a random muted color based on the children */
+  generateColor: PropTypes.bool
 }
 
 export default _
