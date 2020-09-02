@@ -13,7 +13,7 @@ const Schedule = ({ user, schedule }) => (
           <Tag large>{s.feeder}</Tag>
           <div className="flex flex-grow justify-center">
             <Typography variant="subtitle" className="ml-3">
-              {moment(s.timestamp).format('MMM Do, h:mm:ss a')}
+              {moment(s.timestamp).format('h:mm:ss a')}
             </Typography>
             <Typography variant="subtitle" className="ml-2 text-gray">
               ({moment(s.timestamp).fromNow()})
@@ -21,7 +21,10 @@ const Schedule = ({ user, schedule }) => (
           </div>
           {
             user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-              ? <Button minimal intent="danger" className="ml-5" icon="cross" />
+              ? <div>
+                <Button minimal intent="primary" icon="edit" />
+                <Button minimal intent="danger" icon="cross" />
+              </div>
               : null
           }
         </div>

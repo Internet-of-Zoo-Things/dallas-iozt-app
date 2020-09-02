@@ -16,16 +16,22 @@ const Dashboard = ({ user, schedule }) => (
         className="w-full mb-8"
       >
         <div className="w-full flex flex-col">
-          <Button className="my-1" icon="time" fill>
-            <Typography variant="body">Register Time</Typography>
-          </Button>
           <Button className="my-1" icon="add" fill>
             <Typography variant="body">Create Daily Schedule</Typography>
+          </Button>
+          <Button className="my-1" icon="time" fill>
+            <Typography variant="body">Add Individual Feed</Typography>
           </Button>
         </div>
         <div className="w-full flex flex-col items-center">
           <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
           <Schedule schedule={schedule} user={user} />
+        </div>
+        <div className="w-full flex flex-col items-center">
+          <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
+          <div className="mt-2 rounded-md border border-border text-gray w-full flex justify-center items-center h-32">
+            Graphical timeline here
+          </div>
         </div>
       </Card>
     </div>
