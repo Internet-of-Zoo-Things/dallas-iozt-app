@@ -25,7 +25,7 @@ const Schedule = ({ user, schedule }) => {
           ? <>
             {
               schedule.map((s, i) => (
-                <div key={i} className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background">
+                <div key={i} className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background overflow-hidden">
                   <FeederTag>{s.feeder}</FeederTag>
                   <div className="flex flex-grow justify-center">
                     <Typography variant="subtitle" className="ml-3">
