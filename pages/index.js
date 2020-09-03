@@ -28,9 +28,27 @@ const dummyFeeders = [{
   status: 'Online'
 }]
 
+const dummyAnimals = [{
+  name: 'Ellie',
+  type: 'Elephant',
+  intake: 8 // daily food intake in lbs
+}, {
+  name: 'Eva',
+  type: 'Elephant',
+  intake: 9
+}, {
+  name: 'Gerald',
+  type: 'Giraffe',
+  intake: 5
+}, {
+  name: 'Manny',
+  type: 'Monkey',
+  intake: 2
+}]
+
 const Dashboard = ({ user }) => (
   <Layout title="Dashboard" user={user && user.activeUser}>
-    <DashboardComponent user={user && user.activeUser} schedule={dummySchedule} feeders={dummyFeeders} />
+    <DashboardComponent user={user && user.activeUser} schedule={dummySchedule} feeders={dummyFeeders} animals={dummyAnimals} />
   </Layout>
 )
 Dashboard.propTypes = {

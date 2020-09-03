@@ -5,10 +5,10 @@ module.exports = {
   important: true,
   theme: {
     screens: {
-      phone: '450px',
-      tablet: '768x',
-      laptop: '1024px',
-      desktop: '1280px'
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px'
     },
     colors: {
       primary: '#3498db',

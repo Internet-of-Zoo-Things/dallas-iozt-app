@@ -6,6 +6,7 @@ import {
 } from '../../primitives'
 import FeederCard from './FeederCard'
 import Schedule from './Schedule'
+import AnimalCard from './AnimalCard'
 
 const Dashboard = ({
   user,
@@ -34,7 +35,7 @@ const Dashboard = ({
         </div>
         <div className="w-full flex flex-col items-center">
           <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-          <div className="mt-2 rounded-md border border-border text-gray w-full flex justify-center items-center h-32">
+          <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
             Graphical timeline here
           </div>
         </div>
@@ -59,7 +60,7 @@ const Dashboard = ({
       >
         {
           feeders.length !== 0
-            ? <div className="grid grid-cols-2 gap-4 mx-4">
+            ? <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
               {
                 feeders.map((f, i) => (
                   <FeederCard status={f.status} name={f.name} key={i} />
@@ -85,9 +86,17 @@ const Dashboard = ({
         elevation={Elevation.TWO}
         className="w-full mb-8"
       >
-        <div className="flex flex-col items-center mx-4">
-          <Typography variant="h6" className="text-gray">No animals found...</Typography>
-        </div>
+        {
+          animals.length !== 0
+            ? <div className="flex flex-row flex-wrap mx-4">
+              {
+                animals.map((a, i) => (
+                  <AnimalCard key={i} {...a} user={user} />
+                ))
+              }
+            </div>
+            : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
+        }
       </Card>
     </div>
   </div>
