@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { Elevation } from '@blueprintjs/core'
 import {
-  Typography, Button, Card
+  Typography, Button, Card, TextInput
 } from '../../primitives'
 import FeederCard from './FeederCard'
 import Schedule from './Schedule'
@@ -13,94 +13,117 @@ const Dashboard = ({
   schedule,
   feeders,
   animals
-}) => (
-  <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
-    <div className="flex flex-col items-center w-full md:w-full lg:w-1/3 xl:w-1/3 mr-8">
-      <Card
-        header={<Typography variant="h4" className="ml-6 text-dark-gray py-3">Schedule</Typography>}
-        elevation={Elevation.TWO}
-        className="w-full mb-8"
-      >
-        <div className="w-full flex flex-col">
-          <Button className="my-1" icon="add" fill>
-            <Typography variant="body">Create Daily Schedule</Typography>
-          </Button>
-          <Button className="my-1" icon="time" fill>
-            <Typography variant="body">Schedule a Feed</Typography>
-          </Button>
-        </div>
-        <div className="w-full flex flex-col items-center">
-          <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
-          <Schedule schedule={schedule} user={user} />
-        </div>
-        <div className="w-full flex flex-col items-center">
-          <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-          <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
-            Graphical timeline here
+}) => {
+  /* search strings */
+  const [animalSearch, setAnimalSearch] = useState('')
+  /* subset of lists with search applied */
+  const [animalsWithSearch, setAnimalsWithSearch] = useState(animals)
+
+  useEffect(() => {
+    const tmp = animals.filter(
+      (a) => animalSearch.toLowerCase().split(' ')
+        .every(
+          (segment) => a.name.toLowerCase().includes(segment) || a.type.toLowerCase().includes(segment)
+        )
+    )
+    setAnimalsWithSearch(tmp)
+  }, [animalSearch])
+
+  return (
+    <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
+      <div className="flex flex-col items-center w-full md:w-full lg:w-1/3 xl:w-1/3 mr-8">
+        <Card
+          header={<Typography variant="h4" className="ml-6 text-dark-gray py-3">Schedule</Typography>}
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          <div className="w-full flex flex-col">
+            <Button className="my-1" icon="add" fill>
+              <Typography variant="body">Create Daily Schedule</Typography>
+            </Button>
+            <Button className="my-1" icon="time" fill>
+              <Typography variant="body">Schedule a Feed</Typography>
+            </Button>
           </div>
-        </div>
-      </Card>
+          <div className="w-full flex flex-col items-center">
+            <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
+            <Schedule schedule={schedule} user={user} />
+          </div>
+          <div className="w-full flex flex-col items-center">
+            <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
+            <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
+              Graphical timeline here
+            </div>
+          </div>
+        </Card>
+      </div>
+      <div className="flex flex-col items-center w-full md:w-full lg:w-2/3 xl:w-2/3">
+        <Card
+          header={
+            <div className="flex w-full py-3">
+              <div className="flex flex-grow ml-6">
+                <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
+              </div>
+              <div className="flex justify-center items-center">
+                <Button className="mx-6" icon="add">
+                  <Typography variant="body">Add Feeder</Typography>
+                </Button>
+              </div>
+            </div>
+          }
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          {
+            feeders.length !== 0
+              ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
+                {
+                  feeders.map((f, i) => (
+                    <FeederCard status={f.status} name={f.name} key={i} />
+                  ))
+                }
+              </div>
+              : <Typography variant="h6" className="flex w-full justify-center text-gray">No feeders found...</Typography>
+          }
+        </Card>
+        <Card
+          header={
+            <div className="flex w-full py-3">
+              <div className="flex flex-grow ml-6">
+                <Typography variant="h4" className="text-dark-gray">Animals</Typography>
+              </div>
+              <div className="flex justify-center items-center">
+                <TextInput
+                  placeholder="Search for an animal..."
+                  onChange={(e) => setAnimalSearch(e.target.value)}
+                  value={animalSearch}
+                  className="mx-3"
+                />
+                <Button className="mr-6" icon="add">
+                  <Typography variant="body">Add Animal</Typography>
+                </Button>
+              </div>
+            </div>
+          }
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          {
+            animalsWithSearch.length !== 0
+              ? <div className="flex flex-row flex-wrap mx-4">
+                {
+                  animalsWithSearch.map((a, i) => (
+                    <AnimalCard key={i} {...a} user={user} />
+                  ))
+                }
+              </div>
+              : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
+          }
+        </Card>
+      </div>
     </div>
-    <div className="flex flex-col items-center flex-grow">
-      <Card
-        header={
-          <div className="flex w-full py-3">
-            <div className="flex flex-grow ml-6">
-              <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
-            </div>
-            <div className="flex justify-center items-center">
-              <Button className="mx-6" icon="add">
-                <Typography variant="body">Add Feeder</Typography>
-              </Button>
-            </div>
-          </div>
-        }
-        elevation={Elevation.TWO}
-        className="w-full mb-8"
-      >
-        {
-          feeders.length !== 0
-            ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
-              {
-                feeders.map((f, i) => (
-                  <FeederCard status={f.status} name={f.name} key={i} />
-                ))
-              }
-            </div>
-            : <Typography variant="h6" className="flex w-full justify-center text-gray">No feeders found...</Typography>
-        }
-      </Card>
-      <Card
-        header={
-          <div className="flex w-full py-3">
-            <div className="flex flex-grow ml-6">
-              <Typography variant="h4" className="text-dark-gray">Animals</Typography>
-            </div>
-            <div className="flex justify-center items-center">
-              <Button className="mx-6" icon="add">
-                <Typography variant="body">Add Animal</Typography>
-              </Button>
-            </div>
-          </div>
-        }
-        elevation={Elevation.TWO}
-        className="w-full mb-8"
-      >
-        {
-          animals.length !== 0
-            ? <div className="flex flex-row flex-wrap mx-4">
-              {
-                animals.map((a, i) => (
-                  <AnimalCard key={i} {...a} user={user} />
-                ))
-              }
-            </div>
-            : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
-        }
-      </Card>
-    </div>
-  </div>
-)
+  )
+}
 Dashboard.propTypes = {
   user: PropTypes.object,
   schedule: PropTypes.array,
