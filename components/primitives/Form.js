@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, InputGroup } from '@blueprintjs/core'
+import { FormGroup, InputGroup, NumericInput } from '@blueprintjs/core'
 import { InputTypes } from '../../utils/models'
 import Tooltip from './Tooltip'
 import Button from './Button'
@@ -20,7 +20,7 @@ const _ = ({
   const [showPassword, setShowPassword] = useState({})
 
   useEffect(() => {
-    // Initialize all text fields to empty string
+    // Initialize fields
     const tmp = {}
     fields.forEach((f) => {
       if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
@@ -33,7 +33,7 @@ const _ = ({
   const validate = () => {
     for (let i = 0; i < fields.length; i += 1) {
       const f = fields[i]
-      if (f.required && !data[f.id]) return false
+      if (f.required && data[f.id] === undefined) return false
       if (f.required && !f.validator) {
         if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
@@ -58,6 +58,7 @@ const _ = ({
           setData((prev) => ({ ...prev, [field.id]: tmp }))
         }}
         autoComplete="off"
+        fill
       />
     )
     case InputTypes.PASSWORD: return (
@@ -79,6 +80,7 @@ const _ = ({
           setData((prev) => ({ ...prev, [field.id]: tmp }))
         }}
         autoComplete="off"
+        fill
       />
     )
     case InputTypes.EMAIL: return (
@@ -91,6 +93,7 @@ const _ = ({
           const tmp = e.target.value
           setData((prev) => ({ ...prev, [field.id]: tmp }))
         }}
+        fill
       />
     )
     case InputTypes.SELECT: return (
@@ -112,6 +115,19 @@ const _ = ({
           text={(data[field.id] && data[field.id].label) || field.placeholder || 'Select an option'}
         />
       </Select>
+    )
+    case InputTypes.NUMERIC: return (
+      <NumericInput
+        id={field.id}
+        placeholder={field.placeholder || 'Enter a numeric value...'}
+        onValueChange={(e) => {
+          const tmp = e
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        buttonPosition="none"
+        fill
+        {...field.props}
+      />
     )
     default: console.error(`Unknown input type "${field.type}"`)
     }

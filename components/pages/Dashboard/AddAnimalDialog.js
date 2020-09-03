@@ -40,11 +40,12 @@ const _ = ({ isOpen, close }) => (
             ]
           },
           {
-            label: 'Daily Food Intake',
+            label: 'Daily Food Intake (kg)',
             id: 'intake',
             required: true,
-            type: InputTypes.TEXT,
-            placeholder: 'Enter the daily food intake in kg...'
+            type: InputTypes.NUMERIC,
+            placeholder: 'Enter the daily food intake in kg...',
+            validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
           }
         ]}
       />
