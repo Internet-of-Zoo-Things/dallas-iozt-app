@@ -17,7 +17,6 @@ const FeederCard = ({ name, status, ...props }) => (
         </Typography>
       </div>
     }
-    interactive
     {...props}
   >
     <div className="flex flex-col justify-center items-center">

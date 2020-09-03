@@ -7,7 +7,7 @@ export default function createApolloClient(initialState, ctx) {
   return new ApolloClient({
     ssrMode: Boolean(ctx),
     link: new HttpLink({
-      uri: `${process.env.URL}/graphql`,
+      uri: '/graphql',
       credentials: 'include',
       headers: {
         cookie: ctx && ctx.req && ctx.req.headers.cookie
