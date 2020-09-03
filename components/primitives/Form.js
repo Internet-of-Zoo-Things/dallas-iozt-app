@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, InputGroup } from '@blueprintjs/core'
 import { InputTypes } from '../../utils/models'
@@ -18,6 +18,17 @@ const _ = ({
 }) => {
   const [data, setData] = useState({})
   const [showPassword, setShowPassword] = useState({})
+
+  useEffect(() => {
+    // Initialize all text fields to empty string
+    const tmp = {}
+    fields.forEach((f) => {
+      if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
+        tmp[f.id] = ''
+      }
+    })
+    setData(tmp)
+  }, [fields])
 
   const validate = () => {
     for (let i = 0; i < fields.length; i += 1) {
@@ -41,7 +52,12 @@ const _ = ({
         id={field.id}
         placeholder={field.placeholder || 'Enter some text...'}
         type="text"
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        autoComplete="off"
       />
     )
     case InputTypes.PASSWORD: return (
@@ -57,7 +73,12 @@ const _ = ({
           </Tooltip>
         }
         type={showPassword[field.id] ? 'text' : 'password'}
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        autoComplete="off"
       />
     )
     case InputTypes.EMAIL: return (
@@ -65,7 +86,11 @@ const _ = ({
         id={field.id}
         placeholder={field.placeholder || 'Enter your email address...'}
         type="text"
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
       />
     )
     case InputTypes.SELECT: return (
@@ -74,7 +99,6 @@ const _ = ({
         filterable={false}
         { ...field.props }
         items={field.items}
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
         noResults={<SelectItem disabled={true} text="No results." />}
         popoverProps={{ minimal: true }}
         itemRenderer={Select.ItemRenderer}

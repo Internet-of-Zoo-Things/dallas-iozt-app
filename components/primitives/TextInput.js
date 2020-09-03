@@ -6,6 +6,7 @@ import Button from './Button'
 const _ = ({ clearButton, onChange, ...props }) => (
   <InputGroup
     type="text"
+    autoComplete="off"
     rightElement={
       clearButton
         ? <Button icon="cross" onClick={() => onChange({ target: { value: '' } })} minimal />

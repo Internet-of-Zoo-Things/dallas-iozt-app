@@ -73,7 +73,7 @@ const Schedule = ({ user, schedule }) => {
       <Dialog
         isOpen={itemToEdit}
         title="Edit Scheduled Feed"
-        onClose={() => setItemToDelete(null)}
+        onClose={() => setItemToEdit(null)}
       >
         <>
           <div className="flex flex-col items-center m-auto p-4">

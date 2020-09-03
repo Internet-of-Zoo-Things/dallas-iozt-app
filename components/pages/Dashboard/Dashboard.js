@@ -7,6 +7,7 @@ import {
 import FeederCard from './FeederCard'
 import Schedule from './Schedule'
 import AnimalCard from './AnimalCard'
+import AddAnimalDialog from './AddAnimalDialog'
 
 const Dashboard = ({
   user,
@@ -19,6 +20,10 @@ const Dashboard = ({
   const [animalSearch, setAnimalSearch] = useState('')
   /* subset of lists with search applied */
   const [animalsWithSearch, setAnimalsWithSearch] = useState(animals)
+
+  /* dialogs */
+  const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
+  const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
 
   useEffect(() => {
     const tmp = animals.filter(
@@ -66,7 +71,7 @@ const Dashboard = ({
                 <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
               </div>
               <div className="flex justify-center items-center">
-                <Button className="mx-6" icon="add">
+                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)}>
                   <Typography variant="body">Add Feeder</Typography>
                 </Button>
               </div>
@@ -102,7 +107,7 @@ const Dashboard = ({
                   clearButton={animalSearch !== ''}
                   leftElement={<Typography variant="icon" icon="search" />}
                 />
-                <Button className="mr-6" icon="add">
+                <Button className="mr-6" icon="add" onClick={() => setShowAddAnimalDialog(true)}>
                   <Typography variant="body">Add Animal</Typography>
                 </Button>
               </div>
@@ -124,6 +129,8 @@ const Dashboard = ({
           }
         </Card>
       </div>
+      {/* Dialogs */}
+      <AddAnimalDialog isOpen={showAddAnimalDialog} close={() => setShowAddAnimalDialog(false)} />
     </div>
   )
 }
