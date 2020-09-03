@@ -8,6 +8,7 @@ import FeederCard from './FeederCard'
 import Schedule from './Schedule'
 import AnimalCard from './AnimalCard'
 import AddAnimalDialog from './AddAnimalDialog'
+import AddFeederDialog from './AddFeederDialog'
 
 const Dashboard = ({
   user,
@@ -130,6 +131,7 @@ const Dashboard = ({
         </Card>
       </div>
       {/* Dialogs */}
+      <AddFeederDialog isOpen={showAddFeederDialog} close={() => setShowAddFeederDialog(false)} />
       <AddAnimalDialog isOpen={showAddAnimalDialog} close={() => setShowAddAnimalDialog(false)} />
     </div>
   )
