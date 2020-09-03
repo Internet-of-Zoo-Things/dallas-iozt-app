@@ -21,27 +21,36 @@ const Schedule = ({ user, schedule }) => {
   return (
     <div className="flex flex-col w-full items-center">
       {
-        schedule.map((s, i) => (
-          <div key={i} className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background">
-            <FeederTag>{s.feeder}</FeederTag>
-            <div className="flex flex-grow justify-center">
-              <Typography variant="subtitle" className="ml-3">
-                {moment(s.timestamp).format('h:mm:ss a')}
-              </Typography>
-              <Typography variant="subtitle" className="ml-2 text-gray">
-                ({moment(s.timestamp).fromNow()})
-              </Typography>
-            </div>
+        schedule.length !== 0
+          ? <>
             {
-              user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-                ? <div>
-                  <Button minimal intent="primary" icon="edit" onClick={() => setItemToEdit(s)} />
-                  <Button minimal intent="danger" icon="cross" onClick={() => setItemToDelete(s)} />
+              schedule.map((s, i) => (
+                <div key={i} className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background">
+                  <FeederTag>{s.feeder}</FeederTag>
+                  <div className="flex flex-grow justify-center">
+                    <Typography variant="subtitle" className="ml-3">
+                      {moment(s.timestamp).format('h:mm:ss a')}
+                    </Typography>
+                    <Typography variant="subtitle" className="ml-2 text-gray">
+                      ({moment(s.timestamp).fromNow()})
+                    </Typography>
+                  </div>
+                  {
+                    user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
+                      ? <div>
+                        <Button minimal intent="primary" icon="edit" onClick={() => setItemToEdit(s)} />
+                        <Button minimal intent="danger" icon="cross" onClick={() => setItemToDelete(s)} />
+                      </div>
+                      : null
+                  }
                 </div>
-                : null
+              ))
             }
-          </div>
-        ))
+            <Button className="mt-2" minimal intent="danger" fill>
+              <Typography variant="subtitle">Clear All</Typography>
+            </Button>
+          </>
+          : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
       }
       {/* Dialogs */}
       <Dialog
