@@ -1,0 +1,47 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { TextInput, Typography } from '../primitives'
+
+<Meta title="TextInput" component={TextInput} />
+
+# TextInput
+
+## Examples
+<br />
+
+### Default TextInput
+<Preview>
+  <Story name="Default TextInput">
+    <>
+      <TextInput
+        onChange={(e) => console.log(e.target.value)}
+      />
+    </>
+  </Story>
+</Preview>
+
+### Without Clear Button
+<Preview>
+  <Story name="Without Clear Button">
+    <>
+      <TextInput
+        onChange={(e) => console.log(e.target.value)}
+        clearButton={false}
+      />
+    </>
+  </Story>
+</Preview>
+
+### With Left Icon
+<Preview>
+  <Story name="With Left Icon">
+    <>
+      <TextInput
+        onChange={(e) => console.log(e.target.value)}
+        leftElement={<Typography variant="icon" icon="search" />}
+      />
+    </>
+  </Story>
+</Preview>
+
+## Props
+<Props of={TextInput} />

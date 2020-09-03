@@ -98,6 +98,8 @@ const Dashboard = ({
                   onChange={(e) => setAnimalSearch(e.target.value)}
                   value={animalSearch}
                   className="mx-3"
+                  clearButton={animalSearch !== ''}
+                  leftElement={<Typography variant="icon" icon="search" />}
                 />
                 <Button className="mr-6" icon="add">
                   <Typography variant="body">Add Animal</Typography>
