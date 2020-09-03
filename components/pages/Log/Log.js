@@ -19,7 +19,7 @@ const Users = ({ logs }) => (
         <div className="flex w-full py-3">
           <div className="flex flex-grow ml-6">
             <Typography variant="h4" className="text-dark-gray">Log</Typography>
-          </div>``
+          </div>
         </div>
       }
       className="w-full"

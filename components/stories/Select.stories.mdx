@@ -1,0 +1,97 @@
+import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks'
+import { Select, SelectItem, Button } from '../primitives'
+
+<Meta title="Select" component={Select} />
+
+# Select
+
+## Examples
+<br />
+
+### Default Select
+<Preview>
+  <Story name="Default Select">
+    <div className="flex justify-center w-full pb-32">
+      <Select
+        filterable={false}
+        items={[
+          { label: 'Elephant', id: 1 },
+          { label: 'Giraffe', id: 2 },
+          { label: 'Monkey', id: 3 }
+        ]}
+        noResults={<SelectItem disabled={true} text="No results." />}
+        popoverProps={{ minimal: true }}
+        itemRenderer={Select.ItemRenderer}
+        itemPredicate={Select.ItemPredicate}
+        onItemSelect={(item) => { setState(item) }}
+      >
+        <Button
+          outline
+          secondary
+          rightIcon="caret-down"
+          text="Select Animal"
+        />
+      </Select>
+    </div>
+  </Story>
+</Preview>
+
+### Filterable Select
+<Preview>
+  <Story name="Filterable Select">
+    <div className="flex justify-center w-full pb-32">
+      <Select
+        filterable
+        items={[
+          { label: 'Elephant', id: 1 },
+          { label: 'Giraffe', id: 2 },
+          { label: 'Monkey', id: 3 }
+        ]}
+        noResults={<SelectItem disabled={true} text="No results." />}
+        popoverProps={{ minimal: true }}
+        itemRenderer={Select.ItemRenderer}
+        itemPredicate={Select.ItemPredicate}
+        onItemSelect={(item) => { setState(item) }}
+      >
+        <Button
+          outline
+          secondary
+          rightIcon="caret-down"
+          text="Select Animal"
+        />
+      </Select>
+    </div>
+  </Story>
+</Preview>
+
+### Disabled Select
+<Preview>
+  <Story name="Disabled Select">
+    <div className="flex justify-center w-full pb-4">
+      <Select
+        disabled
+        items={[
+          { label: 'Elephant', id: 1 },
+          { label: 'Giraffe', id: 2 },
+          { label: 'Monkey', id: 3 }
+        ]}
+        noResults={<SelectItem disabled={true} text="No results." />}
+        popoverProps={{ minimal: true }}
+        itemRenderer={Select.ItemRenderer}
+        itemPredicate={Select.ItemPredicate}
+        onItemSelect={(item) => { setState(item) }}
+      >
+        <Button
+          outline
+          secondary
+          rightIcon="caret-down"
+          text="Select Animal"
+          disabled
+        />
+      </Select>
+    </div>
+  </Story>
+</Preview>
+
+## Props
+<Props of={Select} />

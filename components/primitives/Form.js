@@ -4,6 +4,7 @@ import { FormGroup, InputGroup } from '@blueprintjs/core'
 import { InputTypes } from '../../utils/models'
 import Tooltip from './Tooltip'
 import Button from './Button'
+import { Select, SelectItem } from './Select'
 
 const validateEmail = (val) => (
   // eslint-disable-next-line no-control-regex
@@ -23,7 +24,7 @@ const _ = ({
       const f = fields[i]
       if (f.required && !data[f.id]) return false
       if (f.required && !f.validator) {
-        if (f.type === InputTypes.EMAIL) return validateEmail(data[f.id])
+        if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
       if (f.validator) {
         if (!f.validator(data[f.id])) return false
@@ -66,6 +67,27 @@ const _ = ({
         type="text"
         onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
       />
+    )
+    case InputTypes.SELECT: return (
+      <Select
+        id={field.id}
+        filterable={false}
+        { ...field.props }
+        items={field.items}
+        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        noResults={<SelectItem disabled={true} text="No results." />}
+        popoverProps={{ minimal: true }}
+        itemRenderer={Select.ItemRenderer}
+        itemPredicate={Select.ItemPredicate}
+        onItemSelect={(item) => { setData((prev) => ({ ...prev, [field.id]: item })) }}
+      >
+        <Button
+          outline
+          secondary
+          rightIcon="caret-down"
+          text={(data[field.id] && data[field.id].label) || field.placeholder || 'Select an option'}
+        />
+      </Select>
     )
     default: console.error(`Unknown input type "${field.type}"`)
     }
