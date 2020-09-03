@@ -27,17 +27,17 @@ const Schedule = ({ user, schedule }) => {
               schedule.map((s, i) => (
                 <div key={i} className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background overflow-hidden">
                   <FeederTag>{s.feeder}</FeederTag>
-                  <div className="flex flex-grow justify-center">
-                    <Typography variant="subtitle" className="ml-3">
+                  <div className="flex flex-grow justify-center overflow-hidden">
+                    <Typography variant="subtitle" className="ml-3 whitespace-no-wrap">
                       {moment(s.timestamp).format('h:mm:ss a')}
                     </Typography>
-                    <Typography variant="subtitle" className="ml-2 text-gray">
+                    <Typography variant="subtitle" className="ml-2 text-gray hidden sm:block md:block lg:block xl:block truncate">
                       ({moment(s.timestamp).fromNow()})
                     </Typography>
                   </div>
                   {
                     user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-                      ? <div>
+                      ? <div className="flex flex-no-wrap">
                         <Button minimal intent="primary" icon="edit" onClick={() => setItemToEdit(s)} />
                         <Button minimal intent="danger" icon="cross" onClick={() => setItemToDelete(s)} />
                       </div>

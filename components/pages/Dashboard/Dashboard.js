@@ -14,8 +14,8 @@ const Dashboard = ({
   feeders,
   animals
 }) => (
-  <div className="flex flex-row w-full">
-    <div className="flex flex-col items-center w-1/3 mr-8">
+  <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
+    <div className="flex flex-col items-center w-full md:w-full lg:w-1/3 xl:w-1/3 mr-8">
       <Card
         header={<Typography variant="h4" className="ml-6 text-dark-gray py-3">Schedule</Typography>}
         elevation={Elevation.TWO}
@@ -60,7 +60,7 @@ const Dashboard = ({
       >
         {
           feeders.length !== 0
-            ? <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
+            ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
               {
                 feeders.map((f, i) => (
                   <FeederCard status={f.status} name={f.name} key={i} />
