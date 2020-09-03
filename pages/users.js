@@ -13,8 +13,12 @@ const Users = ({ user }) => {
   })
 
   return (
-    <Layout title="Users" user={user && user.activeUser} loading={loading} error={error}>
-      <UsersComponent user={user ? user.activeUser : null} allUsers={data ? data.users : undefined} />
+    <Layout title="Users" user={user && user.activeUser} error={error}>
+      <UsersComponent
+        user={user ? user.activeUser : null}
+        allUsers={data ? data.users : undefined}
+        loading={loading}
+      />
     </Layout>
   )
 }

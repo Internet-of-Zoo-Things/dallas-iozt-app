@@ -48,7 +48,12 @@ const dummyAnimals = [{
 
 const Dashboard = ({ user }) => (
   <Layout title="Dashboard" user={user && user.activeUser}>
-    <DashboardComponent user={user && user.activeUser} schedule={dummySchedule} feeders={dummyFeeders} animals={dummyAnimals} />
+    <DashboardComponent
+      user={user && user.activeUser}
+      schedule={dummySchedule}
+      feeders={dummyFeeders}
+      animals={dummyAnimals}
+    />
   </Layout>
 )
 Dashboard.propTypes = {

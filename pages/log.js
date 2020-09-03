@@ -13,8 +13,8 @@ const Log = ({ user }) => {
   })
 
   return (
-    <Layout title="Log" user={user && user.activeUser} loading={loading} error={error}>
-      <LogComponent logs={data ? data.logs : undefined} />
+    <Layout title="Log" user={user && user.activeUser} error={error}>
+      <LogComponent logs={data ? data.logs : undefined} loading={loading} />
     </Layout>
   )
 }

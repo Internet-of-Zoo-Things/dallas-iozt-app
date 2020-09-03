@@ -12,7 +12,7 @@ const NoWrap = styled.div`
   ${tw`flex flex-col`}
 `
 
-const Users = ({ logs }) => (
+const Users = ({ logs, loading }) => (
   <div className="flex flex-col">
     <Card
       header={
@@ -22,7 +22,7 @@ const Users = ({ logs }) => (
           </div>
         </div>
       }
-      className="w-full"
+      className={`w-full ${loading && 'bp3-skeleton'}`}
       elevation={Elevation.TWO}
     >
       <div className="m-6">
@@ -61,7 +61,8 @@ const Users = ({ logs }) => (
 )
 Users.propTypes = {
   /** List of system logs */
-  logs: PropTypes.array
+  logs: PropTypes.array,
+  loading: PropTypes.bool
 }
 Users.defaultProps = {
   logs: []

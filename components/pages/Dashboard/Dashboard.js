@@ -12,7 +12,8 @@ const Dashboard = ({
   user,
   schedule,
   feeders,
-  animals
+  animals,
+  loading
 }) => {
   /* search strings */
   const [animalSearch, setAnimalSearch] = useState('')
@@ -35,7 +36,7 @@ const Dashboard = ({
         <Card
           header={<Typography variant="h4" className="ml-6 text-dark-gray py-3">Schedule</Typography>}
           elevation={Elevation.TWO}
-          className="w-full mb-8"
+          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
         >
           <div className="w-full flex flex-col">
             <Button className="my-1" icon="add" fill>
@@ -72,7 +73,7 @@ const Dashboard = ({
             </div>
           }
           elevation={Elevation.TWO}
-          className="w-full mb-8"
+          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
         >
           {
             feeders.length !== 0
@@ -108,7 +109,7 @@ const Dashboard = ({
             </div>
           }
           elevation={Elevation.TWO}
-          className="w-full mb-8"
+          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
         >
           {
             animalsWithSearch.length !== 0
@@ -130,7 +131,8 @@ Dashboard.propTypes = {
   user: PropTypes.object,
   schedule: PropTypes.array,
   feeders: PropTypes.array,
-  animals: PropTypes.array
+  animals: PropTypes.array,
+  loading: PropTypes.bool
 }
 Dashboard.defaultProps = {
   schedule: [],
