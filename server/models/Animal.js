@@ -7,11 +7,11 @@ const Animal = new Schema({
     type: String,
     required: true
   },
-  dsecription: {
+  type: {
     type: String
   },
   intake: {
-    type: String,
+    type: Number,
     required: true
   },
   created_at: {

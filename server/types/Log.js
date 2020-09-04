@@ -7,11 +7,6 @@ const Log = gql`
     username: String
     message: String
   }
-  input LogInput {
-    timestamp: DateTime
-    username: String!
-    message: String!
-  }
   extend type Query {
     logs: [Log]
   }
