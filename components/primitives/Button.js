@@ -3,7 +3,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import tw from 'twin.macro'
-import { Button } from '@blueprintjs/core'
+import { Button, Position } from '@blueprintjs/core'
+import Tooltip from './Tooltip'
 
 const Styled_ = styled(Button)`
   &&& {
@@ -61,7 +62,13 @@ const Styled_ = styled(Button)`
   }
 `
 
-const _ = (props) => <Styled_ {...props} />
+const _ = (props) => (
+  props.tooltip
+    ? <Tooltip content={props.tooltip} position={Position.BOTTOM} {...props.tooltipProps}>
+      <Styled_ {...props} />
+    </Tooltip>
+    : <Styled_ {...props} />
+)
 _.propTypes = {
   /** Sets background to white with only a border color */
   outline: PropTypes.bool,
@@ -72,7 +79,11 @@ _.propTypes = {
   /** Sets button to its hover behavior */
   active: PropTypes.bool,
   /** If button is disabled */
-  disabled: PropTypes.bool
+  disabled: PropTypes.bool,
+  /** Set a tooltip around the button */
+  tooltip: PropTypes.node,
+  /** Any additional props for the tooltip */
+  tooltipProps: PropTypes.object
 }
 _.defaultProps = {
   intent: 'primary'

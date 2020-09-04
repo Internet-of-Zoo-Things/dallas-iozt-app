@@ -14,7 +14,7 @@ const FeederCard = ({ name, status, ...props }) => (
         </Typography>
       </div>
     }
-    className={status === FeederStatuses.DISABLED ? 'opacity-50' : ''}
+    disabled={status === FeederStatuses.DISABLED}
     {...props}
   >
     <div className="flex flex-col justify-center items-center">
@@ -22,12 +22,12 @@ const FeederCard = ({ name, status, ...props }) => (
       <div className="flex flex-row pt-3 justify-around">
         {
           status === FeederStatuses.DISABLED
-            ? <Button icon='power' minimal />
+            ? <Button icon='power' minimal tooltip="Enable this feeder" />
             : status === FeederStatuses.ONLINE
-              ? <Button icon='disable' minimal />
+              ? <Button icon='disable' minimal tooltip="Disable this feeder (it won't be scheduled in the future)" />
               : null
         }
-        <Button icon="cell-tower" minimal />
+        <Button icon="cell-tower" minimal tooltip="Ping the feeder to check its connection" />
         <Button icon="trash" intent="danger" minimal />
       </div>
     </div>
