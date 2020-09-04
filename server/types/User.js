@@ -29,7 +29,7 @@ const User = gql`
     users(filter: UserFilter): [User]
   },
   extend type Mutation {
-    createUser(userInput: UserInput!): User
+    createUser(userInput: UserInput!): User!
     updateUser(_id: String!, userInput: UserInput!): User
     deleteUser(_id: String!): User
   }

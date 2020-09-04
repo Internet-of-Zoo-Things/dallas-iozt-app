@@ -25,7 +25,6 @@ const User = {
       if (userInput.email && !isEmail(userInput.email)) throw new ApolloError(`${userInput.email} is not a valid email`)
       return models.User.findByIdAndUpdate(_id, {
         ...userInput,
-        created_at: new Date(),
         updated_at: new Date()
       }, { new: true })
         .catch((err) => { throw new ApolloError(err) })

@@ -13,9 +13,9 @@ const Animal = gql`
     animals(filter: String): [Animal]
   }
   extend type Mutation {
-    createAnimal(name: String!, type: String!, intake: Float!): Animal
+    createAnimal(name: String!, type: String!, intake: Float!): Animal!
     updateAnimal(_id: String!, name: String, type: String, intake: Float): Animal
-    deleteAnimal(_id: String!): Boolean
+    deleteAnimal(_id: String!): Animal
   }
 `
 
