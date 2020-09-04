@@ -32,7 +32,7 @@ const _ = ({
       </Head>
       <div className="flex flex-row w-screen h-screen">
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
-          <div className="h-full">
+          <div>
             <Header user={user} currentPage={title} notifications={[{ message: 'This is a test notification!' }]} />
             {
               loading

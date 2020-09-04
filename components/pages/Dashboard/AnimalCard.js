@@ -21,7 +21,7 @@ const FeederCard = ({
           {name}
         </Typography>
         <Typography variant="subtitle" weight="thin" className="px-2">
-          ({intake} kg)
+          ({intake} lbs)
         </Typography>
       </div>
       {

@@ -11,8 +11,8 @@ const IconButton = styled(Button)`
 const FeederCard = ({ name, status, ...props }) => (
   <Card
     header={
-      <div className="flex px-6 py-3 bg-primary w-full justify-center">
-        <Typography variant="body" className="text-white">
+      <div className="flex px-6 py-3 w-full bg-background justify-center">
+        <Typography variant="body">
           { name ? name.toUpperCase() : undefined }
         </Typography>
       </div>

@@ -62,7 +62,7 @@ const _ = ({ isOpen, close }) => {
               id: 'intake',
               required: true,
               type: InputTypes.NUMERIC,
-              placeholder: 'Enter the daily food intake in kg...',
+              placeholder: 'Enter the daily food intake in lbs...',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
             }
           ]}
