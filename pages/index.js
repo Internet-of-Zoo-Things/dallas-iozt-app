@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { useQuery } from 'react-apollo'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import { withCurrentUser } from '../components/providers'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
+import { GET_ANIMALS } from '../utils/graphql/queries'
 
 const dummySchedule = [{
   timestamp: moment().add(30, 'minutes'),
@@ -46,16 +48,22 @@ const dummyAnimals = [{
   intake: 2
 }]
 
-const Dashboard = ({ user }) => (
-  <Layout title="Dashboard" user={user && user.activeUser}>
-    <DashboardComponent
-      user={user && user.activeUser}
-      schedule={dummySchedule}
-      feeders={dummyFeeders}
-      animals={dummyAnimals}
-    />
-  </Layout>
-)
+const Dashboard = ({ user }) => {
+  /* api interaction */
+  const { data, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS)
+
+  return (
+    <Layout title="Dashboard" user={user && user.activeUser} error={animalsError}>
+      <DashboardComponent
+        user={user && user.activeUser}
+        schedule={dummySchedule}
+        feeders={dummyFeeders}
+        animals={data && data.animals}
+        loading={animalsLoading}
+      />
+    </Layout>
+  )
+}
 Dashboard.propTypes = {
   /** Currently signed-in user */
   user: PropTypes.object
