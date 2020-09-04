@@ -14,7 +14,8 @@ const validateEmail = (val) => (
 const _ = ({
   className,
   fields,
-  onSubmit
+  onSubmit,
+  submitLoading
 }) => {
   const [data, setData] = useState({})
   const [showPassword, setShowPassword] = useState({})
@@ -155,6 +156,7 @@ const _ = ({
           onClick={() => onSubmit(data)}
           text="Submit"
           disabled={!validate()}
+          loading={submitLoading}
         />
       </div>
     </form>
@@ -165,7 +167,9 @@ _.propTypes = {
   /** list of field metadata */
   fields: PropTypes.array.isRequired,
   /** function to run when form is submitted */
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  /** set loading state for the submit button */
+  submitLoading: PropTypes.bool
 }
 
 export default _

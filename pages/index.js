@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { useQuery } from 'react-apollo'
@@ -49,8 +49,14 @@ const dummyAnimals = [{
 }]
 
 const Dashboard = ({ user }) => {
+  /* searchbars */
+  const [animalSearch, setAnimalSearch] = useState('')
+
   /* api interaction */
-  const { data, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS)
+  const { data: animalsData, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS, {
+    variables: { filter: animalSearch },
+    fetchPolicy: 'network-only'
+  })
 
   return (
     <Layout title="Dashboard" user={user && user.activeUser} error={animalsError}>
@@ -58,8 +64,10 @@ const Dashboard = ({ user }) => {
         user={user && user.activeUser}
         schedule={dummySchedule}
         feeders={dummyFeeders}
-        animals={data && data.animals}
-        loading={animalsLoading}
+        animals={animalsData ? animalsData.animals : []}
+        animalSearch={animalSearch}
+        setAnimalSearch={setAnimalSearch}
+        animalsLoading={animalsLoading}
       />
     </Layout>
   )

@@ -15,26 +15,13 @@ const Dashboard = ({
   schedule,
   feeders,
   animals,
-  loading
+  animalSearch,
+  setAnimalSearch,
+  animalsLoading
 }) => {
-  /* search strings */
-  const [animalSearch, setAnimalSearch] = useState('')
-  /* subset of lists with search applied */
-  const [animalsWithSearch, setAnimalsWithSearch] = useState(animals)
-
   /* dialogs */
   const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
   const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
-
-  useEffect(() => {
-    const tmp = animals.filter(
-      (a) => animalSearch.toLowerCase().split(' ')
-        .every(
-          (segment) => a.name.toLowerCase().includes(segment) || a.type.toLowerCase().includes(segment)
-        )
-    )
-    setAnimalsWithSearch(tmp)
-  }, [animalSearch])
 
   return (
     <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
@@ -42,7 +29,7 @@ const Dashboard = ({
         <Card
           header={<Typography variant="h4" className="ml-6 text-dark-gray py-3">Schedule</Typography>}
           elevation={Elevation.TWO}
-          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
+          className="w-full mb-8"
         >
           <div className="w-full flex flex-col">
             <Button className="my-1" icon="add" fill>
@@ -79,7 +66,7 @@ const Dashboard = ({
             </div>
           }
           elevation={Elevation.TWO}
-          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
+          className="w-full mb-8"
         >
           {
             feeders.length !== 0
@@ -115,13 +102,13 @@ const Dashboard = ({
             </div>
           }
           elevation={Elevation.TWO}
-          className={`w-full mb-8 ${loading && 'bp3-skeleton'}`}
+          className="w-full mb-8"
         >
           {
-            animalsWithSearch.length !== 0
-              ? <div className="flex flex-row flex-wrap mx-4">
+            animals.length !== 0
+              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton' : ''}`}>
                 {
-                  animalsWithSearch.map((a, i) => (
+                  animals.map((a, i) => (
                     <AnimalCard key={i} {...a} user={user} />
                   ))
                 }
@@ -141,7 +128,9 @@ Dashboard.propTypes = {
   schedule: PropTypes.array,
   feeders: PropTypes.array,
   animals: PropTypes.array,
-  loading: PropTypes.bool
+  animalSearch: PropTypes.string,
+  setAnimalSearch: PropTypes.func,
+  animalsLoading: PropTypes.bool
 }
 Dashboard.defaultProps = {
   schedule: [],
