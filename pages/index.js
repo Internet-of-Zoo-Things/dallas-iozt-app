@@ -24,10 +24,10 @@ const dummySchedule = [{
 
 const dummyFeeders = [{
   name: 'Feeder 1',
-  status: 'Online'
+  status: 'disabled'
 }, {
   name: 'Feeder 2',
-  status: 'Online'
+  status: 'online'
 }]
 
 const dummyAnimals = [{
