@@ -39,8 +39,8 @@ const _ = ({ isOpen, close }) => (
   </Dialog>
 )
 _.propTypes = {
-  isOpen: PropTypes.bool,
-  close: PropTypes.func
+  isOpen: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired
 }
 
 export default _

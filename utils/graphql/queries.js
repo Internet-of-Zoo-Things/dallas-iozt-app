@@ -36,6 +36,7 @@ export const GET_LOGS = gql`
 export const GET_ANIMALS = gql`
   query animals($filter: String) {
     animals(filter: $filter) {
+      _id
       name
       type
       intake

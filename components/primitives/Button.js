@@ -62,13 +62,18 @@ const Styled_ = styled(Button)`
   }
 `
 
-const _ = (props) => (
-  props.tooltip
-    ? <Tooltip content={props.tooltip} position={Position.BOTTOM} {...props.tooltipProps}>
-      <Styled_ {...props} />
-    </Tooltip>
-    : <Styled_ {...props} />
-)
+const _ = ({ outline, ...props }) => {
+  // Annoying way to get around DOM "recevied boolean for non-boolean attribute" warnings
+  const child = <Styled_ {...props} outline={outline ? 1 : 0} />
+
+  return (
+    props.tooltip
+      ? <Tooltip content={props.tooltip} position={Position.BOTTOM} {...props.tooltipProps}>
+        {child}
+      </Tooltip>
+      : child
+  )
+}
 _.propTypes = {
   /** Sets background to white with only a border color */
   outline: PropTypes.bool,

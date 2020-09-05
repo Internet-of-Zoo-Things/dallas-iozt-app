@@ -24,7 +24,16 @@ const _ = ({
     // Initialize fields
     const tmp = {}
     fields.forEach((f) => {
-      if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
+      if (f.defaultValue) {
+        if (f.type === InputTypes.SELECT) {
+          const vals = f.items.filter((item) => item.label === f.defaultValue)
+          tmp[f.id] = vals.length === 1
+            ? vals[0]
+            : undefined && console.error(`Unknown value ${f.defaultValue} of options ${f.items.map((item) => item.label)}`)
+        } else {
+          tmp[f.id] = f.defaultValue
+        }
+      } else if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
         tmp[f.id] = ''
       }
     })
@@ -111,7 +120,6 @@ const _ = ({
       >
         <Button
           outline
-          secondary
           rightIcon="caret-down"
           text={(data[field.id] && data[field.id].label) || field.placeholder || 'Select an option'}
         />
@@ -121,6 +129,7 @@ const _ = ({
       <NumericInput
         id={field.id}
         placeholder={field.placeholder || 'Enter a numeric value...'}
+        defaultValue={field.defaultValue}
         onValueChange={(e) => {
           const tmp = e
           setData((prev) => ({ ...prev, [field.id]: tmp }))
