@@ -30,24 +30,6 @@ const dummyFeeders = [{
   status: 'online'
 }]
 
-const dummyAnimals = [{
-  name: 'Ellie',
-  type: 'Elephant',
-  intake: 8 // daily food intake in lbs
-}, {
-  name: 'Eva',
-  type: 'Elephant',
-  intake: 9
-}, {
-  name: 'Gerald',
-  type: 'Giraffe',
-  intake: 5
-}, {
-  name: 'Manny',
-  type: 'Monkey',
-  intake: 2
-}]
-
 const Dashboard = ({ user }) => {
   /* searchbars */
   const [animalSearch, setAnimalSearch] = useState('')
@@ -55,7 +37,8 @@ const Dashboard = ({ user }) => {
   /* api interaction */
   const { data: animalsData, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS, {
     variables: { filter: animalSearch },
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'no-cache',
+    pollInterval: (1000 * 60) // refetch every minute
   })
 
   return (

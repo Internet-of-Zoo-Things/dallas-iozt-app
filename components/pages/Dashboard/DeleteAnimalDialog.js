@@ -11,7 +11,7 @@ const _ = ({ isOpen, close, data }) => {
   const [deleteAnimal, { loading }] = useMutation(DELETE_ANIMAL, {
     onError: (e) => console.error(JSON.stringify(e)),
     onCompleted: close,
-    refetchQueries: [{ query: GET_ANIMALS }],
+    refetchQueries: () => [{ query: GET_ANIMALS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
   })

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Typography, Button, Card } from '../../primitives'
 import { FeederStatuses } from '../../../utils/models'
+import { capitalize } from '../../../utils/functions/ui'
 
 const FeederCard = ({ name, status, ...props }) => (
   <Card
@@ -18,7 +19,7 @@ const FeederCard = ({ name, status, ...props }) => (
     {...props}
   >
     <div className="flex flex-col justify-center items-center">
-      <Typography variant="h5" weight="thin" className="truncate">{status}</Typography>
+      <Typography variant="h5" weight="thin" className="truncate">{capitalize(status)}</Typography>
       <div className="flex flex-row pt-3 justify-around">
         {
           status === FeederStatuses.DISABLED
