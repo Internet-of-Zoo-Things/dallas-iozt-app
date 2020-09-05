@@ -43,3 +43,14 @@ export const GET_ANIMALS = gql`
     }
   }
 `
+
+export const GET_FEEDERS = gql`
+  query feeders {
+    feeders {
+      _id
+      name
+      description
+      status
+    }
+  }
+`

@@ -14,6 +14,7 @@ const Dashboard = ({
   user,
   schedule,
   feeders,
+  feedersLoading,
   animals,
   animalSearch,
   setAnimalSearch,
@@ -69,11 +70,11 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            feeders.length !== 0
-              ? <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4">
+            feeders.length !== 0 || feedersLoading
+              ? <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4 ${feedersLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   feeders.map((f, i) => (
-                    <FeederCard status={f.status} name={f.name} key={i} />
+                    <FeederCard {...f} key={i} />
                   ))
                 }
               </div>
@@ -105,8 +106,8 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            animals.length !== 0
-              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton' : ''}`}>
+            animals.length !== 0 || animalsLoading
+              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   animals.map((a, i) => (
                     <AnimalCard key={i} {...a} user={user} />
@@ -127,6 +128,7 @@ Dashboard.propTypes = {
   user: PropTypes.object,
   schedule: PropTypes.array,
   feeders: PropTypes.array,
+  feedersLoading: PropTypes.bool,
   animals: PropTypes.array,
   animalSearch: PropTypes.string,
   setAnimalSearch: PropTypes.func,

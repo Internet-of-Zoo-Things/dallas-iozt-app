@@ -23,3 +23,27 @@ export const DELETE_ANIMAL = gql`
     }
   }
 `
+
+export const CREATE_FEEDER = gql`
+  mutation createFeeder($name: String!, $description: String) {
+    createFeeder(name: $name, description: $description) {
+      _id
+    }
+  }
+`
+
+export const UPDATE_FEEDER = gql`
+  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String) {
+    updateFeeder(_id: $_id, name: $name, description: $description, status: $status) {
+      _id
+    }
+  }
+`
+
+export const DELETE_FEEDER = gql`
+  mutation deleteFeeder($_id: String!) {
+    deleteFeeder(_id: $_id) {
+      _id
+    }
+  }
+`

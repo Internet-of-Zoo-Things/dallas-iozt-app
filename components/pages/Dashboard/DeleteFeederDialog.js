@@ -2,16 +2,16 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Classes } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
-import { DELETE_ANIMAL } from '../../../utils/graphql/mutations'
+import { DELETE_FEEDER } from '../../../utils/graphql/mutations'
 import { Button } from '../../primitives'
-import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import { GET_FEEDERS } from '../../../utils/graphql/queries'
 
 const _ = ({ isOpen, close, data }) => {
   /* api interaction */
-  const [deleteAnimal, { loading }] = useMutation(DELETE_ANIMAL, {
+  const [deleteFeeder, { loading }] = useMutation(DELETE_FEEDER, {
     onError: (e) => console.error(JSON.stringify(e)),
     onCompleted: close,
-    refetchQueries: () => [{ query: GET_ANIMALS }],
+    refetchQueries: () => [{ query: GET_FEEDERS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
   })
@@ -20,7 +20,7 @@ const _ = ({ isOpen, close, data }) => {
     <Dialog
       icon="trash"
       onClose={() => close()}
-      title="Delete Animal"
+      title="Delete Feeder"
       isOpen={isOpen}
     >
       <>
@@ -29,7 +29,7 @@ const _ = ({ isOpen, close, data }) => {
         </div>
         <div className={`${Classes.DIALOG_FOOTER} ml-auto`}>
           <Button intent="primary" className="mr-2" onClick={close}>Cancel</Button>
-          <Button intent="danger" onClick={() => deleteAnimal({ variables: { _id: data._id } })} loading={loading}>Delete</Button>
+          <Button intent="danger" onClick={() => deleteFeeder({ variables: { _id: data._id } })} loading={loading}>Delete</Button>
         </div>
       </>
     </Dialog>

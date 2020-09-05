@@ -6,7 +6,7 @@ import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import { withCurrentUser } from '../components/providers'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
-import { GET_ANIMALS } from '../utils/graphql/queries'
+import { GET_ANIMALS, GET_FEEDERS } from '../utils/graphql/queries'
 
 const dummySchedule = [{
   timestamp: moment().add(30, 'minutes'),
@@ -22,14 +22,6 @@ const dummySchedule = [{
   feeder: 'Feeder 1'
 }]
 
-const dummyFeeders = [{
-  name: 'Feeder 1',
-  status: 'disabled'
-}, {
-  name: 'Feeder 2',
-  status: 'online'
-}]
-
 const Dashboard = ({ user }) => {
   /* searchbars */
   const [animalSearch, setAnimalSearch] = useState('')
@@ -40,13 +32,19 @@ const Dashboard = ({ user }) => {
     fetchPolicy: 'no-cache',
     pollInterval: (1000 * 60) // refetch every minute
   })
+  const { data: feedersData, loading: feedersLoading, error: feedersError } = useQuery(GET_FEEDERS, {
+    variables: { filter: animalSearch },
+    fetchPolicy: 'no-cache',
+    pollInterval: (1000 * 60) // refetch every minute
+  })
 
   return (
-    <Layout title="Dashboard" user={user && user.activeUser} error={animalsError}>
+    <Layout title="Dashboard" user={user && user.activeUser} error={animalsError || feedersError}>
       <DashboardComponent
         user={user && user.activeUser}
         schedule={dummySchedule}
-        feeders={dummyFeeders}
+        feeders={feedersData ? feedersData.feeders : []}
+        feedersLoading={feedersLoading}
         animals={animalsData ? animalsData.animals : []}
         animalSearch={animalSearch}
         setAnimalSearch={setAnimalSearch}
