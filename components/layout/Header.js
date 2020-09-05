@@ -55,7 +55,7 @@ const _ = ({
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
       <Navbar.Heading className="flex items-center">
-        <Typography variant="h6" weight="">Dallas Zoo Iot</Typography>
+        <Typography variant="h6" weight="">Dallas Zoo IoT</Typography>
         <Tag className="ml-3 bg-semi-transparent text-gray">
           <Typography variant="subtitle" weight="bold">BETA</Typography>
         </Tag>

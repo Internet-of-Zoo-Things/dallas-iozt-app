@@ -33,7 +33,6 @@ const Dashboard = ({ user }) => {
     pollInterval: (1000 * 60) // refetch every minute
   })
   const { data: feedersData, loading: feedersLoading, error: feedersError } = useQuery(GET_FEEDERS, {
-    variables: { filter: animalSearch },
     fetchPolicy: 'no-cache',
     pollInterval: (1000 * 60) // refetch every minute
   })
