@@ -40,7 +40,7 @@ const _ = ({ isOpen, close }) => {
             },
             {
               label: 'Description',
-              id: 'type',
+              id: 'description',
               required: false,
               type: InputTypes.TEXT,
               placeholder: 'Describe the feeder (optional)...'

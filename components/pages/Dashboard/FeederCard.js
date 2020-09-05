@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
-import { Typography, Button, Card } from '../../primitives'
+import { Position } from '@blueprintjs/core'
+import {
+  Typography, Button, Card, Tooltip
+} from '../../primitives'
 import { FeederStatuses } from '../../../utils/models'
 import { capitalize } from '../../../utils/functions/ui'
 import { UPDATE_FEEDER } from '../../../utils/graphql/mutations'
@@ -24,13 +27,15 @@ const FeederCard = ({
     <>
       <Card
         header={
-          <div
-            className={`flex px-6 py-3 w-full justify-center ${status === FeederStatuses.OFFLINE ? 'bg-danger text-white' : 'bg-background'}`}
-          >
-            <Typography variant="body">
-              { name ? name.toUpperCase() : undefined }
-            </Typography>
-          </div>
+          <Tooltip content={description} disabled={!description} position={Position.TOP} className="w-full">
+            <div
+              className={`flex px-6 py-3 w-full justify-center ${status === FeederStatuses.OFFLINE ? 'bg-danger text-white' : 'bg-background'}`}
+            >
+              <Typography variant="body">
+                { name ? name.toUpperCase() : undefined }
+              </Typography>
+            </div>
+          </Tooltip>
         }
         disabled={status === FeederStatuses.DISABLED}
         {...props}

@@ -35,7 +35,7 @@ const Animal = {
       return models.Animal.findByIdAndUpdate(_id, {
         ...args,
         updated_at: new Date()
-      })
+      }, { new: true })
         .catch((err) => { throw new ApolloError(err) })
     },
     async deleteAnimal(parent, { _id }, { models }) {

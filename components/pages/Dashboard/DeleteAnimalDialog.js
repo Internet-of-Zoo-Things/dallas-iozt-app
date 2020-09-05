@@ -25,7 +25,7 @@ const _ = ({ isOpen, close, data }) => {
     >
       <>
         <div className="flex flex-col items-center m-auto p-4">
-          Are you sure you want to delete {data.name}?
+          Are you sure you want to delete {data.name}? This action cannot be undone!
         </div>
         <div className={`${Classes.DIALOG_FOOTER} ml-auto`}>
           <Button intent="primary" className="mr-2" onClick={close}>Cancel</Button>
