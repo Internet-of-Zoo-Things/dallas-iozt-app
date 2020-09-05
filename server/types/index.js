@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express')
 const User = require('./User')
 const Log = require('./Log')
 const Animal = require('./Animal')
+const Feeder = require('./Feeder')
 
 const types = gql`
   type Query {
@@ -16,6 +17,7 @@ const types = gql`
   ${User}
   ${Log}
   ${Animal}
+  ${Feeder}
 `
 
 module.exports = types

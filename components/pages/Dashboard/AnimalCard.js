@@ -28,7 +28,7 @@ const AnimalCard = ({
             {name}
           </Typography>
           <Typography variant="subtitle" weight="thin" className="px-2">
-            ({intake} lbs)
+            ({intake} lbs/day)
           </Typography>
         </div>
         {

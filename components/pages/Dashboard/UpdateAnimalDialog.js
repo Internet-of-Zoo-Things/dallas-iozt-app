@@ -61,7 +61,7 @@ const _ = ({ isOpen, close, data }) => {
               defaultValue: data.type
             },
             {
-              label: 'Daily Food Intake (kg)',
+              label: 'Daily Food Intake (lbs)',
               id: 'intake',
               required: true,
               type: InputTypes.NUMERIC,
