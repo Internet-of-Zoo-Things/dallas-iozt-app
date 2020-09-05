@@ -19,7 +19,7 @@ const _ = ({ isOpen, close, data }) => {
 
   return (
     <Dialog
-      icon="plus"
+      icon="edit"
       onClose={() => close()}
       title={`Edit ${data.name}`}
       isOpen={isOpen}
