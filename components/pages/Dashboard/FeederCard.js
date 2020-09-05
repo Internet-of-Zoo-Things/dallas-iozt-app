@@ -10,11 +10,13 @@ import { capitalize } from '../../../utils/functions/ui'
 import { UPDATE_FEEDER } from '../../../utils/graphql/mutations'
 import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import DeleteFeederDialog from './DeleteFeederDialog'
+import UpdateFeederDialog from './UpdateFeederDialog'
 
 const FeederCard = ({
   name, status, _id, description, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
+  const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
 
   const [updateFeeder] = useMutation(UPDATE_FEEDER, {
     onError: (e) => console.error(JSON.stringify(e)),
@@ -64,6 +66,7 @@ const FeederCard = ({
                   />
                   : null
             }
+            <Button icon="edit" minimal onClick={() => setShowUpdateFeederDialog(true)} />
             <Button icon="cell-tower" minimal tooltip="Ping the feeder to check its connection" />
             <Button icon="trash" intent="danger" minimal onClick={() => setShowDeleteFeederDialog(true)} />
           </div>
@@ -71,6 +74,7 @@ const FeederCard = ({
       </Card>
       {/* Dialogs */}
       <DeleteFeederDialog isOpen={showDeleteFeederDialog} close={() => setShowDeleteFeederDialog(false)} data={{ name, _id }} />
+      <UpdateFeederDialog isOpen={showUpdateFeederDialog} close={() => setShowUpdateFeederDialog(false)} data={{ _id, name, description }} />
     </>
   )
 }

@@ -12,7 +12,7 @@ const Feeder = {
     async createFeeder(parent, { name, description }, { models }) {
       return models.Feeder.create({
         name: ensureCapitalized(name),
-        description,
+        description: ensureCapitalized(description),
         status: 'online',
         created_at: new Date(),
         updated_at: new Date()
