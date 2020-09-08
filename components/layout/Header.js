@@ -57,7 +57,7 @@ const _ = ({
       <Navbar.Heading className="flex items-center">
         <Typography variant="h6">Dallas Zoo IoT</Typography>
         <Tag className="ml-3 bg-semi-transparent text-gray">
-          <Typography variant="subtitle" weight="bold">BETA</Typography>
+          <Typography variant="subtitle" weight="bold">ALPHA</Typography>
         </Tag>
       </Navbar.Heading>
       <Divider />

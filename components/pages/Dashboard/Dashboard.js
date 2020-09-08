@@ -5,8 +5,8 @@ import {
   Typography, Button, Card, TextInput
 } from '../../primitives'
 import FeederCard from './FeederCard'
-import Schedule from './Schedule'
 import AnimalCard from './AnimalCard'
+import FeedTimeCard from './FeedTimeCard'
 import { AddAnimalDialog, AddFeederDialog } from './Dialogs'
 
 const Dashboard = ({
@@ -41,7 +41,22 @@ const Dashboard = ({
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
-            <Schedule schedule={schedule} user={user} />
+            <div className="flex flex-col w-full items-center">
+              {
+                schedule.length !== 0
+                  ? <>
+                    {
+                      schedule.map((s, i) => (
+                        <FeedTimeCard key={i} feeder={s.feeder} timestamp={s.timestamp} user={user} />
+                      ))
+                    }
+                    <Button className="mt-2" minimal intent="danger" fill>
+                      <Typography variant="subtitle">Clear All</Typography>
+                    </Button>
+                  </>
+                  : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
+              }
+            </div>
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>

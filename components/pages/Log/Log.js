@@ -22,30 +22,30 @@ const Log = ({
           <div className="flex flex-grow ml-6">
             <Typography variant="h4" className="text-dark-gray">Log</Typography>
           </div>
+          <div className="mx-6 flex justify-end items-center flex-wrap">
+            <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
+            {
+              /* fixme: make a backend resolver to do this */
+              [...new Set(logs.map((l) => l.tag))].map((tag, i) => (
+                <Tag
+                  generateColor
+                  clickable
+                  className={`${filter && filter !== tag ? 'opacity-75' : 'opacity-100'} ml-2`}
+                  onClick={filter === tag ? undefined : () => setFilter(tag)}
+                  onRemove={filter === tag ? () => setFilter(undefined) : undefined}
+                  key={i}
+                >
+                  {tag}
+                </Tag>
+              ))
+            }
+          </div>
         </div>
       }
       className={`w-full ${loading && 'bp3-skeleton'}`}
       elevation={Elevation.TWO}
     >
       <div className="m-6">
-        <div className="my-3 w-full flex justify-end items-center flex-wrap">
-          <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
-          {
-            /* fixme: make a backend resolver to do this */
-            [...new Set(logs.map((l) => l.tag))].map((tag, i) => (
-              <Tag
-                generateColor
-                clickable
-                className={`${filter && filter !== tag ? 'opacity-75' : 'opacity-100'} ml-2`}
-                onClick={filter === tag ? undefined : () => setFilter(tag)}
-                onRemove={filter === tag ? () => setFilter(undefined) : undefined}
-                key={i}
-              >
-                {tag}
-              </Tag>
-            ))
-          }
-        </div>
         <table className="bp3-html-table .modifier w-full">
           <thead>
             <tr>
