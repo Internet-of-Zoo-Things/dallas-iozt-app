@@ -24,11 +24,12 @@ export const ALL_USERS = gql`
 `
 
 export const GET_LOGS = gql`
-  query logs {
-    logs {
+  query logs($tag: String) {
+    logs(tag: $tag) {
       username
       timestamp
       message
+      tag
     }
   }
 `

@@ -41,16 +41,27 @@ const Styled_ = styled(Tag)`
 const _ = ({
   generateColor,
   children,
+  clickable,
+  className,
   ...props
 }) => (
-  <Styled_ {...props} color={generateColor ? getColor(`${children} hey wanna hear a udp joke? i don't care if you don't get it`) : undefined}>
+  <Styled_
+    color={generateColor ? getColor(`${children} hey wanna hear a udp joke? i don't care if you don't get it`) : undefined}
+    className={`${clickable ? 'cursor-pointer' : ''} ${className}`}
+    {...props}
+  >
     { children }
   </Styled_>
 )
 _.propTypes = {
   children: PropTypes.node,
+  className: PropTypes.string,
   /** generate a random muted color based on the children */
-  generateColor: PropTypes.bool
+  generateColor: PropTypes.bool,
+  /** if the tag can be clicked/removed */
+  clickable: PropTypes.bool,
+  /** function to run when tag is removed */
+  onRemove: PropTypes.func
 }
 
 export default _

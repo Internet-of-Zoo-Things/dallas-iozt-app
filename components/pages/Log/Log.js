@@ -4,7 +4,7 @@ import { Elevation } from '@blueprintjs/core'
 import styled from 'styled-components'
 import moment from 'moment'
 import tw from 'twin.macro'
-import { Typography, Card } from '../../primitives'
+import { Typography, Card, Tag } from '../../primitives'
 
 const NoWrap = styled.div`
   width: min-content;
@@ -12,7 +12,9 @@ const NoWrap = styled.div`
   ${tw`flex flex-col`}
 `
 
-const Users = ({ logs, loading }) => (
+const Log = ({
+  logs, loading, filter, setFilter
+}) => (
   <div className="flex flex-col">
     <Card
       header={
@@ -26,12 +28,31 @@ const Users = ({ logs, loading }) => (
       elevation={Elevation.TWO}
     >
       <div className="m-6">
+        <div className="my-3 w-full flex justify-end flex-wrap">
+          <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
+          {
+            /* fixme: make a backend resolver to do this */
+            [...new Set(logs.map((l) => l.tag))].map((tag, i) => (
+              <Tag
+                generateColor
+                clickable
+                className={`${filter && filter !== tag ? 'opacity-75' : 'opacity-100'} ml-2`}
+                onClick={filter === tag ? undefined : () => setFilter(tag)}
+                onRemove={filter === tag ? () => setFilter(undefined) : undefined}
+                key={i}
+              >
+                {tag}
+              </Tag>
+            ))
+          }
+        </div>
         <table className="bp3-html-table .modifier w-full">
           <thead>
             <tr>
               <th>Timestamp</th>
               <th>Username</th>
               <th>Message</th>
+              <th>Type</th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +71,15 @@ const Users = ({ logs, loading }) => (
                     </NoWrap>
                   </td>
                   <td>{log.message}</td>
+                  <td>
+                    <Tag
+                      generateColor
+                      clickable
+                      onClick={() => setFilter(log.tag)}
+                    >
+                      {log.tag}
+                    </Tag>
+                  </td>
                 </tr>
               ))
             }
@@ -59,13 +89,16 @@ const Users = ({ logs, loading }) => (
     </Card>
   </div>
 )
-Users.propTypes = {
+Log.propTypes = {
   /** List of system logs */
   logs: PropTypes.array,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  /** Filter log results */
+  filter: PropTypes.string,
+  setFilter: PropTypes.func
 }
-Users.defaultProps = {
+Log.defaultProps = {
   logs: []
 }
 
-export default Users
+export default Log
