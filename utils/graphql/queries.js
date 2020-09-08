@@ -34,6 +34,12 @@ export const GET_LOGS = gql`
   }
 `
 
+export const GET_LOG_TAGS = gql`
+  query logTags {
+    logTags
+  }
+`
+
 export const GET_ANIMALS = gql`
   query animals($filter: String) {
     animals(filter: $filter) {

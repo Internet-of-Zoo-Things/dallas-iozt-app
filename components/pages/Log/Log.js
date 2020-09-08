@@ -13,7 +13,7 @@ const NoWrap = styled.div`
 `
 
 const Log = ({
-  logs, loading, filter, setFilter
+  logs, loading, filter, setFilter, allTags
 }) => (
   <div className="flex flex-col">
     <Card
@@ -25,12 +25,11 @@ const Log = ({
           <div className="mx-6 flex justify-end items-center flex-wrap">
             <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
             {
-              /* fixme: make a backend resolver to do this */
-              [...new Set(logs.map((l) => l.tag))].map((tag, i) => (
+              allTags && allTags.map((tag, i) => (
                 <Tag
                   generateColor
                   clickable
-                  className={`${filter && filter !== tag ? 'opacity-75' : 'opacity-100'} ml-2`}
+                  className={`${filter && filter !== tag ? 'opacity-50' : 'opacity-100'} ml-2`}
                   onClick={filter === tag ? undefined : () => setFilter(tag)}
                   onRemove={filter === tag ? () => setFilter(undefined) : undefined}
                   key={i}
@@ -95,7 +94,9 @@ Log.propTypes = {
   loading: PropTypes.bool,
   /** Filter log results */
   filter: PropTypes.string,
-  setFilter: PropTypes.func
+  setFilter: PropTypes.func,
+  /** All tag filter options */
+  allTags: PropTypes.array
 }
 Log.defaultProps = {
   logs: []

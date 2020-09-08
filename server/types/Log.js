@@ -10,6 +10,7 @@ const Log = gql`
   }
   extend type Query {
     logs(tag: String): [Log]
+    logTags: [String]
   }
 `
 
