@@ -55,7 +55,7 @@ const _ = ({
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
       <Navbar.Heading className="flex items-center">
-        <Typography variant="h6" weight="">Dallas Zoo IoT</Typography>
+        <Typography variant="h6">Dallas Zoo IoT</Typography>
         <Tag className="ml-3 bg-semi-transparent text-gray">
           <Typography variant="subtitle" weight="bold">BETA</Typography>
         </Tag>
@@ -67,7 +67,13 @@ const _ = ({
             <div className="mx-1" key={i}>
               <StyledLink href={r.href}>
                 <Button icon={r.icon} active={currentPage === r.currentPage}>
-                  <Typography variant="subcurrentPage" weight={currentPage === r.currentPage ? 'bold' : undefined}>{r.currentPage}</Typography>
+                  <Typography
+                    variant="subcurrentPage"
+                    weight={currentPage === r.currentPage ? 'bold' : undefined}
+                    className="hidden sm:block md:block lg:block xl:block"
+                  >
+                    {r.currentPage}
+                  </Typography>
                 </Button>
               </StyledLink>
             </div>

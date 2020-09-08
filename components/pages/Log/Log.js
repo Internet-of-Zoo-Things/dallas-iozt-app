@@ -28,7 +28,7 @@ const Log = ({
       elevation={Elevation.TWO}
     >
       <div className="m-6">
-        <div className="my-3 w-full flex justify-end flex-wrap">
+        <div className="my-3 w-full flex justify-end items-center flex-wrap">
           <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
           {
             /* fixme: make a backend resolver to do this */
@@ -70,7 +70,7 @@ const Log = ({
                       {log.username}
                     </NoWrap>
                   </td>
-                  <td>{log.message}</td>
+                  <td className="break-normal">{log.message}</td>
                   <td>
                     <Tag
                       generateColor
