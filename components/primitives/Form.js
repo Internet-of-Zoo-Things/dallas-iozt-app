@@ -43,7 +43,7 @@ const _ = ({
   const validate = () => {
     for (let i = 0; i < fields.length; i += 1) {
       const f = fields[i]
-      if (f.required && data[f.id] === undefined) return false
+      if (f.required && (data[f.id] === undefined || data[f.id] === '')) return false
       if (f.required && !f.validator) {
         if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
