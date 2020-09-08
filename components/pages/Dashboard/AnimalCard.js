@@ -5,8 +5,7 @@ import {
 } from '../../primitives'
 import { compareUserRoles } from '../../../utils/functions/ui'
 import { UserRoles } from '../../../utils/models'
-import UpdateAnimalDialog from './UpdateAnimalDialog'
-import DeleteAnimalDialog from './DeleteAnimalDialog'
+import { UpdateAnimalDialog, DeleteAnimalDialog } from './Dialogs'
 
 const AnimalCard = ({
   user,

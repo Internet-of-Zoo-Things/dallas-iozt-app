@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
-import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
-import { Form } from '../../primitives'
-import { InputTypes } from '../../../utils/models'
-import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import { CREATE_ANIMAL } from '../../../../utils/graphql/mutations'
+import { Form } from '../../../primitives'
+import { InputTypes } from '../../../../utils/models'
+import { GET_ANIMALS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, data }) => {
+const _ = ({ isOpen, close }) => {
   /* api interaction */
-  const [updateAnimal, { loading }] = useMutation(UPDATE_ANIMAL, {
+  const [createAnimal, { loading }] = useMutation(CREATE_ANIMAL, {
     onError: (e) => console.error(JSON.stringify(e)),
     onCompleted: close,
     refetchQueries: [{ query: GET_ANIMALS }],
@@ -19,20 +19,19 @@ const _ = ({ isOpen, close, data }) => {
 
   return (
     <Dialog
-      icon="edit"
+      icon="plus"
       onClose={() => close()}
-      title={`Update information for ${data.name}`}
+      title="Add a Feeder"
       isOpen={isOpen}
     >
       <div className="w-full p-6">
         <Form
-          onSubmit={(d) => {
-            updateAnimal({
+          onSubmit={(data) => {
+            createAnimal({
               variables: {
-                _id: data._id,
-                name: d.name,
-                type: d.type.label,
-                intake: parseFloat(d.intake)
+                name: data.name,
+                type: data.type.label,
+                intake: parseFloat(data.intake)
               }
             })
           }}
@@ -43,8 +42,7 @@ const _ = ({ isOpen, close, data }) => {
               id: 'name',
               required: true,
               type: InputTypes.TEXT,
-              placeholder: 'Enter the animal\'s name...',
-              defaultValue: data.name
+              placeholder: 'Enter the animal\'s name...'
             },
             {
               label: 'Species',
@@ -57,8 +55,7 @@ const _ = ({ isOpen, close, data }) => {
                 { label: 'Elephant' },
                 { label: 'Giraffe' },
                 { label: 'Monkey' }
-              ],
-              defaultValue: data.type
+              ]
             },
             {
               label: 'Daily Food Intake (lbs)',
@@ -66,8 +63,7 @@ const _ = ({ isOpen, close, data }) => {
               required: true,
               type: InputTypes.NUMERIC,
               placeholder: 'Enter the daily food intake in lbs...',
-              validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0,
-              defaultValue: data.intake
+              validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
             }
           ]}
         />
@@ -77,9 +73,7 @@ const _ = ({ isOpen, close, data }) => {
 }
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  /** Existing data for animal */
-  data: PropTypes.object.isRequired
+  close: PropTypes.func.isRequired
 }
 
 export default _

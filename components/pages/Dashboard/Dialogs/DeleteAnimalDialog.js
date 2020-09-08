@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Classes } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
-import { DELETE_ANIMAL } from '../../../utils/graphql/mutations'
-import { Button } from '../../primitives'
-import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import { DELETE_ANIMAL } from '../../../../utils/graphql/mutations'
+import { Button } from '../../../primitives'
+import { GET_ANIMALS } from '../../../../utils/graphql/queries'
 
 const _ = ({ isOpen, close, data }) => {
   /* api interaction */

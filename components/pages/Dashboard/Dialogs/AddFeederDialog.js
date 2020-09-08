@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
-import { Form } from '../../primitives'
-import { InputTypes } from '../../../utils/models'
-import { UPDATE_FEEDER } from '../../../utils/graphql/mutations'
-import { GET_FEEDERS } from '../../../utils/graphql/queries'
+import { Form } from '../../../primitives'
+import { InputTypes } from '../../../../utils/models'
+import { CREATE_FEEDER } from '../../../../utils/graphql/mutations'
+import { GET_FEEDERS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, data }) => {
+const _ = ({ isOpen, close }) => {
   /* api interaction */
-  const [updateFeeder, { loading }] = useMutation(UPDATE_FEEDER, {
+  const [createFeeder, { loading }] = useMutation(CREATE_FEEDER, {
     onError: (e) => console.error(JSON.stringify(e)),
     onCompleted: close,
     refetchQueries: [{ query: GET_FEEDERS }],
@@ -19,15 +19,15 @@ const _ = ({ isOpen, close, data }) => {
 
   return (
     <Dialog
-      icon="edit"
+      icon="plus"
       onClose={() => close()}
-      title={`Edit ${data.name}`}
+      title="Add a Feeder"
       isOpen={isOpen}
     >
       <div className="w-full p-6">
         <Form
           onSubmit={(d) => {
-            updateFeeder({ variables: { _id: data._id, ...d } })
+            createFeeder({ variables: d })
           }}
           submitLoading={loading}
           fields={[
@@ -36,16 +36,14 @@ const _ = ({ isOpen, close, data }) => {
               id: 'name',
               required: true,
               type: InputTypes.TEXT,
-              placeholder: 'Enter a name for the feeder (ex: Feeder A)...',
-              defaultValue: data.name
+              placeholder: 'Enter a name for the feeder (ex: Feeder A)...'
             },
             {
               label: 'Description',
               id: 'description',
               required: false,
               type: InputTypes.TEXT,
-              placeholder: 'Describe the feeder (optional)...',
-              defaultValue: data.description
+              placeholder: 'Describe the feeder (optional)...'
             }
           ]}
         />
@@ -55,8 +53,7 @@ const _ = ({ isOpen, close, data }) => {
 }
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
+  close: PropTypes.func.isRequired
 }
 
 export default _

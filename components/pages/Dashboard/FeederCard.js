@@ -9,8 +9,7 @@ import { FeederStatuses } from '../../../utils/models'
 import { capitalize } from '../../../utils/functions/ui'
 import { UPDATE_FEEDER } from '../../../utils/graphql/mutations'
 import { GET_FEEDERS } from '../../../utils/graphql/queries'
-import DeleteFeederDialog from './DeleteFeederDialog'
-import UpdateFeederDialog from './UpdateFeederDialog'
+import { DeleteFeederDialog, UpdateFeederDialog } from './Dialogs'
 
 const FeederCard = ({
   name, status, _id, description, ...props
