@@ -6,9 +6,10 @@ const Log = gql`
     timestamp: DateTime
     username: String
     message: String
+    tag: String
   }
   extend type Query {
-    logs: [Log]
+    logs(tag: String): [Log]
   }
 `
 

@@ -8,11 +8,12 @@ const isEmail = (str) => {
 }
 
 /* writes a log entry to the database */
-const writeLog = async (username, message) => {
+const writeLog = async (username, message, tag = 'general') => {
   return Log.create({
     timestamp: new Date(),
     username,
-    message
+    message,
+    tag
   })
     .catch((err) => { throw Error(err) })
 }
