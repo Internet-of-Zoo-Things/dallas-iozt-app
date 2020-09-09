@@ -48,7 +48,7 @@ const Dashboard = ({
                   ? <>
                     {
                       schedule.map((s, i) => (
-                        <FeedTimeCard key={i} feeder={s.feeder} timestamp={s.timestamp} user={user} />
+                        <FeedTimeCard key={i} data={s} user={user} />
                       ))
                     }
                     <Button className="mt-2" minimal intent="danger" fill>

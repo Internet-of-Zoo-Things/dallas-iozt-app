@@ -47,7 +47,7 @@ const _ = ({
 }) => (
   <Styled_
     color={generateColor ? getColor(`${children} hey wanna hear a udp joke? i don't care if you don't get it`) : undefined}
-    className={`${clickable ? 'cursor-pointer' : ''} ${className}`}
+    className={`whitespace-no-wrap ${clickable ? 'cursor-pointer' : ''} ${className}`}
     {...props}
   >
     { children }

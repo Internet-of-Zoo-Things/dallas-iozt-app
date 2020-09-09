@@ -26,13 +26,13 @@ const AnimalCard = ({
           <Typography variant="subtitle" className="px-2">
             {name}
           </Typography>
-          <Typography variant="subtitle" weight="thin" className="px-2">
+          <Typography variant="subtitle" weight="thin" className="px-2 truncate">
             ({intake} lbs/day)
           </Typography>
         </div>
         {
           user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-            ? <div>
+            ? <div className="flex flex-no-wrap">
               <Button minimal intent="primary" icon="edit" onClick={() => setShowUpdateDialog(true)} />
               <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
             </div>

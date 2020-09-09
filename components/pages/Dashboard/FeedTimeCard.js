@@ -14,20 +14,23 @@ FeederTag.propTypes = {
   className: PropTypes.string
 }
 
-const FeederTimeCard = ({ feeder, timestamp, user }) => {
+const FeederTimeCard = ({ data, user }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
 
   return (
     <>
       <div className="flex flex-row items-center mt-2 border border-border rounded-lg w-full hover:bg-background overflow-hidden">
-        <FeederTag>{feeder}</FeederTag>
+        <FeederTag>{data.feeder}</FeederTag>
         <div className="flex flex-grow justify-center overflow-hidden">
           <Typography variant="subtitle" className="ml-3 whitespace-no-wrap">
-            {moment(timestamp).format('h:mm:ss a')}
+            {data.quantity} lb{data.quantity === 1 ? '' : 's'} at
+          </Typography>
+          <Typography variant="subtitle" className="ml-1 whitespace-no-wrap">
+            {moment(data.timestamp).format('h:mm:ss a')}
           </Typography>
           <Typography variant="subtitle" className="ml-2 text-gray hidden sm:block md:block lg:block xl:block truncate">
-            ({moment(timestamp).fromNow()})
+            ({moment(data.timestamp).fromNow()})
           </Typography>
         </div>
         {
@@ -40,15 +43,13 @@ const FeederTimeCard = ({ feeder, timestamp, user }) => {
         }
       </div>
       {/* Dialogs */}
-      <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={{ feeder, timestamp }} />
-      <DeleteFeedTimeDialog isOpen={showDeleteDialog} close={() => setShowDeleteDialog(false)} timestamp={timestamp} />
+      <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={data} />
+      <DeleteFeedTimeDialog isOpen={showDeleteDialog} close={() => setShowDeleteDialog(false)} timestamp={data.timestamp} />
     </>
   )
 }
 FeederTimeCard.propTypes = {
-  /** name of the feeder */
-  feeder: PropTypes.string.isRequired,
-  timestamp: PropTypes.any.isRequired,
+  data: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired
 }
 
