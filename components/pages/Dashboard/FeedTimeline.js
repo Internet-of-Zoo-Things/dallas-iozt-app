@@ -13,8 +13,13 @@ const _ = ({ schedule }) => (
       width="100%"
       loader={<div className="w-full h-48 bp3-skeleton" />}
       data={[
-        ['', 'Feed (lbs)'],
-        ...schedule.map((s) => [s.timestamp.toDate(), s.quantity])
+        ['', 'Feed (lbs)', { type: 'string', role: 'tooltip' }],
+        ...schedule.map((s) => [
+          s.timestamp.toDate(),
+          s.quantity,
+          /* specifies the tooltip */
+          `${s.quantity} lb${s.quantity === 1 ? '' : 's'} from ${s.feeder} at ${s.timestamp.format('MMM Do h:mm:ss')}`
+        ])
       ]}
       options={{
         legend: { position: 'none' },
