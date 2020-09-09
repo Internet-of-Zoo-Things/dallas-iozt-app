@@ -6,9 +6,11 @@ import moment from 'moment'
 const config = require('../../../tailwind.config')
 
 const _ = ({ schedule }) => (
-  <div className="flex w-full justify-center mt-3">
+  <div className="flex w-full justify-center overflow-hidden">
     <Chart
       chartType="ScatterChart"
+      height={200}
+      width="100%"
       loader={<div className="w-full h-48 bp3-skeleton" />}
       data={[
         ['', 'Feed (lbs)'],
@@ -22,6 +24,10 @@ const _ = ({ schedule }) => (
         animation: {
           duration: 1000,
           easing: 'inAndOut'
+        },
+        chartArea: {
+          width: '85%',
+          height: '80%'
         }
       }}
     />

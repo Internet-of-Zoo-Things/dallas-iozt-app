@@ -61,9 +61,6 @@ const Dashboard = ({
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-            {/* <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
-              Graphical timeline here
-            </div> */}
             <FeedTimeline schedule={schedule} />
           </div>
         </Card>
