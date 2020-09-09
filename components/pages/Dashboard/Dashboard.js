@@ -7,6 +7,7 @@ import {
 import FeederCard from './FeederCard'
 import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
+import FeedTimeline from './FeedTimeline'
 import { AddAnimalDialog, AddFeederDialog } from './Dialogs'
 
 const Dashboard = ({
@@ -60,9 +61,10 @@ const Dashboard = ({
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-            <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
+            {/* <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
               Graphical timeline here
-            </div>
+            </div> */}
+            <FeedTimeline schedule={schedule} />
           </div>
         </Card>
       </div>

@@ -10,16 +10,20 @@ import { GET_ANIMALS, GET_FEEDERS } from '../utils/graphql/queries'
 
 const dummySchedule = [{
   timestamp: moment().add(30, 'minutes'),
-  feeder: 'Feeder 1'
+  feeder: 'Feeder 1',
+  quantity: 2
 }, {
   timestamp: moment().add(2, 'hours'),
-  feeder: 'Feeder 2'
+  feeder: 'Feeder 2',
+  quantity: 1
 }, {
   timestamp: moment().add(7, 'hours'),
-  feeder: 'Feeder 2'
+  feeder: 'Feeder 2',
+  quantity: 3
 }, {
   timestamp: moment().add(8, 'hours'),
-  feeder: 'Feeder 1'
+  feeder: 'Feeder 1',
+  quantity: 2
 }]
 
 const Dashboard = ({ user }) => {
