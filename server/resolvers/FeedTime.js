@@ -9,7 +9,7 @@ const Feeder = {
     }
   },
   Mutation: {
-    async createFeedTime(parent, { feeder, timestamp }, { models, user }) {
+    async createFeedTime(parent, { feeder, timestamp, quantity }, { models, user }) {
       // todo
     },
     async updateFeedTime(parent, { _id, ...args }, { models, user }) {

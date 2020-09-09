@@ -5,6 +5,7 @@ const FeedTime = gql`
     _id: String
     feeder: String
     timestamp: DateTime
+    quantity: Float
     created_at: DateTime
     updated_at: DateTime
   }
@@ -12,8 +13,8 @@ const FeedTime = gql`
     feedTimes: [FeedTime]
   }
   extend type Mutation {
-    createFeedTime(feeder: String!, timestamp: DateTime): FeedTime!
-    updateFeedTime(_id: String!, feeder: String, timestamp: DateTime): FeedTime
+    createFeedTime(feeder: String!, timestamp: DateTime!, quantity: Float!): FeedTime!
+    updateFeedTime(_id: String!, feeder: String, timestamp: DateTime, quantity: Float): FeedTime
     deleteFeedTime(_id: String!): FeedTime
   }
 `

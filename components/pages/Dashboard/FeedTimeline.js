@@ -11,7 +11,7 @@ const _ = ({ schedule }) => (
       chartType="ScatterChart"
       height={200}
       width="100%"
-      loader={<div className="w-full h-48 bp3-skeleton" />}
+      loader={<div className="mt-3 w-full h-48 bp3-skeleton" />}
       data={[
         ['', 'Feed (lbs)', { type: 'string', role: 'tooltip' }],
         ...schedule.map((s) => [
