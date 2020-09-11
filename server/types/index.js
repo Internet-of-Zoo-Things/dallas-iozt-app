@@ -4,6 +4,7 @@ const Log = require('./Log')
 const Animal = require('./Animal')
 const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
+const Notification = require('./Notification')
 
 const types = gql`
   type Query {
@@ -20,6 +21,7 @@ const types = gql`
   ${Animal}
   ${Feeder}
   ${FeedTime}
+  ${Notification}
 `
 
 module.exports = types
