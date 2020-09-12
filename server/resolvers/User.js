@@ -1,5 +1,5 @@
 const { ApolloError } = require('apollo-server-express')
-const { isEmail, createNotifications } = require('../../utils/functions/api')
+const { isEmail } = require('../../utils/functions/api')
 
 const User = {
   Query: {
@@ -12,12 +12,12 @@ const User = {
         .catch((err) => { throw new ApolloError(err) })
     },
     async notifications(parent, { viewed }, { models, user }) {
-      const filter = viewed !== undefined ? { notifications: { $elemMatch: { viewed } } } : {}
-      return models.User.findOne({
-        username: user.username,
-        ...filter
-      })
-        .then((data) => data.notifications || [])
+      return models.User.findOne({ username: user.username })
+        .then((data) => {
+          // ideally this would be accomplished with a mongo projection rather than filtering the result here
+          if (viewed === undefined) return data.notifications || []
+          return data.notifications.filter((n) => n.viewed === viewed)
+        })
         .catch((err) => { throw new ApolloError(err) })
     }
   },

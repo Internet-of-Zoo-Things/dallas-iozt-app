@@ -34,7 +34,7 @@ const User = gql`
   extend type Query {
     activeUser: User
     users(filter: UserFilter): [User]
-    notifications: [Notification]
+    notifications(viewed: Boolean): [Notification]
   },
   extend type Mutation {
     createUser(userInput: UserInput!): User!
