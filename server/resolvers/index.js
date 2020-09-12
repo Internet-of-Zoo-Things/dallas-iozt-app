@@ -3,14 +3,12 @@ const User = require('./User')
 const Log = require('./Log')
 const Animal = require('./Animal')
 const Feeder = require('./Feeder')
-const Notifications = require('./Notification')
 
 const resolvers = lodash.merge(
   User,
   Log,
   Animal,
-  Feeder,
-  Notifications
+  Feeder
 )
 
 module.exports = resolvers
