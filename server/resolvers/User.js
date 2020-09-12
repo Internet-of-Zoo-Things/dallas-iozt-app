@@ -1,5 +1,5 @@
 const { ApolloError } = require('apollo-server-express')
-const { isEmail } = require('../../utils/functions/api')
+const { isEmail, createNotifications } = require('../../utils/functions/api')
 
 const User = {
   Query: {
@@ -8,7 +8,7 @@ const User = {
     },
     async users(parent, { filter }, { models }) {
       return models.User.find(filter)
-        .then((users) => users.map((u) => ({ ...u._doc, notifications: u._doc.notifications || [] })))
+        .then((users) => users.map((u) => ({ ...u._doc, notifications: u.notifications || [] })))
         .catch((err) => { throw new ApolloError(err) })
     },
     async notifications(parent, { viewed }, { models, user }) {
@@ -17,7 +17,7 @@ const User = {
         username: user.username,
         ...filter
       })
-        .then((data) => data._doc.notifications || [])
+        .then((data) => data.notifications || [])
         .catch((err) => { throw new ApolloError(err) })
     }
   },
@@ -46,22 +46,22 @@ const User = {
     async updateNotifications(parent, { _ids, viewed }, { models, user }) {
       const u = await models.User.findOne({ username: user.username })
       if (!u) throw new ApolloError(`User ${user.username} doesn't exist!`)
-      u._doc.notifications.forEach((n) => {
+      u.notifications.forEach((n) => {
         if (_ids.includes(`${n._id}`)) n.viewed = viewed
       })
       u.updated_at = new Date()
       u.markModified('notifications')
       await u.save().catch((err) => { throw new ApolloError(err) })
-      return u._doc.notifications
+      return u.notifications
     },
     async deleteNotifications(parent, { _ids }, { models, user }) {
       const u = await models.User.findOne({ username: user.username })
       if (!u) throw new ApolloError(`User ${user.username} doesn't exist!`)
-      u._doc.notifications = u._doc.notifications.filter((n) => !_ids.includes(`${n._id}`))
+      u.notifications = u.notifications.filter((n) => !_ids.includes(`${n._id}`))
       u.updated_at = new Date()
       u.markModified('notifications')
       await u.save().catch((err) => { throw new ApolloError(err) })
-      return u._doc.notifications
+      return u.notifications
     }
   }
 }
