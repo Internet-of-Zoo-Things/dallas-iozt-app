@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import tw from 'twin.macro'
 import PropTypes from 'prop-types'
 import {
-  Popover as _Popover, Position, Spinner, Navbar, Alignment
+  Popover as _Popover, Position, Navbar, Alignment, Menu, MenuItem, MenuDivider
 } from '@blueprintjs/core'
 import {
   Typography,
@@ -11,7 +11,6 @@ import {
   StyledLink,
   Tag
 } from '../primitives'
-import { UserRoles } from '../../utils/models'
 
 const Popover = styled(_Popover)`
   &&& {
@@ -23,10 +22,6 @@ const Popover = styled(_Popover)`
 
 const Divider = styled(Navbar.Divider)`
   border-color: #ffffff60;
-`
-
-const NotificationContainer = styled.div`
-  ${tw`h-16 w-full p-3 border-b border-background-darker flex items-center`}
 `
 
 const routes = [
@@ -87,33 +82,17 @@ const _ = ({
           <Button icon="notifications" />
         }
         content={
-          <div className="w-64">
-            <div className="flex flex-col justify-center items-center">
-              {
-                notifications.length > 0
-                  ? notifications.map((n, i) => (
-                    <NotificationContainer key={i}>
-                      <Typography variant="icon" icon="envelope" className="mr-2" />
-                      <Typography variant="subcurrentPage" className="truncate">
-                        {n.message}
-                      </Typography>
-                    </NotificationContainer>
-                  ))
-                  : <NotificationContainer>
-                    <Typography variant="subcurrentPage">
-                      No new notifications!
-                    </Typography>
-                  </NotificationContainer>
-              }
-              <NotificationContainer>
-                <StyledLink href="/log" className="w-full">
-                  <Button fill>
-                    Full Logs
-                  </Button>
-                </StyledLink>
-              </NotificationContainer>
-            </div>
-          </div>
+          <Menu className="max-w-xs">
+            {
+              notifications.length > 0
+                ? notifications.map((n, i) => (
+                  <MenuItem icon="envelope" text={n.message} multiline key={i} />
+                ))
+                : <MenuItem text="No new notifications!" disabled />
+            }
+            <MenuDivider />
+            <MenuItem icon="align-left" text="View full log" href="/log" />
+          </Menu>
         }
         position={Position.BOTTOM}
         className="h-12"
@@ -123,35 +102,11 @@ const _ = ({
           <Button icon="user" />
         }
         content={
-          <div className="w-64">
-            <div className="flex flex-col justify-center items-center pb-3">
-              {
-                user
-                  ? <>
-                    <div className="flex flex-col justify-center items-center my-3">
-                      <div className="flex justify-center items-end">
-                        <Typography variant="body">
-                          { user.name }
-                        </Typography>
-                        <Typography variant="subcurrentPage" className="text-gray ml-1">
-                          ({ user.username })
-                        </Typography>
-                      </div>
-                      <Typography variant="subcurrentPage" className="text-gray mt-1">
-                        { UserRoles[user.role].name }
-                      </Typography>
-                    </div>
-                    <Button minimal fill icon="cog">
-                      Settings
-                    </Button>
-                    <Button minimal fill intent="danger" icon="log-out">
-                      Sign Out
-                    </Button>
-                  </>
-                  : <Spinner />
-              }
-            </div>
-          </div>
+          <Menu>
+            <MenuDivider title={`${user && user.name} (${user && user.username})`} />
+            <MenuItem icon="cog" text="Settings" />
+            <MenuItem icon="log-out" text="Sign Out" intent="danger" />
+          </Menu>
         }
         position={Position.BOTTOM}
         className="h-12"

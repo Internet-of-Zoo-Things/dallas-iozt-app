@@ -42,7 +42,7 @@ const Animal = {
       }, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Updated animal "${args.animal}"`, 'animal')
+          await writeLog(user.username, `Updated animal "${args.name}"`, 'animal')
           return data
         })
     },
