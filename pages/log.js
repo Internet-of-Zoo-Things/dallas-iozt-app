@@ -12,6 +12,7 @@ const Log = ({ user }) => {
 
   const { data, error, loading } = useQuery(GET_LOGS, {
     variables: { tag },
+    fetchPolicy: 'no-cache',
     onError: (e) => console.error(e)
   })
 

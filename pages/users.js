@@ -9,6 +9,7 @@ import { ALL_USERS } from '../utils/graphql/queries'
 
 const Users = ({ user }) => {
   const { data, error, loading } = useQuery(ALL_USERS, {
+    fetchPolicy: 'no-cache',
     onError: (e) => console.error(e)
   })
 
