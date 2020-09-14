@@ -12,7 +12,7 @@ import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import { DeleteFeederDialog, UpdateFeederDialog } from './Dialogs'
 
 const FeederCard = ({
-  name, status, _id, description, ...props
+  name, status, _id, description, client, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
@@ -84,7 +84,8 @@ FeederCard.propTypes = {
   status: PropTypes.string,
   /** Optional description for feeder */
   description: PropTypes.string,
-  _id: PropTypes.string
+  _id: PropTypes.string,
+  client: PropTypes.any.isRequired
 }
 
 export default FeederCard

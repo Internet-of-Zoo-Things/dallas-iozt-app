@@ -9,6 +9,7 @@ import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
 import { AddAnimalDialog, AddFeederDialog } from './Dialogs'
+import { GET_ANIMALS } from '../../../utils/graphql/queries'
 
 const Dashboard = ({
   user,
@@ -18,7 +19,8 @@ const Dashboard = ({
   animals,
   animalSearch,
   setAnimalSearch,
-  animalsLoading
+  animalsLoading,
+  client
 }) => {
   /* dialogs */
   const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
@@ -87,7 +89,7 @@ const Dashboard = ({
               ? <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4 ${feedersLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   feeders.map((f, i) => (
-                    <FeederCard {...f} key={i} />
+                    <FeederCard {...f} key={i} client={client} />
                   ))
                 }
               </div>
@@ -123,7 +125,20 @@ const Dashboard = ({
               ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   animals.map((a, i) => (
-                    <AnimalCard key={i} {...a} user={user} />
+                    <AnimalCard
+                      key={i}
+                      {...a}
+                      user={user}
+                      onDelete={() => {
+                        client.writeQuery({
+                          query: GET_ANIMALS,
+                          variables: { filter: animalSearch },
+                          data: {
+                            animals: animals.filter((t) => t._id !== a._id)
+                          }
+                        })
+                      }}
+                    />
                   ))
                 }
               </div>
@@ -133,7 +148,22 @@ const Dashboard = ({
       </div>
       {/* Dialogs */}
       <AddFeederDialog isOpen={showAddFeederDialog} close={() => setShowAddFeederDialog(false)} />
-      <AddAnimalDialog isOpen={showAddAnimalDialog} close={() => setShowAddAnimalDialog(false)} />
+      <AddAnimalDialog
+        isOpen={showAddAnimalDialog}
+        close={() => setShowAddAnimalDialog(false)}
+        updateCache={(d) => {
+          client.writeQuery({
+            query: GET_ANIMALS,
+            variables: { filter: animalSearch },
+            data: {
+              animals: [
+                ...animals,
+                d.createAnimal
+              ]
+            }
+          })
+        }}
+      />
     </div>
   )
 }
@@ -145,7 +175,8 @@ Dashboard.propTypes = {
   animals: PropTypes.array,
   animalSearch: PropTypes.string,
   setAnimalSearch: PropTypes.func,
-  animalsLoading: PropTypes.bool
+  animalsLoading: PropTypes.bool,
+  client: PropTypes.any
 }
 Dashboard.defaultProps = {
   schedule: [],

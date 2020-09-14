@@ -6,11 +6,16 @@ import { DELETE_ANIMAL } from '../../../../utils/graphql/mutations'
 import { Button } from '../../../primitives'
 import { GET_ANIMALS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, data }) => {
+const _ = ({
+  isOpen, close, data, onSubmit
+}) => {
   /* api interaction */
   const [deleteAnimal, { loading }] = useMutation(DELETE_ANIMAL, {
     onError: (e) => console.error(JSON.stringify(e)),
-    onCompleted: close,
+    onCompleted: () => {
+      onSubmit()
+      close()
+    },
     refetchQueries: () => [{ query: GET_ANIMALS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
@@ -39,7 +44,8 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   /** Existing data for animal */
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired
 }
 
 export default _

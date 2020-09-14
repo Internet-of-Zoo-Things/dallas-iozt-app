@@ -13,6 +13,7 @@ const AnimalCard = ({
   name,
   type,
   intake,
+  onDelete,
   ...props
 }) => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false)
@@ -53,6 +54,7 @@ const AnimalCard = ({
         data={{
           _id, name, type, intake
         }}
+        onSubmit={onDelete}
       />
     </div>
   )
@@ -66,7 +68,8 @@ AnimalCard.propTypes = {
   /** Daily food intake in lbs */
   intake: PropTypes.number.isRequired,
   /** id of animal in database */
-  _id: PropTypes.string.isRequired
+  _id: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default AnimalCard

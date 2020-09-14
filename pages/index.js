@@ -26,18 +26,20 @@ const dummySchedule = [{
   quantity: 2
 }]
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, client }) => {
   /* searchbars */
   const [animalSearch, setAnimalSearch] = useState('')
 
   /* api interaction */
   const { data: animalsData, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS, {
     variables: { filter: animalSearch },
-    fetchPolicy: 'no-cache',
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true,
     pollInterval: (1000 * 60) // refetch every minute
   })
   const { data: feedersData, loading: feedersLoading, error: feedersError } = useQuery(GET_FEEDERS, {
-    fetchPolicy: 'no-cache',
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true,
     pollInterval: (1000 * 60) // refetch every minute
   })
 
@@ -52,13 +54,16 @@ const Dashboard = ({ user }) => {
         animalSearch={animalSearch}
         setAnimalSearch={setAnimalSearch}
         animalsLoading={animalsLoading}
+        client={client}
       />
     </Layout>
   )
 }
 Dashboard.propTypes = {
   /** Currently signed-in user */
-  user: PropTypes.object
+  user: PropTypes.object,
+  /* apollo client used to write to the cache */
+  client: PropTypes.any
 }
 
 export default withApollo({ ssr: true })(withCurrentUser(Dashboard))
