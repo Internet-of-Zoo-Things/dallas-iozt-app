@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Classes } from '@blueprintjs/core'
-import { Button } from '../../../primitives'
+import { Button, Typography } from '../../../primitives'
 
 const _ = ({ isOpen, close }) => {
   /* TODO:  Add api interaction */
@@ -15,8 +15,8 @@ const _ = ({ isOpen, close }) => {
     >
       <>
         <div className="flex flex-col items-center m-auto p-4">
-          {/* Wrapped in another div to keep span element inline */}
-          <div>Are you sure you want to delete <span className="font-bold">all</span> scheduled feed times? This action cannot be undone!</div>
+          {/* Wrapped in another div to keep Typography element inline */}
+          <div>Are you sure you want to delete <Typography variant="subtitle" weight="bold">all</Typography> scheduled feed times? This action cannot be undone!</div>
         </div>
         <div className={`${Classes.DIALOG_FOOTER} ml-auto`}>
           <Button intent="primary" className="mr-2" onClick={close}>Cancel</Button>
