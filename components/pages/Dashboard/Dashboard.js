@@ -8,7 +8,7 @@ import FeederCard from './FeederCard'
 import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
-import { AddAnimalDialog, AddFeederDialog } from './Dialogs'
+import { AddAnimalDialog, AddFeederDialog, DeleteAllFeedTimesDialog } from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
 
 const Dashboard = ({
@@ -25,6 +25,7 @@ const Dashboard = ({
   /* dialogs */
   const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
   const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
+  const [showDeleteAllFeedTimesDialog, setShowDeleteAllFeedTimesDialog] = useState(false)
 
   return (
     <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
@@ -53,7 +54,7 @@ const Dashboard = ({
                         <FeedTimeCard key={i} data={s} user={user} />
                       ))
                     }
-                    <Button className="mt-2" minimal intent="danger" fill>
+                    <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
                       <Typography variant="subtitle">Clear All</Typography>
                     </Button>
                   </>
@@ -164,6 +165,7 @@ const Dashboard = ({
           })
         }}
       />
+      <DeleteAllFeedTimesDialog isOpen={showDeleteAllFeedTimesDialog} close={() => setShowDeleteAllFeedTimesDialog(false)} />
     </div>
   )
 }
