@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, InputGroup, NumericInput } from '@blueprintjs/core'
+import { DatePicker } from '@blueprintjs/datetime'
 import { InputTypes } from '../../utils/models'
 import Tooltip from './Tooltip'
 import Button from './Button'
@@ -137,6 +138,26 @@ const _ = ({
         buttonPosition="none"
         fill
         {...field.props}
+      />
+    )
+    case InputTypes.DATETIME: return (
+      <DatePicker
+        id={field.id}
+        className='justify-center'
+        highlightCurrentDay={true}
+        showActionsBar={true}
+        todayButtonText='Today'
+        canClearSelection={true}
+        clearButtonText='Clear'
+        timePrecision='minute'
+        timePickerProps={{
+          showArrowButtons: 'showTimeArrowButtons',
+          useAmPm: true
+        }}
+        onChange={(e) => {
+          const tmp = e
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
       />
     )
     default: console.error(`Unknown input type "${field.type}"`)

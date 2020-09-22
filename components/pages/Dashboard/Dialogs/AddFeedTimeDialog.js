@@ -16,9 +16,9 @@ const _ = ({ isOpen, close }) => {
     >
       <div className="w-full p-6">
         <Form
-          onSubmit={(data) => {
+          onSubmit={(formData) => {
             // TODO:  Implement form submit to db
-            // console.log(JSON.stringify(data))
+            // console.log(JSON.stringify(formData))
           }}
           submitLoading={false}
           fields={[
@@ -44,12 +44,10 @@ const _ = ({ isOpen, close }) => {
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
             },
             {
-              // TODO:  Create InputTypes for timestamp and edit this accordingly
               label: 'Time',
               id: 'timestamp',
               required: true,
-              type: InputTypes.TEXT,
-              placeholder: 'Enter time to dispense feeding'
+              type: InputTypes.DATETIME
             }
           ]}
         />
