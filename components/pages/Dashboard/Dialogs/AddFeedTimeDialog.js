@@ -28,12 +28,9 @@ const _ = ({ isOpen, close, feeders }) => {
               required: true,
               type: InputTypes.SELECT,
               placeholder: 'Select Feeder',
-              // TODO:  Use dynamic list of possible feeders from db
-              items: [
-                { label: 'Feeder A' },
-                { label: 'Feeder B' },
-                { label: 'Feeder C' }
-              ]
+              items:
+                // Only list feeders that are online
+                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name }))
             },
             {
               label: 'Food Quantity (lbs)',
