@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog } from '@blueprintjs/core'
 import { Form } from '../../../primitives'
-import { InputTypes } from '../../../../utils/models'
+import { InputTypes, FeederStatuses } from '../../../../utils/models'
 
-const _ = ({ isOpen, close }) => {
+const _ = ({ isOpen, close, feeders }) => {
   // TODO:  Add api interaction
 
   return (
@@ -58,7 +58,10 @@ const _ = ({ isOpen, close }) => {
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
+  feeders: PropTypes.array
+}
+_.defaultProps = {
+  feeders: []
 }
 
 export default _

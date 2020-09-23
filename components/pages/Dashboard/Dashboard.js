@@ -168,7 +168,11 @@ const Dashboard = ({
           })
         }}
       />
-      <AddFeedTimeDialog isOpen={showAddFeedTimeDialog} close={() => setShowAddFeedTimeDialog(false)} />
+      <AddFeedTimeDialog
+        isOpen={showAddFeedTimeDialog}
+        close={() => setShowAddFeedTimeDialog(false)}
+        feeders={feeders}
+      />
       <DeleteAllFeedTimesDialog isOpen={showDeleteAllFeedTimesDialog} close={() => setShowDeleteAllFeedTimesDialog(false)} />
     </div>
   )
