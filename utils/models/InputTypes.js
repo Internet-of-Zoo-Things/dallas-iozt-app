@@ -3,5 +3,6 @@ export default {
   PASSWORD: 'password',
   EMAIL: 'email',
   SELECT: 'select',
-  NUMERIC: 'numeric'
+  NUMERIC: 'numeric',
+  DATETIME: 'datetime'
 }
