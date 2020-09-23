@@ -144,6 +144,9 @@ const _ = ({
       <DatePicker
         id={field.id}
         className='justify-center'
+        defaultValue={new Date()} // Today is selected by default
+        minDate={new Date()} // disable dates prior to Today
+        maxDate={new Date(((new Date()).getFullYear() + 1), 11, 31, 23, 59, 59, 999)} // enable dates thru Dec 31, 1 year in the future
         highlightCurrentDay={true}
         showActionsBar={true}
         todayButtonText='Today'
