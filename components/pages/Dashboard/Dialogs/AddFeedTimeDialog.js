@@ -11,14 +11,14 @@ const _ = ({ isOpen, close, feeders }) => {
     <Dialog
       icon="plus"
       onClose={() => close()}
-      title="Schedule Feed Time"
+      title="Schedule a Feed"
       isOpen={isOpen}
     >
       <div className="w-full p-6">
         <Form
           onSubmit={(formData) => {
             // TODO:  Implement form submit to db
-            // console.log(JSON.stringify(formData))
+            // console.debug('formData: ', JSON.stringify(formData))
           }}
           submitLoading={false}
           fields={[
