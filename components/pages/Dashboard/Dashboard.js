@@ -8,7 +8,9 @@ import FeederCard from './FeederCard'
 import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
-import { AddAnimalDialog, AddFeederDialog, DeleteAllFeedTimesDialog } from './Dialogs'
+import {
+  AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
+} from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
 
 const Dashboard = ({
@@ -25,6 +27,7 @@ const Dashboard = ({
   /* dialogs */
   const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
   const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
+  const [showAddFeedTimeDialog, setShowAddFeedTimeDialog] = useState(false)
   const [showDeleteAllFeedTimesDialog, setShowDeleteAllFeedTimesDialog] = useState(false)
 
   return (
@@ -39,7 +42,7 @@ const Dashboard = ({
             <Button className="my-1" icon="add" fill>
               <Typography variant="body">Create Daily Schedule</Typography>
             </Button>
-            <Button className="my-1" icon="time" fill>
+            <Button className="my-1" icon="time" fill onClick={() => setShowAddFeedTimeDialog(true)}>
               <Typography variant="body">Schedule a Feed</Typography>
             </Button>
           </div>
@@ -164,6 +167,11 @@ const Dashboard = ({
             }
           })
         }}
+      />
+      <AddFeedTimeDialog
+        isOpen={showAddFeedTimeDialog}
+        close={() => setShowAddFeedTimeDialog(false)}
+        feeders={feeders}
       />
       <DeleteAllFeedTimesDialog isOpen={showDeleteAllFeedTimesDialog} close={() => setShowDeleteAllFeedTimesDialog(false)} />
     </div>

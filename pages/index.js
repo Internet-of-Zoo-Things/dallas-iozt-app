@@ -34,13 +34,13 @@ const Dashboard = ({ user, client }) => {
   const { data: animalsData, loading: animalsLoading, error: animalsError } = useQuery(GET_ANIMALS, {
     variables: { filter: animalSearch },
     awaitRefetchQueries: true,
-    notifyOnNetworkStatusChange: true,
-    pollInterval: (1000 * 60) // refetch every minute
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
   const { data: feedersData, loading: feedersLoading, error: feedersError } = useQuery(GET_FEEDERS, {
     awaitRefetchQueries: true,
-    notifyOnNetworkStatusChange: true,
-    pollInterval: (1000 * 60) // refetch every minute
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
 
   return (

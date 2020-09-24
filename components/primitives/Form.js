@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { FormGroup, InputGroup, NumericInput } from '@blueprintjs/core'
+import { DatePicker } from '@blueprintjs/datetime'
 import { InputTypes } from '../../utils/models'
 import Tooltip from './Tooltip'
 import Button from './Button'
@@ -43,7 +44,7 @@ const _ = ({
   const validate = () => {
     for (let i = 0; i < fields.length; i += 1) {
       const f = fields[i]
-      if (f.required && (data[f.id] === undefined || data[f.id] === '')) return false
+      if (f.required && !data[f.id]) return false
       if (f.required && !f.validator) {
         if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
@@ -137,6 +138,29 @@ const _ = ({
         buttonPosition="none"
         fill
         {...field.props}
+      />
+    )
+    case InputTypes.DATETIME: return (
+      <DatePicker
+        id={field.id}
+        className='justify-center'
+        defaultValue={new Date()} // Today is selected by default
+        minDate={new Date()} // disable dates prior to Today
+        maxDate={new Date(((new Date()).getFullYear() + 1), 11, 31, 23, 59, 59, 999)} // enable dates thru Dec 31, 1 year in the future
+        highlightCurrentDay={true}
+        showActionsBar={true}
+        todayButtonText='Today'
+        canClearSelection={true}
+        clearButtonText='Clear'
+        timePrecision='minute'
+        timePickerProps={{
+          showArrowButtons: 'showTimeArrowButtons',
+          useAmPm: true
+        }}
+        onChange={(e) => {
+          const tmp = e
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
       />
     )
     default: console.error(`Unknown input type "${field.type}"`)
