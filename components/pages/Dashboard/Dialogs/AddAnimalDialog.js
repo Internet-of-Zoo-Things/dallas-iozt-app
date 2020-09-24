@@ -24,7 +24,7 @@ const _ = ({ isOpen, close, updateCache }) => {
     <Dialog
       icon="plus"
       onClose={() => close()}
-      title="Add a Feeder"
+      title="Add an Animal"
       isOpen={isOpen}
     >
       <div className="w-full p-6">
