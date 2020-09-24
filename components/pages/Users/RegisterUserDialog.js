@@ -6,7 +6,6 @@ import { InputTypes } from '../../../utils/models'
 
 const Users = ({ isOpen, close }) => (
   <Dialog
-    className=""
     icon="edit"
     onClose={() => close()}
     title="Register a User"

@@ -19,6 +19,9 @@ const User = new Schema({
   email: {
     type: String
   },
+  notifications: {
+    type: Array
+  },
   created_at: {
     type: Date,
     required: true

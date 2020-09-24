@@ -4,7 +4,7 @@ import { Elevation } from '@blueprintjs/core'
 import styled from 'styled-components'
 import moment from 'moment'
 import tw from 'twin.macro'
-import { Typography, Card } from '../../primitives'
+import { Typography, Card, Tag } from '../../primitives'
 
 const NoWrap = styled.div`
   width: min-content;
@@ -12,17 +12,36 @@ const NoWrap = styled.div`
   ${tw`flex flex-col`}
 `
 
-const Users = ({ logs }) => (
+const Log = ({
+  logs, loading, filter, setFilter, allTags
+}) => (
   <div className="flex flex-col">
     <Card
       header={
         <div className="flex w-full py-3">
           <div className="flex flex-grow ml-6">
             <Typography variant="h4" className="text-dark-gray">Log</Typography>
-          </div>``
+          </div>
+          <div className="mx-6 flex justify-end items-center flex-wrap">
+            <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
+            {
+              allTags && allTags.map((tag, i) => (
+                <Tag
+                  generateColor
+                  clickable
+                  className={`${filter && filter !== tag ? 'opacity-50' : 'opacity-100'} ml-2`}
+                  onClick={filter === tag ? undefined : () => setFilter(tag)}
+                  onRemove={filter === tag ? () => setFilter(undefined) : undefined}
+                  key={i}
+                >
+                  {tag}
+                </Tag>
+              ))
+            }
+          </div>
         </div>
       }
-      className="w-full"
+      className={`w-full ${loading && 'bp3-skeleton'}`}
       elevation={Elevation.TWO}
     >
       <div className="m-6">
@@ -32,6 +51,7 @@ const Users = ({ logs }) => (
               <th>Timestamp</th>
               <th>Username</th>
               <th>Message</th>
+              <th>Type</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +69,16 @@ const Users = ({ logs }) => (
                       {log.username}
                     </NoWrap>
                   </td>
-                  <td>{log.message}</td>
+                  <td className="break-normal">{log.message}</td>
+                  <td>
+                    <Tag
+                      generateColor
+                      clickable
+                      onClick={() => setFilter(log.tag)}
+                    >
+                      {log.tag}
+                    </Tag>
+                  </td>
                 </tr>
               ))
             }
@@ -59,12 +88,18 @@ const Users = ({ logs }) => (
     </Card>
   </div>
 )
-Users.propTypes = {
+Log.propTypes = {
   /** List of system logs */
-  logs: PropTypes.array
+  logs: PropTypes.array,
+  loading: PropTypes.bool,
+  /** Filter log results */
+  filter: PropTypes.string,
+  setFilter: PropTypes.func,
+  /** All tag filter options */
+  allTags: PropTypes.array
 }
-Users.defaultProps = {
+Log.defaultProps = {
   logs: []
 }
 
-export default Users
+export default Log

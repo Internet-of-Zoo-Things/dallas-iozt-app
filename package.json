@@ -51,6 +51,7 @@
     "react-avatar": "^3.9.7",
     "react-cookie": "^4.0.3",
     "react-dom": "16.13.1",
+    "react-google-charts": "^3.0.15",
     "require-directory": "^2.1.1",
     "styled-components": "^5.1.0",
     "tailwindcss": "^1.4.6",

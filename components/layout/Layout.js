@@ -32,8 +32,8 @@ const _ = ({
       </Head>
       <div className="flex flex-row w-screen h-screen">
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
-          <div className="h-full">
-            <Header user={user} currentPage={title} notifications={[{ message: 'This is a test notification!' }]} />
+          <div>
+            <Header user={user} currentPage={title} notifications={[{ message: 'This is an example of a really long notification that will wrap to a newline!' }]} />
             {
               loading
                 ? <Spinner className="flex items-center h-full justify-center m-auto">

@@ -46,6 +46,18 @@ import { InputTypes } from '../../utils/models'
             type: InputTypes.PASSWORD,
             placeholder: 'Type in that same password one more time...',
             validator: (val) => val && val.length !== 0
+          },
+          {
+            label: 'Role',
+            id: 'role',
+            required: true,
+            type: InputTypes.SELECT,
+            props: { filterable: false },
+            placeholder: 'Select a role',
+            items: [
+              { label: 'Read-only', id: 1 },
+              { label: 'Read-and-write', id: 2 }
+            ]
           }
         ]}
       />

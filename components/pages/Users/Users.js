@@ -6,7 +6,7 @@ import { UserRoles } from '../../../utils/models'
 import RegisterUserDialog from './RegisterUserDialog'
 import { compareUserRoles } from '../../../utils/functions/ui'
 
-const Users = ({ user, allUsers }) => {
+const Users = ({ user, allUsers, loading }) => {
   const [registerDialog, setRegisterDialog] = useState(false)
 
   return (
@@ -24,7 +24,7 @@ const Users = ({ user, allUsers }) => {
             </div>
           </div>
         }
-        className="w-full"
+        className={`w-full ${loading && 'bp3-skeleton'}`}
         elevation={Elevation.TWO}
       >
         <div className="m-6">
@@ -67,7 +67,8 @@ Users.propTypes = {
   /** Currently signed-in user */
   user: PropTypes.object,
   /** List of all users */
-  allUsers: PropTypes.array
+  allUsers: PropTypes.array,
+  loading: PropTypes.bool
 }
 Users.defaultProps = {
   allUsers: []

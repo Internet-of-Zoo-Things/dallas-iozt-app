@@ -2,9 +2,12 @@ const { ApolloError } = require('apollo-server-express')
 
 const User = {
   Query: {
-    async logs(parent, args, { models }) {
-      return models.Log.find()
+    async logs(parent, { tag }, { models }) {
+      return models.Log.find(tag ? { tag } : {}).sort({ timestamp: -1 })
         .catch((err) => { throw new ApolloError(err) })
+    },
+    async logTags(parent, args, { models }) {
+      return models.Log.distinct('tag')
     }
   }
 }

@@ -1,33 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Elevation } from '@blueprintjs/core'
 import {
   Typography, Button, Card, TextInput
 } from '../../primitives'
 import FeederCard from './FeederCard'
-import Schedule from './Schedule'
 import AnimalCard from './AnimalCard'
+import FeedTimeCard from './FeedTimeCard'
+import FeedTimeline from './FeedTimeline'
+import {
+  AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
+} from './Dialogs'
+import { GET_ANIMALS } from '../../../utils/graphql/queries'
 
 const Dashboard = ({
   user,
   schedule,
   feeders,
-  animals
+  feedersLoading,
+  animals,
+  animalSearch,
+  setAnimalSearch,
+  animalsLoading,
+  client
 }) => {
-  /* search strings */
-  const [animalSearch, setAnimalSearch] = useState('')
-  /* subset of lists with search applied */
-  const [animalsWithSearch, setAnimalsWithSearch] = useState(animals)
-
-  useEffect(() => {
-    const tmp = animals.filter(
-      (a) => animalSearch.toLowerCase().split(' ')
-        .every(
-          (segment) => a.name.toLowerCase().includes(segment) || a.type.toLowerCase().includes(segment)
-        )
-    )
-    setAnimalsWithSearch(tmp)
-  }, [animalSearch])
+  /* dialogs */
+  const [showAddFeederDialog, setShowAddFeederDialog] = useState(false)
+  const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
+  const [showAddFeedTimeDialog, setShowAddFeedTimeDialog] = useState(false)
+  const [showDeleteAllFeedTimesDialog, setShowDeleteAllFeedTimesDialog] = useState(false)
 
   return (
     <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
@@ -41,19 +42,32 @@ const Dashboard = ({
             <Button className="my-1" icon="add" fill>
               <Typography variant="body">Create Daily Schedule</Typography>
             </Button>
-            <Button className="my-1" icon="time" fill>
+            <Button className="my-1" icon="time" fill onClick={() => setShowAddFeedTimeDialog(true)}>
               <Typography variant="body">Schedule a Feed</Typography>
             </Button>
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
-            <Schedule schedule={schedule} user={user} />
+            <div className="flex flex-col w-full items-center">
+              {
+                schedule.length !== 0
+                  ? <>
+                    {
+                      schedule.map((s, i) => (
+                        <FeedTimeCard key={i} data={s} user={user} />
+                      ))
+                    }
+                    <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
+                      <Typography variant="subtitle">Clear All</Typography>
+                    </Button>
+                  </>
+                  : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
+              }
+            </div>
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-            <div className="mt-2 rounded-md border border-dashed border-border text-gray w-full flex justify-center items-center h-32">
-              Graphical timeline here
-            </div>
+            <FeedTimeline schedule={schedule} />
           </div>
         </Card>
       </div>
@@ -65,7 +79,7 @@ const Dashboard = ({
                 <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
               </div>
               <div className="flex justify-center items-center">
-                <Button className="mx-6" icon="add">
+                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)}>
                   <Typography variant="body">Add Feeder</Typography>
                 </Button>
               </div>
@@ -75,11 +89,11 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            feeders.length !== 0
-              ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-4 mx-4">
+            feeders.length !== 0 || feedersLoading
+              ? <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4 ${feedersLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   feeders.map((f, i) => (
-                    <FeederCard status={f.status} name={f.name} key={i} />
+                    <FeederCard {...f} key={i} client={client} />
                   ))
                 }
               </div>
@@ -101,7 +115,7 @@ const Dashboard = ({
                   clearButton={animalSearch !== ''}
                   leftElement={<Typography variant="icon" icon="search" />}
                 />
-                <Button className="mr-6" icon="add">
+                <Button className="mr-6" icon="add" onClick={() => setShowAddAnimalDialog(true)}>
                   <Typography variant="body">Add Animal</Typography>
                 </Button>
               </div>
@@ -111,11 +125,24 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            animalsWithSearch.length !== 0
-              ? <div className="flex flex-row flex-wrap mx-4">
+            animals.length !== 0 || animalsLoading
+              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
-                  animalsWithSearch.map((a, i) => (
-                    <AnimalCard key={i} {...a} user={user} />
+                  animals.map((a, i) => (
+                    <AnimalCard
+                      key={i}
+                      {...a}
+                      user={user}
+                      onDelete={() => {
+                        client.writeQuery({
+                          query: GET_ANIMALS,
+                          variables: { filter: animalSearch },
+                          data: {
+                            animals: animals.filter((t) => t._id !== a._id)
+                          }
+                        })
+                      }}
+                    />
                   ))
                 }
               </div>
@@ -123,6 +150,30 @@ const Dashboard = ({
           }
         </Card>
       </div>
+      {/* Dialogs */}
+      <AddFeederDialog isOpen={showAddFeederDialog} close={() => setShowAddFeederDialog(false)} />
+      <AddAnimalDialog
+        isOpen={showAddAnimalDialog}
+        close={() => setShowAddAnimalDialog(false)}
+        updateCache={(d) => {
+          client.writeQuery({
+            query: GET_ANIMALS,
+            variables: { filter: animalSearch },
+            data: {
+              animals: [
+                ...animals,
+                d.createAnimal
+              ]
+            }
+          })
+        }}
+      />
+      <AddFeedTimeDialog
+        isOpen={showAddFeedTimeDialog}
+        close={() => setShowAddFeedTimeDialog(false)}
+        feeders={feeders}
+      />
+      <DeleteAllFeedTimesDialog isOpen={showDeleteAllFeedTimesDialog} close={() => setShowDeleteAllFeedTimesDialog(false)} />
     </div>
   )
 }
@@ -130,7 +181,12 @@ Dashboard.propTypes = {
   user: PropTypes.object,
   schedule: PropTypes.array,
   feeders: PropTypes.array,
-  animals: PropTypes.array
+  feedersLoading: PropTypes.bool,
+  animals: PropTypes.array,
+  animalSearch: PropTypes.string,
+  setAnimalSearch: PropTypes.func,
+  animalsLoading: PropTypes.bool,
+  client: PropTypes.any
 }
 Dashboard.defaultProps = {
   schedule: [],

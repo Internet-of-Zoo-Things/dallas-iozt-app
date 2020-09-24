@@ -10,16 +10,18 @@ const Styled_ = styled(Card)`
   }
 `
 
-const _ = ({ children, header, ...props }) => (
+const _ = ({
+  children, header, disabled, ...props
+}) => (
   <Styled_ {...props}>
     {
       header
-        ? <div className="flex border-b border-background-darker">
+        ? <div className={`flex border-b border-background-darker ${disabled ? 'opacity-50' : ''}`}>
           {header}
         </div>
         : null
     }
-    <div className={header && (Array.isArray(children)) ? 'pb-4' : 'py-4'}>
+    <div className={`${header && (Array.isArray(children)) ? 'pb-4' : 'py-4'} ${disabled ? 'text-disabled' : ''}`}>
       {
         Array.isArray(children)
           ? children.map((c, i) => (
@@ -37,7 +39,8 @@ const _ = ({ children, header, ...props }) => (
 _.propTypes = {
   /** optional label at the top of the card */
   header: PropTypes.any,
-  children: PropTypes.any
+  children: PropTypes.any,
+  disabled: PropTypes.bool
 }
 
 export default _

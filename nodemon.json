@@ -1,5 +1,5 @@
 {
   "verbose": true,
-  "watch": ["server/**/*"],
+  "watch": ["server/**/*", "utils/functions/api/**/*"],
   "ext": "js"
 }

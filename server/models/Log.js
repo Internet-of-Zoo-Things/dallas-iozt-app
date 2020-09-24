@@ -14,6 +14,10 @@ const Log = new Schema({
   message: {
     type: String,
     required: true
+  },
+  tag: {
+    type: String,
+    required: true
   }
 })
 

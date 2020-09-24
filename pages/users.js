@@ -9,12 +9,17 @@ import { ALL_USERS } from '../utils/graphql/queries'
 
 const Users = ({ user }) => {
   const { data, error, loading } = useQuery(ALL_USERS, {
+    fetchPolicy: 'no-cache',
     onError: (e) => console.error(e)
   })
 
   return (
-    <Layout title="Users" user={user && user.activeUser} loading={loading} error={error}>
-      <UsersComponent user={user ? user.activeUser : null} allUsers={data ? data.users : undefined} />
+    <Layout title="Users" user={user && user.activeUser} error={error}>
+      <UsersComponent
+        user={user ? user.activeUser : null}
+        allUsers={data ? data.users : undefined}
+        loading={loading}
+      />
     </Layout>
   )
 }

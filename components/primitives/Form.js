@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, InputGroup } from '@blueprintjs/core'
+import { FormGroup, InputGroup, NumericInput } from '@blueprintjs/core'
+import { DatePicker } from '@blueprintjs/datetime'
 import { InputTypes } from '../../utils/models'
 import Tooltip from './Tooltip'
 import Button from './Button'
+import { Select, SelectItem } from './Select'
 
 const validateEmail = (val) => (
   // eslint-disable-next-line no-control-regex
@@ -13,17 +15,38 @@ const validateEmail = (val) => (
 const _ = ({
   className,
   fields,
-  onSubmit
+  onSubmit,
+  submitLoading
 }) => {
   const [data, setData] = useState({})
   const [showPassword, setShowPassword] = useState({})
+
+  useEffect(() => {
+    // Initialize fields
+    const tmp = {}
+    fields.forEach((f) => {
+      if (f.defaultValue) {
+        if (f.type === InputTypes.SELECT) {
+          const vals = f.items.filter((item) => item.label === f.defaultValue)
+          tmp[f.id] = vals.length === 1
+            ? vals[0]
+            : undefined && console.error(`Unknown value ${f.defaultValue} of options ${f.items.map((item) => item.label)}`)
+        } else {
+          tmp[f.id] = f.defaultValue
+        }
+      } else if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
+        tmp[f.id] = ''
+      }
+    })
+    setData(tmp)
+  }, [fields])
 
   const validate = () => {
     for (let i = 0; i < fields.length; i += 1) {
       const f = fields[i]
       if (f.required && !data[f.id]) return false
       if (f.required && !f.validator) {
-        if (f.type === InputTypes.EMAIL) return validateEmail(data[f.id])
+        if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
       if (f.validator) {
         if (!f.validator(data[f.id])) return false
@@ -40,7 +63,13 @@ const _ = ({
         id={field.id}
         placeholder={field.placeholder || 'Enter some text...'}
         type="text"
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        autoComplete="off"
+        fill
       />
     )
     case InputTypes.PASSWORD: return (
@@ -56,7 +85,13 @@ const _ = ({
           </Tooltip>
         }
         type={showPassword[field.id] ? 'text' : 'password'}
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        autoComplete="off"
+        fill
       />
     )
     case InputTypes.EMAIL: return (
@@ -64,7 +99,68 @@ const _ = ({
         id={field.id}
         placeholder={field.placeholder || 'Enter your email address...'}
         type="text"
-        onChange={(e) => setData((prev) => ({ ...prev, [field.id]: e.target.value }))}
+        value={data[field.id]}
+        onChange={(e) => {
+          const tmp = e.target.value
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        fill
+      />
+    )
+    case InputTypes.SELECT: return (
+      <Select
+        id={field.id}
+        filterable={false}
+        { ...field.props }
+        items={field.items}
+        noResults={<SelectItem disabled={true} text="No results." />}
+        popoverProps={{ minimal: true }}
+        itemRenderer={Select.ItemRenderer}
+        itemPredicate={Select.ItemPredicate}
+        onItemSelect={(item) => { setData((prev) => ({ ...prev, [field.id]: item })) }}
+      >
+        <Button
+          outline
+          rightIcon="caret-down"
+          text={(data[field.id] && data[field.id].label) || field.placeholder || 'Select an option'}
+        />
+      </Select>
+    )
+    case InputTypes.NUMERIC: return (
+      <NumericInput
+        id={field.id}
+        placeholder={field.placeholder || 'Enter a numeric value...'}
+        defaultValue={field.defaultValue}
+        onValueChange={(e) => {
+          const tmp = e
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
+        buttonPosition="none"
+        fill
+        {...field.props}
+      />
+    )
+    case InputTypes.DATETIME: return (
+      <DatePicker
+        id={field.id}
+        className='justify-center'
+        defaultValue={new Date()} // Today is selected by default
+        minDate={new Date()} // disable dates prior to Today
+        maxDate={new Date(((new Date()).getFullYear() + 1), 11, 31, 23, 59, 59, 999)} // enable dates thru Dec 31, 1 year in the future
+        highlightCurrentDay={true}
+        showActionsBar={true}
+        todayButtonText='Today'
+        canClearSelection={true}
+        clearButtonText='Clear'
+        timePrecision='minute'
+        timePickerProps={{
+          showArrowButtons: 'showTimeArrowButtons',
+          useAmPm: true
+        }}
+        onChange={(e) => {
+          const tmp = e
+          setData((prev) => ({ ...prev, [field.id]: tmp }))
+        }}
       />
     )
     default: console.error(`Unknown input type "${field.type}"`)
@@ -93,6 +189,7 @@ const _ = ({
           onClick={() => onSubmit(data)}
           text="Submit"
           disabled={!validate()}
+          loading={submitLoading}
         />
       </div>
     </form>
@@ -103,7 +200,9 @@ _.propTypes = {
   /** list of field metadata */
   fields: PropTypes.array.isRequired,
   /** function to run when form is submitted */
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  /** set loading state for the submit button */
+  submitLoading: PropTypes.bool
 }
 
 export default _

@@ -28,3 +28,7 @@ export function compareUserRoles(role1, role2) {
     throw Error(err)
   }
 }
+
+export function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}

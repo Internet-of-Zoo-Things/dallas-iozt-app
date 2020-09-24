@@ -8,6 +8,16 @@ const User = {
     },
     async users(parent, { filter }, { models }) {
       return models.User.find(filter)
+        .then((users) => users.map((u) => ({ ...u._doc, notifications: u.notifications || [] })))
+        .catch((err) => { throw new ApolloError(err) })
+    },
+    async notifications(parent, { viewed }, { models, user }) {
+      return models.User.findOne({ username: user.username })
+        .then((data) => {
+          // ideally this would be accomplished with a mongo projection rather than filtering the result here
+          if (viewed === undefined) return data.notifications || []
+          return data.notifications.filter((n) => n.viewed === viewed)
+        })
         .catch((err) => { throw new ApolloError(err) })
     }
   },
@@ -25,7 +35,6 @@ const User = {
       if (userInput.email && !isEmail(userInput.email)) throw new ApolloError(`${userInput.email} is not a valid email`)
       return models.User.findByIdAndUpdate(_id, {
         ...userInput,
-        created_at: new Date(),
         updated_at: new Date()
       }, { new: true })
         .catch((err) => { throw new ApolloError(err) })
@@ -33,6 +42,26 @@ const User = {
     async deleteUser(parent, { _id }, { models }) {
       return models.User.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
+    },
+    async updateNotifications(parent, { _ids, viewed }, { models, user }) {
+      const u = await models.User.findOne({ username: user.username })
+      if (!u) throw new ApolloError(`User ${user.username} doesn't exist!`)
+      u.notifications.forEach((n) => {
+        if (_ids.includes(`${n._id}`)) n.viewed = viewed
+      })
+      u.updated_at = new Date()
+      u.markModified('notifications')
+      await u.save().catch((err) => { throw new ApolloError(err) })
+      return u.notifications
+    },
+    async deleteNotifications(parent, { _ids }, { models, user }) {
+      const u = await models.User.findOne({ username: user.username })
+      if (!u) throw new ApolloError(`User ${user.username} doesn't exist!`)
+      u.notifications = u.notifications.filter((n) => !_ids.includes(`${n._id}`))
+      u.updated_at = new Date()
+      u.markModified('notifications')
+      await u.save().catch((err) => { throw new ApolloError(err) })
+      return u.notifications
     }
   }
 }

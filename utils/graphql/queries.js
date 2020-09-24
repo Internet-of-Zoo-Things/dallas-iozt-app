@@ -24,11 +24,40 @@ export const ALL_USERS = gql`
 `
 
 export const GET_LOGS = gql`
-  query logs {
-    logs {
+  query logs($tag: String) {
+    logs(tag: $tag) {
       username
       timestamp
       message
+      tag
+    }
+  }
+`
+
+export const GET_LOG_TAGS = gql`
+  query logTags {
+    logTags
+  }
+`
+
+export const GET_ANIMALS = gql`
+  query animals($filter: String) {
+    animals(filter: $filter) {
+      _id
+      name
+      type
+      intake
+    }
+  }
+`
+
+export const GET_FEEDERS = gql`
+  query feeders {
+    feeders {
+      _id
+      name
+      description
+      status
     }
   }
 `
