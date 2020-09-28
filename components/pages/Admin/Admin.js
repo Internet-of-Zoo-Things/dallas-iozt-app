@@ -12,11 +12,11 @@ const Admin = () => {
       <div className="flex mb-2">
         <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
         <Typography variant="body" className="mr-2">{(moment().diff(pi_start, 'days'))} days</Typography>
-        <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, HH:MM:SS')})</Typography>
+        <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, hh:mm:ss a')})</Typography>
       </div>
       <div className="flex">
         <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
-        <Typography variant="body" className="mr-2">{update.format('MMM Do, HH:MM:SS')}</Typography>
+        <Typography variant="body" className="mr-2">{update.format('MMM Do, hh:mm:ss a')}</Typography>
         <Typography variant="body" className="text-gray mr-2">({update.fromNow()})</Typography>
       </div>
       <Typography variant="h4" className="text-dark-gray my-4">Actions</Typography>

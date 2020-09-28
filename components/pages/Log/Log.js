@@ -60,7 +60,7 @@ const Log = ({
                 <tr key={i}>
                   <td>
                     <NoWrap>
-                      <Typography variant="subtitle">{moment(log.timestamp).format()}</Typography>
+                      <Typography variant="subtitle">{moment(log.timestamp).format('MMM Do, hh:mm:ss a')}</Typography>
                       <Typography variant="subtitle" className="text-gray">{moment(log.timestamp).fromNow()}</Typography>
                     </NoWrap>
                   </td>
