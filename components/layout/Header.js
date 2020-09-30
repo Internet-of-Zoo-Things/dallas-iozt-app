@@ -11,6 +11,8 @@ import {
   StyledLink,
   Tag
 } from '../primitives'
+import { UserRoles } from '../../utils/models'
+import { compareUserRoles } from '../../utils/functions/ui'
 
 const Popover = styled(_Popover)`
   &&& {
@@ -39,6 +41,12 @@ const routes = [
     href: '/log',
     currentPage: 'Log',
     icon: 'document'
+  },
+  {
+    href: '/admin',
+    currentPage: 'Admin',
+    icon: 'cog',
+    role: UserRoles.DEVELOPER
   }
 ]
 
@@ -58,21 +66,27 @@ const _ = ({
       <Divider />
       <div className="ml-1 flex">
         {
-          routes.map((r, i) => (
-            <div className="mx-1" key={i}>
-              <StyledLink href={r.href}>
-                <Button icon={r.icon} active={currentPage === r.currentPage}>
-                  <Typography
-                    variant="subcurrentPage"
-                    weight={currentPage === r.currentPage ? 'bold' : undefined}
-                    className="hidden sm:block md:block lg:block xl:block"
-                  >
-                    {r.currentPage}
-                  </Typography>
-                </Button>
-              </StyledLink>
-            </div>
-          ))
+          routes.map((r, i) => {
+            if (r.role) {
+              if (!user) return null
+              if (compareUserRoles(user.role, r.role) < 0) return null
+            }
+            return (
+              <div className="mx-1" key={i}>
+                <StyledLink href={r.href}>
+                  <Button icon={r.icon} active={currentPage === r.currentPage}>
+                    <Typography
+                      variant="subcurrentPage"
+                      weight={currentPage === r.currentPage ? 'bold' : undefined}
+                      className="hidden sm:block md:block lg:block xl:block"
+                    >
+                      {r.currentPage}
+                    </Typography>
+                  </Button>
+                </StyledLink>
+              </div>
+            )
+          })
         }
       </div>
     </Navbar.Group>
