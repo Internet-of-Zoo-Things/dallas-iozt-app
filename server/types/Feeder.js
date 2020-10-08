@@ -13,7 +13,7 @@ const Feeder = gql`
     feeders: [Feeder]
   }
   extend type Mutation {
-    createFeeder(name: String!, description: String): Feeder!
+    createFeeder(name: String!, description: String): Feeder
     updateFeeder(_id: String!, name: String, description: String, status: String): Feeder
     deleteFeeder(_id: String!): Feeder
   }

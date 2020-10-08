@@ -13,9 +13,7 @@ const Feeder = {
       return models.Feeder.create({
         name: ensureCapitalized(name),
         description: ensureCapitalized(description),
-        status: 'online',
-        created_at: new Date(),
-        updated_at: new Date()
+        status: 'online'
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
@@ -25,10 +23,7 @@ const Feeder = {
     },
     async updateFeeder(parent, { _id, ...args }, { models, user }) {
       if (args.name) args.name = ensureCapitalized(args.name)
-      return models.Feeder.findByIdAndUpdate(_id, {
-        ...args,
-        updated_at: new Date()
-      }, { new: true })
+      return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(user.username, `Updated feeder "${args.name}"`, 'feeder')

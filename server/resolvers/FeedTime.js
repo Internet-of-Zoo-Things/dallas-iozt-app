@@ -5,6 +5,7 @@ const Feeder = {
   Query: {
     async feedTimes(parent, args, { models }) {
       return models.FeedTimes.find()
+        .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
