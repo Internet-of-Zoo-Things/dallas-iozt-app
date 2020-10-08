@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
+const Feeder = require('./Feeder')
 
 const { Schema } = mongoose
 
 const FeedTime = new Schema({
   feeder: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: Feeder,
     required: true
   },
   timestamp: {
