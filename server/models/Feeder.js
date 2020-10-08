@@ -14,15 +14,9 @@ const Feeder = new Schema({
   status: {
     type: String,
     required: true
-  },
-  created_at: {
-    type: Date,
-    required: true
-  },
-  updated_at: {
-    type: Date,
-    required: true
   }
+}, {
+  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
 
 module.exports = mongoose.model('feeder', Feeder)

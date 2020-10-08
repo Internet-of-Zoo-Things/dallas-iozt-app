@@ -24,19 +24,12 @@ const User = {
   Mutation: {
     async createUser(parent, { userInput }, { models }) {
       if (userInput.email && !isEmail(userInput.email)) throw new ApolloError(`${userInput.email} is not a valid email`)
-      return models.User.create({
-        ...userInput,
-        created_at: new Date(),
-        updated_at: new Date()
-      })
+      return models.User.create(userInput)
         .catch((err) => { throw new ApolloError(err) })
     },
     async updateUser(parent, { _id, userInput }, { models }) {
       if (userInput.email && !isEmail(userInput.email)) throw new ApolloError(`${userInput.email} is not a valid email`)
-      return models.User.findByIdAndUpdate(_id, {
-        ...userInput,
-        updated_at: new Date()
-      }, { new: true })
+      return models.User.findByIdAndUpdate(_id, userInput, { new: true })
         .catch((err) => { throw new ApolloError(err) })
     },
     async deleteUser(parent, { _id }, { models }) {
@@ -49,7 +42,6 @@ const User = {
       u.notifications.forEach((n) => {
         if (_ids.includes(`${n._id}`)) n.viewed = viewed
       })
-      u.updated_at = new Date()
       u.markModified('notifications')
       await u.save().catch((err) => { throw new ApolloError(err) })
       return u.notifications
@@ -58,7 +50,6 @@ const User = {
       const u = await models.User.findOne({ username: user.username })
       if (!u) throw new ApolloError(`User ${user.username} doesn't exist!`)
       u.notifications = u.notifications.filter((n) => !_ids.includes(`${n._id}`))
-      u.updated_at = new Date()
       u.markModified('notifications')
       await u.save().catch((err) => { throw new ApolloError(err) })
       return u.notifications

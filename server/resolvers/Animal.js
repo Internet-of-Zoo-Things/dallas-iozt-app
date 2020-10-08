@@ -23,9 +23,7 @@ const Animal = {
       return models.Animal.create({
         name: ensureCapitalized(name),
         type: ensureCapitalized(type),
-        intake,
-        created_at: new Date(),
-        updated_at: new Date()
+        intake
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
@@ -36,10 +34,7 @@ const Animal = {
     async updateAnimal(parent, { _id, ...args }, { models, user }) {
       if (args.name) args.name = ensureCapitalized(args.name)
       if (args.type) args.type = ensureCapitalized(args.type)
-      return models.Animal.findByIdAndUpdate(_id, {
-        ...args,
-        updated_at: new Date()
-      }, { new: true })
+      return models.Animal.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(user.username, `Updated animal "${args.name}"`, 'animal')
