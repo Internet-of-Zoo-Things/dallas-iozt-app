@@ -149,7 +149,7 @@ const Dashboard = ({
               </div>
               : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
           } */}
-          <AnimalsBoard />
+          <AnimalsBoard animals={animals} />
         </Card>
       </div>
       {/* Dialogs */}
