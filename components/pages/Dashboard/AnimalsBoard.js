@@ -6,26 +6,6 @@ import PropTypes from 'prop-types'
 import { Typography } from '../../primitives'
 import AnimalCard from './AnimalCard'
 
-// const reorder = (list, startIndex, endIndex) => {
-//   const result = Array.from(list)
-//   const [removed] = result.splice(startIndex, 1)
-//   result.splice(endIndex, 0, removed)
-//   return result
-// }
-
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source)
-  const destClone = Array.from(destination)
-  const [removed] = sourceClone.splice(droppableSource.index, 1)
-
-  destClone.splice(droppableDestination.index, 0, removed)
-
-  return {
-    [droppableSource.droppableId]: sourceClone,
-    [droppableDestination.droppableId]: destClone
-  }
-}
-
 const AnimalsBoard = ({ animals }) => {
   const [animalsState, setAnimals] = useState({
     inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
@@ -35,6 +15,19 @@ const AnimalsBoard = ({ animals }) => {
   useEffect(() => {
     resetServerContext()
   }, [])
+
+  const move = (source, destination, droppableSource, droppableDestination) => {
+    const sourceClone = Array.from(source)
+    const destClone = Array.from(destination)
+    const [removed] = sourceClone.splice(droppableSource.index, 1)
+
+    destClone.splice(droppableDestination.index, 0, removed)
+
+    return {
+      [droppableSource.droppableId]: sourceClone,
+      [droppableDestination.droppableId]: destClone
+    }
+  }
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return // dropped outside the list
@@ -47,15 +40,6 @@ const AnimalsBoard = ({ animals }) => {
         destination
       )
       setAnimals(res)
-    } else {
-      // reorder within list (turned off for now)
-
-      // const items = reorder(
-      //   animalsState[source.droppableId],
-      //   source.index,
-      //   destination.index
-      // )
-      // setAnimals((prev) => ({ ...prev, [source.droppableId]: items }))
     }
   }
 
