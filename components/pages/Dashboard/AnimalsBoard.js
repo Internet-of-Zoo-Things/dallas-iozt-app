@@ -67,7 +67,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     <div
       {...provided.droppableProps}
       ref={provided.innerRef}
-      className={`flex flex-col w-full h-full p-2 ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
+      className={`flex flex-col w-full h-full p-2 rounded ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
       {list.map((item, index) => (
         <Draggable
