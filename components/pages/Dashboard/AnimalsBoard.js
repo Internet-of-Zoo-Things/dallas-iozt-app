@@ -3,13 +3,19 @@ import {
   DragDropContext, Droppable, Draggable, resetServerContext
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
+import { useMutation } from 'react-apollo'
 import { Typography } from '../../primitives'
 import AnimalCard from './AnimalCard'
+import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
 const AnimalsBoard = ({ animals }) => {
   const [animalsState, setAnimals] = useState({
     inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
     outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
+  })
+
+  const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
+    onError: (e) => console.error(JSON.stringify(e))
   })
 
   useEffect(() => {
@@ -22,6 +28,13 @@ const AnimalsBoard = ({ animals }) => {
     const [removed] = sourceClone.splice(droppableSource.index, 1)
 
     destClone.splice(droppableDestination.index, 0, removed)
+
+    updateAnimal({
+      variables: {
+        _id: removed.id,
+        inExhibit: droppableDestination.droppableId === 'inside'
+      }
+    })
 
     return {
       [droppableSource.droppableId]: sourceClone,

@@ -7,17 +7,19 @@ export const CREATE_ANIMAL = gql`
       name
       type
       intake
+      inExhibit
     }
   }
 `
 
 export const UPDATE_ANIMAL = gql`
-  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float) {
-    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake) {
+  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float, $inExhibit: Boolean) {
+    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, inExhibit: $inExhibit) {
       _id
       name
       type
       intake
+      inExhibit
     }
   }
 `
