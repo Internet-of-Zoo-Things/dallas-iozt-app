@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import {
-  DragDropContext, Droppable, Draggable, resetServerContext
+  DragDropContext, Droppable, Draggable
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
@@ -28,10 +28,6 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   useEffect(() => {
     setAnimals(constructState(animals))
   }, [animals])
-
-  useEffect(() => {
-    resetServerContext()
-  }, [])
 
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source)
@@ -69,6 +65,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
 
   const renderList = (provided, snapshot, list) => (
     <div
+      {...provided.droppableProps}
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
@@ -76,14 +73,15 @@ const AnimalsBoard = ({ animals, onDelete }) => {
         <Draggable
           key={item.id}
           draggableId={item.id}
-          index={index}>
-          {(provided1, snapshot1) => (
+          index={index}
+        >
+          {(draggableProvided, draggableSnapshot) => (
             <div
-              ref={provided1.innerRef}
-              {...provided1.draggableProps}
-              {...provided1.dragHandleProps}
-              style={{ ...provided1.draggableProps.style }}
-              className={`mb-2 rounded-lg bg-white ${snapshot1.isDragging ? 'border-2 border-primary' : 'border border-gray '}`}
+              ref={draggableProvided.innerRef}
+              {...draggableProvided.dragHandleProps}
+              {...draggableProvided.draggableProps}
+              style={{ ...draggableProvided.draggableProps.style }}
+              className={`mb-2 rounded-lg bg-white outline-none ${draggableSnapshot.isDragging ? 'border-2 border-primary' : 'border border-gray '}`}
             >
               <AnimalCard {...item.content} onDelete={() => onDelete(item.id)} />
             </div>
