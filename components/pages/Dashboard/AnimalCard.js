@@ -3,8 +3,6 @@ import PropTypes from 'prop-types'
 import {
   Typography, Button, Tag
 } from '../../primitives'
-import { compareUserRoles } from '../../../utils/functions/ui'
-import { UserRoles } from '../../../utils/models'
 import { UpdateAnimalDialog, DeleteAnimalDialog } from './Dialogs'
 
 const AnimalCard = ({

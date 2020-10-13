@@ -8,11 +8,13 @@ import { Typography, toast } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
+const constructState = (animals) => ({
+  inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
+  outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
+})
+
 const AnimalsBoard = ({ animals, onDelete }) => {
-  const [animalsState, setAnimals] = useState({
-    inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
-    outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
-  })
+  const [animalsState, setAnimals] = useState(constructState(animals))
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
@@ -22,6 +24,10 @@ const AnimalsBoard = ({ animals, onDelete }) => {
       console.error(JSON.stringify(err))
     }
   })
+
+  useEffect(() => {
+    setAnimals(constructState(animals))
+  }, [animals])
 
   useEffect(() => {
     resetServerContext()
