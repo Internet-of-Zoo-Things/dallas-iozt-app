@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 import { Typography } from '../../primitives'
+import AnimalCard from './AnimalCard'
 
 // fake data generator
 const getItems = (count, offset = 0) => Array.from({ length: count }, (v, k) => k).map((k) => ({
@@ -50,16 +51,10 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle
 })
 
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250
-})
-
 const AnimalsBoard = ({ animals }) => {
   const [animalsState, setAnimals] = useState({
-    inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a.name })),
-    outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a.name }))
+    inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
+    outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
   })
 
   const onDragEnd = ({ source, destination }) => {
@@ -88,8 +83,7 @@ const AnimalsBoard = ({ animals }) => {
   const renderList = (provided, snapshot, list) => (
     <div
       ref={provided.innerRef}
-      style={getListStyle(snapshot.isDraggingOver)}
-      className="flex flex-col w-full h-full"
+      className={`flex flex-col w-full h-full p-2 ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
       {list.map((item, index) => (
         <Draggable
@@ -101,11 +95,10 @@ const AnimalsBoard = ({ animals }) => {
               ref={provided1.innerRef}
               {...provided1.draggableProps}
               {...provided1.dragHandleProps}
-              style={getItemStyle(
-                snapshot1.isDragging,
-                provided1.draggableProps.style
-              )}>
-              {item.content}
+              style={{ ...provided1.draggableProps.style }}
+              className={`mb-2 rounded-lg bg-white ${snapshot1.isDragging ? 'border-2 border-primary' : 'border border-gray '}`}
+            >
+              <AnimalCard {...item.content} />
             </div>
           )}
         </Draggable>

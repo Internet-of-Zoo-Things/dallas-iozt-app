@@ -20,8 +20,8 @@ const AnimalCard = ({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   return (
-    <div className="flex px-2 w-full lg:w-1/2 xl:w-1/2 md:w-full sm:w-full">
-      <div className="flex flex-row items-center mt-2 border border-border rounded-lg hover:bg-background w-full overflow-hidden" {...props}>
+    <div className="flex w-full">
+      <div className="flex flex-row items-center w-full overflow-hidden" {...props}>
         <Tag large generateColor>{type}</Tag>
         <div className="flex flex-grow justify-center">
           <Typography variant="subtitle" className="px-2">
@@ -31,14 +31,10 @@ const AnimalCard = ({
             ({intake} lbs/day)
           </Typography>
         </div>
-        {
-          user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-            ? <div className="flex flex-no-wrap">
-              <Button minimal intent="primary" icon="edit" onClick={() => setShowUpdateDialog(true)} />
-              <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
-            </div>
-            : null
-        }
+        <div className="flex flex-no-wrap">
+          <Button minimal intent="primary" icon="edit" onClick={() => setShowUpdateDialog(true)} />
+          <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
+        </div>
       </div>
       {/* Dialogs */}
       <UpdateAnimalDialog
