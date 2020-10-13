@@ -114,62 +114,68 @@ export default class AnimalsBoard extends Component {
     render() {
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}>
-                {this.state.items.map((item, index) => (
-                  <Draggable
-                    key={item.id}
-                    draggableId={item.id}
-                    index={index}>
-                    {(provided1, snapshot1) => (
-                      <div
-                        ref={provided1.innerRef}
-                        {...provided1.draggableProps}
-                        {...provided1.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot1.isDragging,
-                          provided1.draggableProps.style
-                        )}>
-                        {item.content}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-          <Droppable droppableId="droppable2">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}>
-                {this.state.selected.map((item, index) => (
-                  <Draggable
-                    key={item.id}
-                    draggableId={item.id}
-                    index={index}>
-                    {(provided2, snapshot2) => (
-                      <div
-                        ref={provided2.innerRef}
-                        {...provided2.draggableProps}
-                        {...provided2.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot2.isDragging,
-                          provided2.draggableProps.style
-                        )}>
-                        {item.content}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          <div className="flex flex-row mx-4">
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  className="flex flex-col flex-grow"
+                >
+                  {this.state.items.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                      {(provided1, snapshot1) => (
+                        <div
+                          ref={provided1.innerRef}
+                          {...provided1.draggableProps}
+                          {...provided1.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot1.isDragging,
+                            provided1.draggableProps.style
+                          )}>
+                          {item.content}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+            <Droppable droppableId="droppable2">
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  className="flex flex-col flex-grow"
+                >
+                  {this.state.selected.map((item, index) => (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}>
+                      {(provided2, snapshot2) => (
+                        <div
+                          ref={provided2.innerRef}
+                          {...provided2.draggableProps}
+                          {...provided2.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot2.isDragging,
+                            provided2.draggableProps.style
+                          )}>
+                          {item.content}
+                        </div>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </div>
         </DragDropContext>
       )
     }
