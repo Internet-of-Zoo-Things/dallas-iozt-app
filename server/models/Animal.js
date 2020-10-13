@@ -13,6 +13,11 @@ const Animal = new Schema({
   intake: {
     type: Number,
     required: true
+  },
+  inExhibit: {
+    type: Boolean,
+    required: true,
+    default: false
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
