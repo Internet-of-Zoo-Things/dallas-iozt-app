@@ -4,7 +4,7 @@ import {
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
-import { Typography } from '../../primitives'
+import { Typography, toast } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
@@ -15,7 +15,12 @@ const AnimalsBoard = ({ animals }) => {
   })
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
-    onError: (e) => console.error(JSON.stringify(e))
+    onError: (err) => {
+      toast.error({
+        message: 'There was an error trying to move this animal!'
+      })
+      console.error(JSON.stringify(err))
+    }
   })
 
   useEffect(() => {
