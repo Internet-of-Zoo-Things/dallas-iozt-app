@@ -21,7 +21,7 @@ const AnimalCard = ({
 
   return (
     <div className="flex w-full">
-      <div className="flex flex-row items-center w-full overflow-hidden" {...props}>
+      <div className="flex flex-row items-center w-full overflow-hidden outline-none" {...props}>
         <Tag large generateColor>{type}</Tag>
         <div className="flex flex-grow justify-center">
           <Typography variant="subtitle" className="px-2">
