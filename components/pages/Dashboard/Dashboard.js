@@ -149,7 +149,18 @@ const Dashboard = ({
               </div>
               : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
           } */}
-          <AnimalsBoard animals={animals} />
+          <AnimalsBoard
+            animals={animals}
+            onDelete={(id) => {
+              client.writeQuery({
+                query: GET_ANIMALS,
+                variables: { filter: animalSearch },
+                data: {
+                  animals: animals.filter((t) => t._id !== id)
+                }
+              })
+            }}
+          />
         </Card>
       </div>
       {/* Dialogs */}

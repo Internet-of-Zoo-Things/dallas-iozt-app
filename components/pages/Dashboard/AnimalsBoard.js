@@ -8,7 +8,7 @@ import { Typography, toast } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
-const AnimalsBoard = ({ animals }) => {
+const AnimalsBoard = ({ animals, onDelete }) => {
   const [animalsState, setAnimals] = useState({
     inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
     outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
@@ -79,7 +79,7 @@ const AnimalsBoard = ({ animals }) => {
               style={{ ...provided1.draggableProps.style }}
               className={`mb-2 rounded-lg bg-white ${snapshot1.isDragging ? 'border-2 border-primary' : 'border border-gray '}`}
             >
-              <AnimalCard {...item.content} />
+              <AnimalCard {...item.content} onDelete={() => onDelete(item.id)} />
             </div>
           )}
         </Draggable>
@@ -108,7 +108,8 @@ const AnimalsBoard = ({ animals }) => {
   )
 }
 AnimalsBoard.propTypes = {
-  animals: PropTypes.array.isRequired
+  animals: PropTypes.array.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default AnimalsBoard

@@ -14,13 +14,14 @@ const AnimalCard = ({
   type,
   intake,
   onDelete,
+  inExhibit,
   ...props
 }) => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   return (
-    <div className="flex w-full">
+    <div className="flex w-full outline-none">
       <div className="flex flex-row items-center w-full overflow-hidden outline-none" {...props}>
         <Tag large generateColor>{type}</Tag>
         <div className="flex flex-grow justify-center">
@@ -65,7 +66,8 @@ AnimalCard.propTypes = {
   intake: PropTypes.number.isRequired,
   /** id of animal in database */
   _id: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onDelete: PropTypes.func.isRequired,
+  inExhibit: PropTypes.bool
 }
 
 export default AnimalCard
