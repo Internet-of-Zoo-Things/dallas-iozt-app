@@ -12,6 +12,7 @@ import {
   AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
 } from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
   user,
@@ -124,7 +125,7 @@ const Dashboard = ({
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          {
+          {/* {
             animals.length !== 0 || animalsLoading
               ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
@@ -147,7 +148,8 @@ const Dashboard = ({
                 }
               </div>
               : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
-          }
+          } */}
+          <AnimalsBoard />
         </Card>
       </div>
       {/* Dialogs */}
