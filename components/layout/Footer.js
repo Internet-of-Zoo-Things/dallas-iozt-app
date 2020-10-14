@@ -1,7 +1,7 @@
 import React from 'react'
+import { Popover } from '@blueprintjs/core'
 import {
   Typography,
-  Tooltip,
   Button,
   StyledLink
 } from '../primitives'
@@ -19,19 +19,25 @@ const _ = () => (
         </>
         : null
     }
-    <Tooltip content={
+    <Popover content={
       <div className="p-3 w-48 break-normal text-center">
-        <Typography variant="body">
-          Please create a new issue at this link and label it as a <strong>Bug</strong>!
+        <Typography variant="body" className="mb-2">
+          Please create a new issue at
+          <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app/issues" external className="mx-1 text-primary-darker">
+            this link
+          </StyledLink>
+          and label it as a <strong>Bug</strong>!
+        </Typography>
+        <Typography variant="subtitle" className="opacity-75">
+          <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app/issues" external className="mx-1 text-primary-darker">
+            Click here
+          </StyledLink>
+          for help creating an issue ticket.
         </Typography>
       </div>
     }>
-      <div className="">
-        <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app/issues" external>
-          <Button minimal className="h-full" icon="warning-sign">Report a bug</Button>
-        </StyledLink>
-      </div>
-    </Tooltip>
+      <Button minimal className="h-full" icon="warning-sign">Report a bug</Button>
+    </Popover>
   </div>
 )
 
