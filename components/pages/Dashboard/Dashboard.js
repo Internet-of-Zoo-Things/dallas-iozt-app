@@ -5,13 +5,13 @@ import {
   Typography, Button, Card, TextInput
 } from '../../primitives'
 import FeederCard from './FeederCard'
-import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
 import {
   AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
 } from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
   user,
@@ -126,25 +126,19 @@ const Dashboard = ({
         >
           {
             animals.length !== 0 || animalsLoading
-              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
-                {
-                  animals.map((a, i) => (
-                    <AnimalCard
-                      key={i}
-                      {...a}
-                      user={user}
-                      onDelete={() => {
-                        client.writeQuery({
-                          query: GET_ANIMALS,
-                          variables: { filter: animalSearch },
-                          data: {
-                            animals: animals.filter((t) => t._id !== a._id)
-                          }
-                        })
-                      }}
-                    />
-                  ))
-                }
+              ? <div className={animalsLoading ? 'bp3-skeleton h-32' : ''}>
+                <AnimalsBoard
+                  animals={animals}
+                  onDelete={(id) => {
+                    client.writeQuery({
+                      query: GET_ANIMALS,
+                      variables: { filter: animalSearch },
+                      data: {
+                        animals: animals.filter((t) => t._id !== id)
+                      }
+                    })
+                  }}
+                />
               </div>
               : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
           }

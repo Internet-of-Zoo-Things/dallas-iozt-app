@@ -13,6 +13,7 @@ module.exports = {
     colors: {
       primary: '#3498db',
       'primary-darker': '#217dbb',
+      'primary-transparent': '#3498db80',
       background: '#eee',
       'background-darker': '#ddd',
       success: '#1bb460',

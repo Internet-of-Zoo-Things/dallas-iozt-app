@@ -52,6 +52,7 @@
     "react": "16.13.1",
     "react-apollo": "^3.1.5",
     "react-avatar": "^3.9.7",
+    "react-beautiful-dnd": "^13.0.0",
     "react-cookie": "^4.0.3",
     "react-dom": "16.13.1",
     "react-google-charts": "^3.0.15",
