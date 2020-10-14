@@ -29,7 +29,7 @@ const _ = () => (
           and label it as a <strong>Bug</strong>!
         </Typography>
         <Typography variant="subtitle" className="opacity-75">
-          <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app/issues" external className="mx-1 text-primary-darker">
+          <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app/blob/develop/Report-a-Bug.md" external className="mx-1 text-primary-darker">
             Click here
           </StyledLink>
           for help creating an issue ticket.
