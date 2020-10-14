@@ -14,7 +14,7 @@ const Animal = new Schema({
     type: Number,
     required: true
   },
-  inExhibit: {
+  onExhibit: {
     type: Boolean,
     required: true,
     default: false

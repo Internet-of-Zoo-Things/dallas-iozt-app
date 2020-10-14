@@ -47,7 +47,7 @@ export const GET_ANIMALS = gql`
       name
       type
       intake
-      inExhibit
+      onExhibit
     }
   }
 `

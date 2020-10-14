@@ -12,7 +12,7 @@ const AnimalCard = ({
   type,
   intake,
   onDelete,
-  inExhibit,
+  onExhibit,
   ...props
 }) => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false)
@@ -65,7 +65,7 @@ AnimalCard.propTypes = {
   /** id of animal in database */
   _id: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
-  inExhibit: PropTypes.bool
+  onExhibit: PropTypes.bool
 }
 
 export default AnimalCard

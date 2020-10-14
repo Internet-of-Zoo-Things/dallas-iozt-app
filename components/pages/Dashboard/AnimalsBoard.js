@@ -9,8 +9,8 @@ import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
 const constructState = (animals) => ({
-  inside: animals.filter((a) => a.inExhibit).map((a) => ({ id: a._id, content: a })),
-  outside: animals.filter((a) => !a.inExhibit).map((a) => ({ id: a._id, content: a }))
+  on: animals.filter((a) => a.onExhibit).map((a) => ({ id: a._id, content: a })),
+  off: animals.filter((a) => !a.onExhibit).map((a) => ({ id: a._id, content: a }))
 })
 
 const AnimalsBoard = ({ animals, onDelete }) => {
@@ -39,7 +39,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     updateAnimal({
       variables: {
         _id: removed.id,
-        inExhibit: droppableDestination.droppableId === 'inside'
+        onExhibit: droppableDestination.droppableId === 'on'
       }
     })
 
@@ -50,7 +50,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   }
 
   const onDragEnd = ({ source, destination }) => {
-    if (!destination) return // dropped outside the list
+    if (!destination) return // dropped off the list
     if (source.droppableId !== destination.droppableId) {
       // moved to another list
       const res = move(
@@ -96,15 +96,15 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row mx-4">
         <div className="flex flex-col items-center w-1/2 mx-2">
-          <Typography variant="h6" className="mb-2">In Exhibit</Typography>
-          <Droppable droppableId="inside">
-            {(provided, snapshot) => renderList(provided, snapshot, animalsState.inside)}
+          <Typography variant="h6" className="mb-2">On Exhibit</Typography>
+          <Droppable droppableId="on">
+            {(provided, snapshot) => renderList(provided, snapshot, animalsState.on)}
           </Droppable>
         </div>
         <div className="flex flex-col items-center w-1/2 mx-2">
-          <Typography variant="h6" className="mb-2">Out of Exhibit</Typography>
-          <Droppable droppableId="outside">
-            {(provided, snapshot) => renderList(provided, snapshot, animalsState.outside)}
+          <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
+          <Droppable droppableId="off">
+            {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
           </Droppable>
         </div>
       </div>

@@ -6,7 +6,7 @@ const Animal = gql`
     name: String
     type: String
     intake: Float
-    inExhibit: Boolean
+    onExhibit: Boolean
     created_at: DateTime
     updated_at: DateTime
   }
@@ -15,7 +15,7 @@ const Animal = gql`
   }
   extend type Mutation {
     createAnimal(name: String!, type: String!, intake: Float!): Animal
-    updateAnimal(_id: String!, name: String, type: String, intake: Float, inExhibit: Boolean): Animal
+    updateAnimal(_id: String!, name: String, type: String, intake: Float, onExhibit: Boolean): Animal
     deleteAnimal(_id: String!): Animal
   }
 `
