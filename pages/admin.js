@@ -9,4 +9,4 @@ const Admin = () => (
   </Layout>
 )
 
-export default withApollo({ ssr: true })(Admin)
+export default withApollo({ ssr: false })(Admin)
