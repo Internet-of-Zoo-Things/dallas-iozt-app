@@ -9,7 +9,7 @@ import Tooltip from './Tooltip'
 const Styled_ = styled(Button)`
   &&& {
     background-image: none;
-    ${tw`disabled:opacity-75 outline-none shadow-none focus:shadow-outline disabled:focus:shadow-none`}
+    ${tw`disabled:opacity-75 outline-none shadow-none focus:shadow-outline disabled:focus:shadow-none transition duration-150`}
     .bp3-icon {
       color: inherit;
     }
