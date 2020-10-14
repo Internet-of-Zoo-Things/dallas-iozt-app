@@ -12,7 +12,17 @@ const Feeder = {
   },
   Mutation: {
     async createFeedTime(parent, { feeder, timestamp, quantity }, { models }) {
-      // todo
+      return models.FeedTime.create({
+        feeder: feeder,
+        timestamp: timestamp,
+        quantity: quantity
+      })
+      .populate('feeder')
+      .catch((err) => {throw new ApolloError(err)})
+      .then(async (data) => {
+         await writeLog(`created feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+        return data
+      })
     },
     async updateFeedTime(parent, { _id, ...args }, { models }) {
       // todo
