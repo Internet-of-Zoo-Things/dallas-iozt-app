@@ -37,7 +37,7 @@ const Animal = {
       return models.Animal.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Updated animal "${args.name}"`, 'animal')
+          await writeLog(`Updated animal "${data.name}"`, 'animal')
           return data
         })
     },
