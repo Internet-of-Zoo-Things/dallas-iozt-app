@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Typography, Button, Tag } from '../../primitives'
-import { compareUserRoles } from '../../../utils/functions/ui'
-import { UserRoles } from '../../../utils/models'
 import { UpdateFeedTimeDialog, DeleteFeedTimeDialog } from './Dialogs'
 
 const FeederTag = ({ children, className }) => (
@@ -14,7 +12,7 @@ FeederTag.propTypes = {
   className: PropTypes.string
 }
 
-const FeedTimeCard = ({ data, user }) => {
+const FeedTimeCard = ({ data }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
 
@@ -36,14 +34,10 @@ const FeedTimeCard = ({ data, user }) => {
             ({moment(data.timestamp).fromNow()})
           </Typography>
         </div>
-        {
-          user && compareUserRoles(user.role, UserRoles.VIEWER) > 0
-            ? <div className="flex flex-no-wrap">
-              <Button minimal intent="primary" icon="edit" onClick={() => setShowEditDialog(true)} />
-              <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
-            </div>
-            : null
-        }
+        <div className="flex flex-no-wrap">
+          <Button minimal intent="primary" icon="edit" onClick={() => setShowEditDialog(true)} />
+          <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
+        </div>
       </div>
       {/* Dialogs */}
       <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={data} />
@@ -52,8 +46,7 @@ const FeedTimeCard = ({ data, user }) => {
   )
 }
 FeedTimeCard.propTypes = {
-  data: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired
 }
 
 export default FeedTimeCard

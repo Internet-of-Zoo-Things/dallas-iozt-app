@@ -1,6 +1,6 @@
 const { ApolloError } = require('apollo-server-express')
 
-const User = {
+const Log = {
   Query: {
     async logs(parent, { tag }, { models }) {
       return models.Log.find(tag ? { tag } : {}).sort({ timestamp: -1 })
@@ -12,4 +12,4 @@ const User = {
   }
 }
 
-module.exports = User
+module.exports = Log

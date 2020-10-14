@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-apollo'
-import PropTypes from 'prop-types'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
-import { withCurrentUser } from '../components/providers'
 import LogComponent from '../components/pages/Log/Log'
 import { GET_LOGS, GET_LOG_TAGS } from '../utils/graphql/queries'
 
-const Log = ({ user }) => {
+const Log = () => {
   const [tag, setTag] = useState(undefined)
 
   const { data, error, loading } = useQuery(GET_LOGS, {
@@ -21,7 +19,7 @@ const Log = ({ user }) => {
   })
 
   return (
-    <Layout title="Log" user={user && user.activeUser} error={error || tagsError}>
+    <Layout title="Log" error={error || tagsError}>
       <LogComponent
         logs={data ? data.logs : undefined}
         loading={loading || tagsLoading}
@@ -32,9 +30,5 @@ const Log = ({ user }) => {
     </Layout>
   )
 }
-Log.propTypes = {
-  /** Currently signed-in user */
-  user: PropTypes.object
-}
 
-export default withApollo({ ssr: true })(withCurrentUser(Log))
+export default withApollo({ ssr: true })(Log)

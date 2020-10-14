@@ -49,7 +49,6 @@ const Log = ({
           <thead>
             <tr>
               <th>Timestamp</th>
-              <th>Username</th>
               <th>Message</th>
               <th>Type</th>
             </tr>
@@ -62,11 +61,6 @@ const Log = ({
                     <NoWrap>
                       <Typography variant="subtitle">{moment(log.timestamp).format('MMM Do, hh:mm:ss a')}</Typography>
                       <Typography variant="subtitle" className="text-gray">{moment(log.timestamp).fromNow()}</Typography>
-                    </NoWrap>
-                  </td>
-                  <td>
-                    <NoWrap>
-                      {log.username}
                     </NoWrap>
                   </td>
                   <td className="break-normal">{log.message}</td>
