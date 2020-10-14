@@ -4,7 +4,6 @@ import moment from 'moment'
 import { useQuery } from 'react-apollo'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
-import { withCurrentUser } from '../components/providers'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
 import { GET_ANIMALS, GET_FEEDERS } from '../utils/graphql/queries'
 
@@ -26,7 +25,7 @@ const dummySchedule = [{
   quantity: 2
 }]
 
-const Dashboard = ({ user, client }) => {
+const Dashboard = ({ client }) => {
   /* searchbars */
   const [animalSearch, setAnimalSearch] = useState('')
 
@@ -44,9 +43,8 @@ const Dashboard = ({ user, client }) => {
   })
 
   return (
-    <Layout title="Dashboard" user={user && user.activeUser} error={animalsError || feedersError}>
+    <Layout title="Dashboard" error={animalsError || feedersError}>
       <DashboardComponent
-        user={user && user.activeUser}
         schedule={dummySchedule}
         feeders={feedersData ? feedersData.feeders : []}
         feedersLoading={feedersLoading}
@@ -60,10 +58,8 @@ const Dashboard = ({ user, client }) => {
   )
 }
 Dashboard.propTypes = {
-  /** Currently signed-in user */
-  user: PropTypes.object,
   /* apollo client used to write to the cache */
   client: PropTypes.any
 }
 
-export default withApollo({ ssr: true })(withCurrentUser(Dashboard))
+export default withApollo({ ssr: true })(Dashboard)

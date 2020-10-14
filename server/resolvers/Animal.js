@@ -19,7 +19,7 @@ const Animal = {
     }
   },
   Mutation: {
-    async createAnimal(parent, { name, type, intake }, { models, user }) {
+    async createAnimal(parent, { name, type, intake }, { models }) {
       return models.Animal.create({
         name: ensureCapitalized(name),
         type: ensureCapitalized(type),
@@ -27,25 +27,25 @@ const Animal = {
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Created animal "${name}"`, 'animal')
+          await writeLog(`Created animal "${name}"`, 'animal')
           return data
         })
     },
-    async updateAnimal(parent, { _id, ...args }, { models, user }) {
+    async updateAnimal(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
       if (args.type) args.type = ensureCapitalized(args.type)
       return models.Animal.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Updated animal "${args.name}"`, 'animal')
+          await writeLog(`Updated animal "${data.name}"`, 'animal')
           return data
         })
     },
-    async deleteAnimal(parent, { _id }, { models, user }) {
+    async deleteAnimal(parent, { _id }, { models }) {
       return models.Animal.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Deleted animal "${data.name}"`, 'animal')
+          await writeLog(`Deleted animal "${data.name}"`, 'animal')
           return data
         })
     }

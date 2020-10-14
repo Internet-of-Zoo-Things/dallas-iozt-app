@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server-express')
 
 const FeedTime = gql`
+  scalar DateTime
   type FeedTime {
     _id: String
     feeder: String

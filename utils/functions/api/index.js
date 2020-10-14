@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const { Log } = require('../../../server/models')
 
 const isEmail = (str) => {
@@ -9,10 +8,9 @@ const isEmail = (str) => {
 }
 
 /* writes a log entry to the database */
-const writeLog = async (username, message, tag = 'general') => {
+const writeLog = async (message, tag = 'general') => {
   return Log.create({
     timestamp: new Date(),
-    username,
     message,
     tag
   })
@@ -21,25 +19,8 @@ const writeLog = async (username, message, tag = 'general') => {
 
 const ensureCapitalized = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
-/* creates a notification for given users or all users */
-const createNotifications = async (models, message, usernames) => {
-  if (usernames && !Array.isArray(usernames)) throw Error(`usernames argument must be an array of strings, recevied ${usernames}`)
-  const notification = {
-    message,
-    timestamp: new Date(),
-    viewed: false,
-    _id: mongoose.Types.ObjectId()
-  }
-  return models.User.updateMany(
-    usernames ? { username: { $in: usernames } } : {},
-    { $push: { notifications: notification } },
-    { new: true }
-  ).catch((err) => { throw Error(err) })
-}
-
 module.exports = {
   isEmail,
   writeLog,
-  ensureCapitalized,
-  createNotifications
+  ensureCapitalized
 }

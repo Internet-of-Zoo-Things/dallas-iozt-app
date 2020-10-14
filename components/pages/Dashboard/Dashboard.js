@@ -14,7 +14,6 @@ import { GET_ANIMALS } from '../../../utils/graphql/queries'
 import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
-  user,
   schedule,
   feeders,
   feedersLoading,
@@ -54,7 +53,7 @@ const Dashboard = ({
                   ? <>
                     {
                       schedule.map((s, i) => (
-                        <FeedTimeCard key={i} data={s} user={user} />
+                        <FeedTimeCard key={i} data={s} />
                       ))
                     }
                     <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
@@ -172,7 +171,6 @@ const Dashboard = ({
   )
 }
 Dashboard.propTypes = {
-  user: PropTypes.object,
   schedule: PropTypes.array,
   feeders: PropTypes.array,
   feedersLoading: PropTypes.bool,

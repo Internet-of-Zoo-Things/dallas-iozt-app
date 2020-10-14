@@ -5,7 +5,6 @@ import { Errors } from '../../../utils/models'
 import { Typography, StyledLink, Button } from '../../primitives'
 
 const ErrorView = ({
-  user,
   code,
   msg,
   desc,
@@ -29,7 +28,6 @@ const ErrorView = ({
   return (
     <Layout
       title={`${code || 'Client'} Error`}
-      user={user}
     >
       { view }
     </Layout>
@@ -43,8 +41,7 @@ ErrorView.propTypes = {
   /** Optional description for further clarification */
   desc: PropTypes.string,
   /** Display the error without the layout wrapper */
-  noWrapper: PropTypes.bool,
-  user: PropTypes.object
+  noWrapper: PropTypes.bool
 }
 
 export default ErrorView

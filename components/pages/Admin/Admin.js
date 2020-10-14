@@ -27,7 +27,5 @@ const Admin = () => {
     </div>
   )
 }
-Admin.propTypes = {
-}
 
 export default Admin

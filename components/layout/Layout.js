@@ -12,8 +12,7 @@ const _ = ({
   loadingMessage,
   children,
   title,
-  error,
-  user
+  error
 }) => {
   if (error) {
     console.error(error)
@@ -33,7 +32,7 @@ const _ = ({
       <div className="flex flex-row w-screen h-screen">
         <div className="flex flex-col flex-grow justify-between bg-background overflow-y-scroll">
           <div>
-            <Header user={user} currentPage={title} notifications={[{ message: 'This is an example of a really long notification that will wrap to a newline!' }]} />
+            <Header currentPage={title} />
             {
               loading
                 ? <Spinner className="flex items-center h-full justify-center m-auto">
@@ -44,7 +43,7 @@ const _ = ({
                 </div>
             }
           </div>
-          <Footer user={user} />
+          <Footer />
         </div>
       </div>
     </>
@@ -62,9 +61,7 @@ _.propTypes = {
   /* Classname for children */
   className: PropTypes.string,
   /** Error object used for error handling */
-  error: PropTypes.object,
-  /** Currently signed-in user */
-  user: PropTypes.object
+  error: PropTypes.object
 }
 
 export default _

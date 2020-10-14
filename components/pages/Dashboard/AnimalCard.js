@@ -6,7 +6,6 @@ import {
 import { UpdateAnimalDialog, DeleteAnimalDialog } from './Dialogs'
 
 const AnimalCard = ({
-  user,
   _id,
   name,
   type,
@@ -55,7 +54,6 @@ const AnimalCard = ({
   )
 }
 AnimalCard.propTypes = {
-  user: PropTypes.object,
   /** Name of the animal */
   name: PropTypes.string.isRequired,
   /** Species of animal */

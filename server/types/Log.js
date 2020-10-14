@@ -4,7 +4,6 @@ const Log = gql`
   type Log {
     _id: String
     timestamp: DateTime
-    username: String
     message: String
     tag: String
   }

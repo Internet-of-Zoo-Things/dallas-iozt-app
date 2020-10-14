@@ -11,18 +11,18 @@ const Feeder = {
     }
   },
   Mutation: {
-    async createFeedTime(parent, { feeder, timestamp, quantity }, { models, user }) {
+    async createFeedTime(parent, { feeder, timestamp, quantity }, { models }) {
       // todo
     },
-    async updateFeedTime(parent, { _id, ...args }, { models, user }) {
+    async updateFeedTime(parent, { _id, ...args }, { models }) {
       // todo
     },
-    async deleteFeedTime(parent, { _id }, { models, user }) {
+    async deleteFeedTime(parent, { _id }, { models }) {
       return models.FeedTime.findByIdAndDelete(_id)
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          await writeLog(`Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
           return data
         })
     }

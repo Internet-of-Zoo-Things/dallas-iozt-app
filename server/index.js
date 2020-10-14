@@ -38,9 +38,8 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
-    const user = { username: 'admin', name: 'Test User', role: 'ADMIN' }
     return {
-      req, res, user, models
+      req, res, models
     }
   },
   playground: { version: '1.7.25' }

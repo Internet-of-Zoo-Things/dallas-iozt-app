@@ -1,32 +1,8 @@
 import gql from 'graphql-tag'
 
-export const ACTIVE_USER = gql`
-  query activeUser {
-    activeUser {
-      username
-      name
-      role
-    }
-  }
-`
-
-export const ALL_USERS = gql`
-  query users {
-    users {
-      username
-      name
-      role
-      email
-      created_at
-      updated_at
-    }
-  }
-`
-
 export const GET_LOGS = gql`
   query logs($tag: String) {
     logs(tag: $tag) {
-      username
       timestamp
       message
       tag
