@@ -20,7 +20,7 @@ const AnimalCard = ({
   return (
     <div className="flex w-full outline-none">
       <div className="flex flex-row items-center w-full overflow-hidden outline-none" {...props}>
-        <Tag large generateColor>{type}</Tag>
+        <Tag large generateColor className="rounded-lg">{type}</Tag>
         <div className="flex flex-grow justify-center">
           <Typography variant="subtitle" className="px-2">
             {name}

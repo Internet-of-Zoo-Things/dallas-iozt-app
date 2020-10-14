@@ -67,7 +67,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     <div
       {...provided.droppableProps}
       ref={provided.innerRef}
-      className={`flex flex-col w-full h-full p-2 rounded ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
+      className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
       {list.map((item, index) => (
         <Draggable
@@ -81,7 +81,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
               {...draggableProvided.dragHandleProps}
               {...draggableProvided.draggableProps}
               style={{ ...draggableProvided.draggableProps.style }}
-              className={`mb-2 rounded-lg bg-white outline-none ${draggableSnapshot.isDragging ? 'border-2 border-primary' : 'border border-gray '}`}
+              className={`mb-2 rounded-lg bg-white outline-none transition duration-150 ${draggableSnapshot.isDragging ? 'border border-primary' : 'shadow hover:shadow-md'}`}
             >
               <AnimalCard {...item.content} onDelete={() => onDelete(item.id)} />
             </div>

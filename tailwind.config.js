@@ -13,7 +13,7 @@ module.exports = {
     colors: {
       primary: '#3498db',
       'primary-darker': '#217dbb',
-      'primary-transparent': '#3498db80',
+      'primary-transparent': '#3498db40',
       background: '#eee',
       'background-darker': '#ddd',
       success: '#1bb460',
@@ -53,7 +53,8 @@ module.exports = {
     borderColor: ['hover', 'disabled'],
     backgroundColor: ['hover', 'disabled'],
     opacity: ['hover', 'disabled'],
-    gridAutoFlow: ['responsive', 'hover', 'focus']
+    gridAutoFlow: ['responsive', 'hover', 'focus'],
+    boxShadow: ['hover']
   },
   plugins: [
     plugin(({ addVariant }) => {
