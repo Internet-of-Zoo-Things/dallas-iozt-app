@@ -37,7 +37,7 @@ const User = gql`
     notifications(viewed: Boolean): [Notification]
   },
   extend type Mutation {
-    createUser(userInput: UserInput!): User!
+    createUser(userInput: UserInput!): User
     updateUser(_id: String!, userInput: UserInput!): User
     deleteUser(_id: String!): User
     updateNotifications(_ids: [String]!, viewed: Boolean!): [Notification]
