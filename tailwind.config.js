@@ -47,6 +47,11 @@ module.exports = {
       auto: 'auto',
       16: '4rem',
       64: '16rem'
+    },
+    extend: {
+      boxShadow: {
+        border: '0 0 0 1px rgba(16, 22, 26, 0.15), 0 0 0 rgba(16, 22, 26, 0), 0 0 0 rgba(16, 22, 26, 0)'
+      }
     }
   },
   variants: {
@@ -54,7 +59,7 @@ module.exports = {
     backgroundColor: ['hover', 'disabled'],
     opacity: ['hover', 'disabled'],
     gridAutoFlow: ['responsive', 'hover', 'focus'],
-    boxShadow: ['hover']
+    boxShadow: ['responsive', 'hover']
   },
   plugins: [
     plugin(({ addVariant }) => {
