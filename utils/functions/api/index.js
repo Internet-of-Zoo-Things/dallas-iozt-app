@@ -17,7 +17,7 @@ const writeLog = async (message, tag = 'general') => {
     .catch((err) => { throw Error(err) })
 }
 
-const ensureCapitalized = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
 module.exports = {
   isEmail,
