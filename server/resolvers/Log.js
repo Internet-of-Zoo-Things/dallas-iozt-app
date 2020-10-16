@@ -6,8 +6,11 @@ const Log = {
       return models.Log.find(tag ? { tag } : {}).sort({ timestamp: -1 }).limit(limit).skip(skip || 0)
         .catch((err) => { throw new ApolloError(err) })
     },
+    async logCount(parent, { tag }, { models }) {
+      return models.Log.countDocuments(tag ? { tag } : {}).catch((err) => { throw new ApolloError(err) })
+    },
     async logTags(parent, args, { models }) {
-      return models.Log.distinct('tag')
+      return models.Log.distinct('tag').catch((err) => { throw new ApolloError(err) })
     }
   }
 }

@@ -13,7 +13,7 @@ const NoWrap = styled.div`
 `
 
 const Log = ({
-  logs, loading, filter, setFilter, allTags
+  logs, loading, filter, setFilter, allTags, changePage
 }) => (
   <div className="flex flex-col">
     <Card
@@ -90,7 +90,9 @@ Log.propTypes = {
   filter: PropTypes.string,
   setFilter: PropTypes.func,
   /** All tag filter options */
-  allTags: PropTypes.array
+  allTags: PropTypes.array,
+  /** Change the page of results being viewed */
+  changePage: PropTypes.func
 }
 Log.defaultProps = {
   logs: []

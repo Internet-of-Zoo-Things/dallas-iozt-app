@@ -8,7 +8,8 @@ const Log = gql`
     tag: String
   }
   extend type Query {
-    logs(tag: String, limit: Float, skip: Float): [Log]
+    logs(tag: String, limit: Int, skip: Int): [Log]
+    logCount(tag: String): Int
     logTags: [String]
   }
 `

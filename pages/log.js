@@ -5,11 +5,14 @@ import Layout from '../components/layout'
 import LogComponent from '../components/pages/Log/Log'
 import { GET_LOGS, GET_LOG_TAGS } from '../utils/graphql/queries'
 
+const PAGE_SIZE = 15
+
 const Log = () => {
   const [tag, setTag] = useState(undefined)
+  const [page, setPage] = useState(0)
 
   const { data, error, loading } = useQuery(GET_LOGS, {
-    variables: { tag },
+    variables: { tag, limit: PAGE_SIZE, skip: (PAGE_SIZE * page) },
     fetchPolicy: 'no-cache',
     onError: (e) => console.error(e)
   })
@@ -26,6 +29,7 @@ const Log = () => {
         filter={tag}
         setFilter={setTag}
         allTags={allTags ? allTags.logTags : undefined}
+        changePage={setPage}
       />
     </Layout>
   )

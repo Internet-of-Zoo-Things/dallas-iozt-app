@@ -1,12 +1,13 @@
 import gql from 'graphql-tag'
 
 export const GET_LOGS = gql`
-  query logs($tag: String) {
-    logs(tag: $tag) {
+  query logs($tag: String, $limit: Int, $skip: Int) {
+    logs(tag: $tag, limit: $limit, skip: $skip) {
       timestamp
       message
       tag
     }
+    logCount(tag: $tag)
   }
 `
 
