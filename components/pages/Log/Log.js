@@ -4,7 +4,9 @@ import { Elevation } from '@blueprintjs/core'
 import styled from 'styled-components'
 import moment from 'moment'
 import tw from 'twin.macro'
-import { Typography, Card, Tag } from '../../primitives'
+import {
+  Typography, Card, Tag, Pagination
+} from '../../primitives'
 
 const NoWrap = styled.div`
   width: min-content;
@@ -13,7 +15,7 @@ const NoWrap = styled.div`
 `
 
 const Log = ({
-  logs, loading, filter, setFilter, allTags, changePage
+  logs, loading, filter, setFilter, allTags, currentPage, changePage, totalPages
 }) => (
   <div className="flex flex-col">
     <Card
@@ -44,7 +46,7 @@ const Log = ({
       className={`w-full ${loading && 'bp3-skeleton'}`}
       elevation={Elevation.TWO}
     >
-      <div className="m-6">
+      <div className="m-6 w-full">
         <table className="bp3-html-table .modifier w-full">
           <thead>
             <tr>
@@ -79,6 +81,7 @@ const Log = ({
           </tbody>
         </table>
       </div>
+      { logs ? <Pagination changePage={changePage} currentPage={currentPage} totalPages={totalPages} className="mt-4" /> : null }
     </Card>
   </div>
 )
@@ -92,7 +95,9 @@ Log.propTypes = {
   /** All tag filter options */
   allTags: PropTypes.array,
   /** Change the page of results being viewed */
-  changePage: PropTypes.func
+  changePage: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number
 }
 Log.defaultProps = {
   logs: []

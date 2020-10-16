@@ -29,7 +29,9 @@ const Log = () => {
         filter={tag}
         setFilter={setTag}
         allTags={allTags ? allTags.logTags : undefined}
+        currentPage={page}
         changePage={setPage}
+        totalPages={data ? Math.ceil(data.logCount / PAGE_SIZE) : undefined}
       />
     </Layout>
   )

@@ -47,15 +47,15 @@ const Styled_ = styled(Button)`
       if (props.minimal) {
         switch (props.intent) {
           case 'primary': {
-            return tw`text-primary hover:opacity-100`
+            return tw`text-primary hover:opacity-100 disabled:hover:opacity-75`
           }
           case 'warning': {
-            return tw`text-warning hover:opacity-100`
+            return tw`text-warning hover:opacity-100 disabled:hover:opacity-75`
           }
           case 'danger': {
-            return tw`text-danger hover:opacity-100`
+            return tw`text-danger hover:opacity-100 disabled:hover:opacity-75`
           }
-          default: return tw`text-primary hover:opacity-100`
+          default: return tw`text-primary hover:opacity-100 disabled:hover:opacity-75`
         }
       }
     }}
