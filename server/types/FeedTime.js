@@ -4,7 +4,7 @@ const FeedTime = gql`
   scalar DateTime
   type FeedTime {
     _id: String
-    feeder: String
+    feeder: Feeder
     timestamp: DateTime
     quantity: Float
     created_at: DateTime

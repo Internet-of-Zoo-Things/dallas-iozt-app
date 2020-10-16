@@ -1,18 +1,28 @@
 const { ApolloError } = require('apollo-server-express')
 const moment = require('moment')
+const mongoose = require('mongoose')
 const { writeLog } = require('../../utils/functions/api')
 
 const Feeder = {
   Query: {
     async feedTimes(parent, args, { models }) {
-      return models.FeedTimes.find()
+      return models.FeedTime.find()
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
   Mutation: {
-    async createFeedTime(parent, { feeder, timestamp, quantity }, { models }) {
-      // todo
+    async createFeedTime(parent, args, { models }) {
+      return models.FeedTime.findOneAndUpdate({ _id: mongoose.Types.ObjectId() }, args, {
+        new: true,
+        upsert: true
+      })
+        .populate('feeder')
+        .catch((err) => { throw new ApolloError(err) })
+        .then(async (data) => {
+          await writeLog(`Created feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          return data
+        })
     },
     async updateFeedTime(parent, { _id, ...args }, { models }) {
       // todo

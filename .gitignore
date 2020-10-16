@@ -30,4 +30,4 @@ yarn-error.log*
 .env.production.local
 .env
 .npmrc
-x
+package-lock.json
