@@ -25,7 +25,16 @@ const Feeder = {
         })
     },
     async updateFeedTime(parent, { _id, ...args }, { models }) {
-      // todo
+      return models.FeedTime.findByIdAndUpdate(_id, args, {
+        new: true,
+        upsert: true
+      })
+        .populate('feeder')
+        .catch((err) => { throw new ApolloError(err) })
+        .then(async (data) => {
+          await writeLog(`Edited feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          return data
+        })
     },
     async deleteFeedTime(parent, { _id }, { models }) {
       return models.FeedTime.findByIdAndDelete(_id)
