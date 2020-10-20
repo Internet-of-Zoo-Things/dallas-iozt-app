@@ -27,7 +27,7 @@ const routes = [
   {
     href: '/admin',
     currentPage: 'Admin',
-    icon: 'cog',
+    icon: 'cog'
   }
 ]
 
