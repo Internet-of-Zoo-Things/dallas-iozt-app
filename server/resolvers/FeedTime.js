@@ -26,8 +26,7 @@ const Feeder = {
     },
     async updateFeedTime(parent, { _id, ...args }, { models }) {
       return models.FeedTime.findByIdAndUpdate(_id, args, {
-        new: true,
-        upsert: true
+        new: true
       })
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
