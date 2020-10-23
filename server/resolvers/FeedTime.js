@@ -43,6 +43,14 @@ const Feeder = {
           await writeLog(`Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
           return data
         })
+    },
+    async deleteAllUpcomingFeedTimes(parent, _, { models }) {
+      return models.FeedTime.deleteMany({ timestamp: { $gte: new Date() } })
+        .catch((err) => { throw new ApolloError(err) })
+        .then(async () => {
+          await writeLog('Deleted all upcoming feed times', 'feed time')
+          return true
+        })
     }
   }
 }
