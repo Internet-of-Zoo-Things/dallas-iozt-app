@@ -32,8 +32,7 @@ const routes = [
 ]
 
 const _ = ({
-  currentPage,
-  notifications
+  currentPage
 }) => (
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
@@ -67,11 +66,7 @@ const _ = ({
   </Navbar>
 )
 _.propTypes = {
-  currentPage: PropTypes.string,
-  notifications: PropTypes.array
-}
-_.defaultProps = {
-  notifications: []
+  currentPage: PropTypes.string
 }
 
 export default _

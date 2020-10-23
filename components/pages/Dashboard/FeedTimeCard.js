@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Popover, Position } from '@blueprintjs/core'
+import { Popover, Position, Classes } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
 import {
   Typography, Button, Tag, Icon, toast
@@ -54,7 +54,7 @@ const FeedTimeCard = ({ data, feeders }) => {
             content={
               <div className="flex flex-col items-center p-4">
                 <Typography variant="body" className="mb-2">Snooze Feeding</Typography>
-                <div className="flex">
+                <div className={`flex ${Classes.POPOVER_DISMISS}`}>
                   {
                     [5, 10, 15].map((time, i) => (
                       <Button className="mx-1" key={i} onClick={() => {
@@ -65,7 +65,7 @@ const FeedTimeCard = ({ data, feeders }) => {
                             timestamp: moment(data.timestamp).add(time, 'minutes').toDate()
                           }
                         })
-                      }}>{time} min</Button>
+                      }} loading={loading && time === snoozeAmount}>{time} min</Button>
                     ))
                   }
                 </div>
