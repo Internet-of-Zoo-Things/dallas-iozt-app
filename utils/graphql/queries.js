@@ -39,3 +39,17 @@ export const GET_FEEDERS = gql`
     }
   }
 `
+
+export const GET_FEED_TIMES = gql`
+  query feedTimes {
+    feedTimes {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`

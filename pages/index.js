@@ -1,29 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { useQuery } from 'react-apollo'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
-import { GET_ANIMALS, GET_FEEDERS } from '../utils/graphql/queries'
-
-const dummySchedule = [{
-  timestamp: moment().add(30, 'minutes'),
-  feeder: 'Feeder 1',
-  quantity: 2
-}, {
-  timestamp: moment().add(2, 'hours'),
-  feeder: 'Feeder 2',
-  quantity: 1
-}, {
-  timestamp: moment().add(7, 'hours'),
-  feeder: 'Feeder 2',
-  quantity: 3
-}, {
-  timestamp: moment().add(8, 'hours'),
-  feeder: 'Feeder 1',
-  quantity: 2
-}]
+import { GET_ANIMALS, GET_FEEDERS, GET_FEED_TIMES } from '../utils/graphql/queries'
 
 const Dashboard = ({ client }) => {
   /* searchbars */
@@ -41,11 +22,17 @@ const Dashboard = ({ client }) => {
     notifyOnNetworkStatusChange: true
     // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
+  const { data: feedTimesData, loading: feedTimesLoading, error: feedTimesError } = useQuery(GET_FEED_TIMES, {
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
+  })
 
   return (
-    <Layout title="Dashboard" error={animalsError || feedersError}>
+    <Layout title="Dashboard" error={animalsError || feedersError || feedTimesError}>
       <DashboardComponent
-        schedule={dummySchedule}
+        schedule={feedTimesData ? feedTimesData.feedTimes : []}
+        scheduleLoading={feedTimesLoading}
         feeders={feedersData ? feedersData.feeders : []}
         feedersLoading={feedersLoading}
         animals={animalsData ? animalsData.animals : []}

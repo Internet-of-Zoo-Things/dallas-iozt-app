@@ -15,10 +15,10 @@ const _ = ({ schedule }) => (
       data={[
         ['', 'Feed (lbs)', { type: 'string', role: 'tooltip' }],
         ...schedule.map((s) => [
-          s.timestamp.toDate(),
+          new Date(s.timestamp),
           s.quantity,
           /* specifies the tooltip */
-          `${s.quantity} lb${s.quantity === 1 ? '' : 's'} from ${s.feeder} at ${s.timestamp.format('MMM Do h:mm:ss')}`
+          `${s.quantity} lb${s.quantity === 1 ? '' : 's'} from ${s.feeder.name} at ${moment(s.timestamp).format('MMM Do h:mm:ss')}`
         ])
       ]}
       options={{

@@ -15,6 +15,7 @@ import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
   schedule,
+  scheduleLoading,
   feeders,
   feedersLoading,
   animals,
@@ -49,8 +50,8 @@ const Dashboard = ({
             <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
             <div className="flex flex-col w-full items-center">
               {
-                schedule.length !== 0
-                  ? <>
+                schedule.length !== 0 || scheduleLoading
+                  ? <div className={animalsLoading ? 'bp3-skeleton h-32' : ''}>
                     {
                       schedule.map((s, i) => (
                         <FeedTimeCard key={i} data={s} />
@@ -59,14 +60,18 @@ const Dashboard = ({
                     <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
                       <Typography variant="subtitle">Clear All</Typography>
                     </Button>
-                  </>
+                  </div>
                   : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
               }
             </div>
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-            <FeedTimeline schedule={schedule} />
+            {
+              schedule.length !== 0
+                ? <FeedTimeline schedule={schedule} />
+                : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
+            }
           </div>
         </Card>
       </div>
@@ -172,6 +177,7 @@ const Dashboard = ({
 }
 Dashboard.propTypes = {
   schedule: PropTypes.array,
+  scheduleLoading: PropTypes.bool,
   feeders: PropTypes.array,
   feedersLoading: PropTypes.bool,
   animals: PropTypes.array,

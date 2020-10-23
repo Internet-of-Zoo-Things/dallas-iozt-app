@@ -21,7 +21,7 @@ const FeedTimeCard = ({ data }) => {
   return (
     <>
       <div className="flex flex-row items-center mt-2 border border-border hover:shadow-md rounded-lg w-full overflow-hidden transition duration-150">
-        <FeederTag>{data.feeder}</FeederTag>
+        <FeederTag>{data.feeder.name}</FeederTag>
         <div className="flex flex-grow justify-center overflow-hidden">
           <Typography variant="subtitle" className="ml-3 whitespace-no-wrap">
             {data.quantity} lb{data.quantity === 1 ? '' : 's'}
