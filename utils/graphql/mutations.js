@@ -61,3 +61,17 @@ export const DELETE_FEEDER = gql`
     }
   }
 `
+
+export const CREATE_FEED_TIME = gql`
+  mutation createFeedTime($feeder: String!, $timestamp: DateTime!, $quantity: Float!) {
+    createFeedTime(feeder: $feeder, timestamp: $timestamp, quantity: $quantity) {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`

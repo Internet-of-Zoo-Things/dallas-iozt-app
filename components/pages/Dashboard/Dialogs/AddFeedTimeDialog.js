@@ -1,11 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog } from '@blueprintjs/core'
+import { useMutation } from 'react-apollo'
 import { Form } from '../../../primitives'
 import { InputTypes, FeederStatuses } from '../../../../utils/models'
+import { CREATE_FEED_TIME } from '../../../../utils/graphql/mutations'
+import { GET_FEED_TIMES } from '../../../../utils/graphql/queries'
 
 const _ = ({ isOpen, close, feeders }) => {
-  // TODO:  Add api interaction
+  /* api interaction */
+  const [createFeedTime, { loading }] = useMutation(CREATE_FEED_TIME, {
+    onError: (e) => console.error(JSON.stringify(e)),
+    onCompleted: close,
+    refetchQueries: [{ query: GET_FEED_TIMES }],
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+  })
 
   return (
     <Dialog
@@ -16,11 +26,10 @@ const _ = ({ isOpen, close, feeders }) => {
     >
       <div className="w-full p-6">
         <Form
-          onSubmit={(formData) => {
-            // TODO:  Implement form submit to db
-            // console.debug('formData: ', JSON.stringify(formData))
+          onSubmit={(d) => {
+            createFeedTime({ variables: { ...d, feeder: d.feeder.id } })
           }}
-          submitLoading={false}
+          submitLoading={loading}
           fields={[
             {
               label: 'Feeder',
@@ -30,7 +39,7 @@ const _ = ({ isOpen, close, feeders }) => {
               placeholder: 'Select Feeder',
               items:
                 // Only list feeders that are online
-                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name }))
+                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, id: f._id }))
             },
             {
               label: 'Food Quantity (lbs)',
