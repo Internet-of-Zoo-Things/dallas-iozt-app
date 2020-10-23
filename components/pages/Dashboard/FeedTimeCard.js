@@ -2,10 +2,13 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Popover, Position } from '@blueprintjs/core'
+import { useMutation } from 'react-apollo'
 import {
-  Typography, Button, Tag, Icon
+  Typography, Button, Tag, Icon, toast
 } from '../../primitives'
 import { UpdateFeedTimeDialog, DeleteFeedTimeDialog } from './Dialogs'
+import { UPDATE_FEED_TIME } from '../../../utils/graphql/mutations'
+import { GET_FEED_TIMES } from '../../../utils/graphql/queries'
 
 const FeederTag = ({ children, className }) => (
   <Tag large className={`rounded-md ${className}`}>{ children }</Tag>
@@ -18,6 +21,15 @@ FeederTag.propTypes = {
 const FeedTimeCard = ({ data, feeders }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
+  const [snoozeAmount, setSnoozeAmount] = useState(null)
+
+  const [updateFeedTime, { loading }] = useMutation(UPDATE_FEED_TIME, {
+    onError: (e) => console.error(JSON.stringify(e)),
+    onCompleted: () => toast.success({ message: `Feed time was delayed by ${snoozeAmount} minutes!` }),
+    refetchQueries: [{ query: GET_FEED_TIMES }],
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+  })
 
   return (
     <>
@@ -45,7 +57,15 @@ const FeedTimeCard = ({ data, feeders }) => {
                 <div className="flex">
                   {
                     [5, 10, 15].map((time, i) => (
-                      <Button className="mx-1" key={i}>{time} min</Button>
+                      <Button className="mx-1" key={i} onClick={() => {
+                        setSnoozeAmount(time)
+                        updateFeedTime({
+                          variables: {
+                            _id: data._id,
+                            timestamp: moment(data.timestamp).add(time, 'minutes').toDate()
+                          }
+                        })
+                      }}>{time} min</Button>
                     ))
                   }
                 </div>
