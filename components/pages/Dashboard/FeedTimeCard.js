@@ -46,7 +46,7 @@ const FeedTimeCard = ({ data }) => {
       </div>
       {/* Dialogs */}
       <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={data} />
-      <DeleteFeedTimeDialog isOpen={showDeleteDialog} close={() => setShowDeleteDialog(false)} timestamp={data.timestamp} />
+      <DeleteFeedTimeDialog isOpen={showDeleteDialog} close={() => setShowDeleteDialog(false)} timestamp={data.timestamp} id={data._id} />
     </>
   )
 }

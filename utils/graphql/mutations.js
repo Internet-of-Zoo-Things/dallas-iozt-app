@@ -75,3 +75,25 @@ export const CREATE_FEED_TIME = gql`
     }
   }
 `
+
+export const UPDATE_FEED_TIME = gql`
+  mutation updateFeedTime($_id: String!, $feeder: String, $timestamp: DateTime, $quantity: Float) {
+    updateFeedTime(_id: $_id, feeder: $feeder, timestamp: $timestamp, quantity: $quantity) {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`
+
+export const DELETE_FEED_TIME = gql`
+  mutation deleteFeedTime($_id: String!) {
+    deleteFeedTime(_id: $_id) {
+      _id
+    }
+  }
+`
