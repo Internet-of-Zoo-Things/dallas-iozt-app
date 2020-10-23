@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
-import { Typography, Button, Tag } from '../../primitives'
+import {
+  Typography, Button, Tag, Icon
+} from '../../primitives'
 import { UpdateFeedTimeDialog, DeleteFeedTimeDialog } from './Dialogs'
 
 const FeederTag = ({ children, className }) => (
@@ -35,6 +37,9 @@ const FeedTimeCard = ({ data }) => {
           </Typography>
         </div>
         <div className="flex flex-no-wrap">
+          <Button minimal intent="primary" onClick={() => {}}>
+            <Icon.Snooze />
+          </Button>
           <Button minimal intent="primary" icon="edit" onClick={() => setShowEditDialog(true)} />
           <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
         </div>

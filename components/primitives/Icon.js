@@ -10,7 +10,8 @@ function renderIconFoundation(component) {
 }
 const Icon = {
   // Custom svg icons
-  Elephant: (props) => renderIconFoundation(<svgs.Elephant {...props} />)
+  // Elephant: (props) => renderIconFoundation(<svgs.Elephant {...props} />)
+  Snooze: (props) => renderIconFoundation(<svgs.Snooze {...props} />)
 }
 
 export default Icon
