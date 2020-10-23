@@ -51,7 +51,7 @@ const Dashboard = ({
             <div className="flex flex-col w-full items-center">
               {
                 schedule.length !== 0 || scheduleLoading
-                  ? <div className={animalsLoading ? 'bp3-skeleton h-32' : ''}>
+                  ? <div className={`${animalsLoading ? 'bp3-skeleton h-32' : ''} w-full`}>
                     {
                       schedule.map((s, i) => (
                         <FeedTimeCard key={i} data={s} />
