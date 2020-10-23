@@ -97,3 +97,9 @@ export const DELETE_FEED_TIME = gql`
     }
   }
 `
+
+export const DELETE_ALL_FEED_TIMES = gql`
+  mutation deleteAllUpcomingFeedTimes {
+    deleteAllUpcomingFeedTimes
+  }
+`
