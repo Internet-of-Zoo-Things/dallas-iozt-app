@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
+import { Popover, Position } from '@blueprintjs/core'
 import {
   Typography, Button, Tag, Icon
 } from '../../primitives'
@@ -37,9 +38,25 @@ const FeedTimeCard = ({ data, feeders }) => {
           </Typography>
         </div>
         <div className="flex flex-no-wrap">
-          <Button minimal intent="primary" onClick={() => {}}>
-            <Icon.Snooze />
-          </Button>
+          <Popover
+            content={
+              <div className="flex flex-col items-center p-4">
+                <Typography variant="body" className="mb-2">Snooze Feeding</Typography>
+                <div className="flex">
+                  {
+                    [5, 10, 15].map((time, i) => (
+                      <Button className="mx-1" key={i}>{time} min</Button>
+                    ))
+                  }
+                </div>
+              </div>
+            }
+            position={Position.TOP}
+          >
+            <Button minimal intent="primary" onClick={() => {}}>
+              <Icon.Snooze />
+            </Button>
+          </Popover>
           <Button minimal intent="primary" icon="edit" onClick={() => setShowEditDialog(true)} />
           <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
         </div>
