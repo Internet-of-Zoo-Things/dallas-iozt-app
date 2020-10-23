@@ -5,8 +5,8 @@ const { writeLog } = require('../../utils/functions/api')
 
 const Feeder = {
   Query: {
-    async feedTimes(parent, args, { models }) {
-      return models.FeedTime.find()
+    async feedTimes(parent, { includePrevious = false }, { models }) {
+      return models.FeedTime.find(includePrevious ? {} : { timestamp: { $gte: new Date() } })
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
     }

@@ -11,7 +11,7 @@ const FeedTime = gql`
     updated_at: DateTime
   }
   extend type Query {
-    feedTimes: [FeedTime]
+    feedTimes(includePrevious: Boolean): [FeedTime]
   }
   extend type Mutation {
     createFeedTime(feeder: String!, timestamp: DateTime!, quantity: Float!): FeedTime
