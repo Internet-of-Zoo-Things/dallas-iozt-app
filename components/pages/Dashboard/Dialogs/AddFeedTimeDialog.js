@@ -53,7 +53,8 @@ const _ = ({ isOpen, close, feeders }) => {
               label: 'Time',
               id: 'timestamp',
               required: true,
-              type: InputTypes.DATETIME
+              type: InputTypes.DATETIME,
+              defaultValue: new Date()
             }
           ]}
         />
