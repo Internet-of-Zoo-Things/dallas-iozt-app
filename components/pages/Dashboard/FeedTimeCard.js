@@ -30,9 +30,9 @@ const FeedTimeCard = ({ data }) => {
             at
           </Typography>
           <Typography variant="subtitle" className="ml-1 whitespace-no-wrap">
-            {moment(data.timestamp).format('h:mm:ss a')}
+            {moment(data.timestamp).format('h:mm a')}
           </Typography>
-          <Typography variant="subtitle" className="ml-2 text-gray hidden sm:block md:block lg:block xl:block truncate">
+          <Typography variant="subtitle" className="ml-2 text-gray hidden sm:block md:block lg:hidden xl:block truncate">
             ({moment(data.timestamp).fromNow()})
           </Typography>
         </div>
