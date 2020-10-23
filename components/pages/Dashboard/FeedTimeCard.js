@@ -14,7 +14,7 @@ FeederTag.propTypes = {
   className: PropTypes.string
 }
 
-const FeedTimeCard = ({ data }) => {
+const FeedTimeCard = ({ data, feeders }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
 
@@ -45,13 +45,14 @@ const FeedTimeCard = ({ data }) => {
         </div>
       </div>
       {/* Dialogs */}
-      <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={data} />
+      <UpdateFeedTimeDialog isOpen={showEditDialog} close={() => setShowEditDialog(false)} data={data} feeders={feeders} />
       <DeleteFeedTimeDialog isOpen={showDeleteDialog} close={() => setShowDeleteDialog(false)} timestamp={data.timestamp} id={data._id} />
     </>
   )
 }
 FeedTimeCard.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  feeders: PropTypes.array.isRequired
 }
 
 export default FeedTimeCard

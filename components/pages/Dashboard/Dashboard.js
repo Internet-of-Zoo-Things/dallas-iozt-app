@@ -54,7 +54,7 @@ const Dashboard = ({
                   ? <div className={`${animalsLoading ? 'bp3-skeleton h-32' : ''} w-full`}>
                     {
                       schedule.map((s, i) => (
-                        <FeedTimeCard key={i} data={s} />
+                        <FeedTimeCard key={i} data={s} feeders={feeders || []} />
                       ))
                     }
                     <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
