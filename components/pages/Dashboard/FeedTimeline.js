@@ -2,16 +2,38 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Chart from 'react-google-charts'
 import moment from 'moment'
+import styled from 'styled-components'
 import lodash from 'lodash'
+import { generateColorStr } from '../../../utils/functions/ui'
+import { Typography } from '../../primitives'
 
-const config = require('../../../tailwind.config')
+const Circle = styled.div`
+  border-radius: 100%;
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: ${({ color }) => color};
+`
+
+const Legend = ({ feeder, color, className }) => (
+  <div className={`flex justify-center items-center ${className}`}>
+    <Circle color={color} className="mr-1" />
+    <Typography variant="subtitle">{feeder}</Typography>
+  </div>
+)
+Legend.propTypes = {
+  feeder: PropTypes.string,
+  color: PropTypes.string,
+  className: PropTypes.string
+}
 
 const _ = ({ schedule }) => {
   const series = {}
   const axes = { y: {} }
+  const colors = []
   lodash.uniq(schedule.map((d) => d.feeder.name)).forEach((f, i) => {
     series[i] = { axis: f }
-    axes[f] = { label: f }
+    axes.y[f] = { label: f }
+    colors.push(generateColorStr(`${f.replace(/feeder/gi, '')} and hash it up!`))
   })
 
   const format = (d) => {
@@ -22,24 +44,22 @@ const _ = ({ schedule }) => {
   }
 
   return (
-    <div className="flex w-full justify-center overflow-hidden">
+    <div className="flex flex-col w-full items-center overflow-hidden">
       <Chart
         chartType="ScatterChart"
         height={200}
         width="100%"
         loader={<div className="mt-3 w-full h-48 bp3-skeleton" />}
         data={[
-          ['', ...Object.keys(series).map((s) => series[s].axis), { type: 'string', role: 'tooltip' }],
+          ['Timestamp', ...Object.keys(series).map((s) => series[s].axis)],
           ...schedule.map((s) => [
             new Date(s.timestamp),
-            ...format(s),
-            /* specifies the tooltip */
-            `${s.quantity} lb${s.quantity === 1 ? '' : 's'} from ${s.feeder.name} at ${moment(s.timestamp).format('MMM Do h:mm:ss')}`
+            ...format(s)
           ])
         ]}
         options={{
           legend: { position: 'none' },
-          // colors: [config.theme.colors.primary],
+          colors,
           animation: {
             duration: 1000,
             easing: 'inAndOut'
@@ -53,8 +73,14 @@ const _ = ({ schedule }) => {
           vAxis: { title: 'Feed (lbs)', minValue: 0 },
           axes
         }}
-        legendToggle
       />
+      <div className="mt-2 flex flex-wrap w-full justify-center">
+        {
+          Object.keys(series).map((f, i) => (
+            <Legend key={i} feeder={series[f].axis} color={colors[i]} className="m-2" />
+          ))
+        }
+      </div>
     </div>
   )
 }
