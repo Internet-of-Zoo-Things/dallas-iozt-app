@@ -1,4 +1,5 @@
 const { Log } = require('../../../server/models')
+const { createSchedule } = require('./createSchedule')
 
 const isEmail = (str) => {
   // eslint-disable-next-line no-control-regex
@@ -22,5 +23,6 @@ const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slic
 module.exports = {
   isEmail,
   writeLog,
-  ensureCapitalized
+  ensureCapitalized,
+  createSchedule
 }

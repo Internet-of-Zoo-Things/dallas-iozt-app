@@ -9,6 +9,7 @@ const cron = require('node-cron')
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 const models = require('./models')
+const { createSchedule } = require('../utils/functions/api')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -51,7 +52,7 @@ const corsOptions = {
 }
 
 /* set up cron job to automatically create daily schedule */
-const job = cron.schedule('* 6 * * *', () => {}) // 6 am daily
+const job = cron.schedule('* 6 * * *', createSchedule) // 6 am daily
 
 /* prepare the api */
 app.prepare()

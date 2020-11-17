@@ -1,7 +1,7 @@
 const { ApolloError } = require('apollo-server-express')
 const moment = require('moment')
 const mongoose = require('mongoose')
-const { writeLog } = require('../../utils/functions/api')
+const { writeLog, createSchedule } = require('../../utils/functions/api')
 
 const Feeder = {
   Query: {
@@ -51,6 +51,11 @@ const Feeder = {
           await writeLog('Deleted all upcoming feed times', 'feed time')
           return true
         })
+    },
+    async createDailySchedule() {
+      return createSchedule().then(() => {
+        return []
+      }).catch((err) => { throw new ApolloError(err) })
     }
   }
 }
