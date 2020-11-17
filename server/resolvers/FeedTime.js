@@ -52,9 +52,11 @@ const Feeder = {
           return true
         })
     },
-    async createDailySchedule() {
-      return createSchedule().then(() => {
-        return []
+    async createDailySchedule(parent, { debug }, { models }) {
+      return createSchedule(debug).then(() => {
+        return models.FeedTime.find({ timestamp: { $gte: new Date() } })
+          .populate('feeder')
+          .catch((err) => { throw new ApolloError(err) })
       }).catch((err) => { throw new ApolloError(err) })
     }
   }

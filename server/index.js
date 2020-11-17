@@ -52,7 +52,17 @@ const corsOptions = {
 }
 
 /* set up cron job to automatically create daily schedule */
-const job = cron.schedule('* 6 * * *', createSchedule) // 6 am daily
+const job = cron.schedule('* 6 * * *', () => { // 6 am daily
+  console.warn('CRON: Creating daily schedule')
+  createSchedule()
+    .catch((err) => {
+      console.error('Could not create daily schedule!')
+      console.error(err)
+    })
+    .then(() => {
+      // todo: expire old feedtimes (past 1 week)
+    })
+})
 
 /* prepare the api */
 app.prepare()
