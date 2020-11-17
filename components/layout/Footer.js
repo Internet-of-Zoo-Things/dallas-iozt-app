@@ -12,6 +12,11 @@ const _ = () => (
       process.env.NODE_ENV !== 'production'
         ? <>
           <div className="mr-2">
+            <StyledLink href="/graphql">
+              <Button minimal className="h-full" icon="graph">GraphQL Playground</Button>
+            </StyledLink>
+          </div>
+          <div className="mr-2">
             <StyledLink href="https://github.com/Internet-of-Zoo-Things/dallas-iozt-app" external>
               <Button minimal className="h-full" icon="code">View the source</Button>
             </StyledLink>
