@@ -4,6 +4,7 @@ const cors = require('cors')
 const express = require('express')
 const next = require('next')
 const mongoose = require('mongoose')
+const cron = require('node-cron')
 
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
@@ -49,6 +50,9 @@ const corsOptions = {
   credentials: true
 }
 
+/* set up cron job to automatically create daily schedule */
+const job = cron.schedule('* 6 * * *', () => {}) // 6 am daily
+
 /* prepare the api */
 app.prepare()
   .then(() => {
@@ -69,5 +73,6 @@ app.prepare()
   })
   .catch((ex) => {
     console.error(ex.stack)
+    job.destroy()
     process.exit(1)
   })
