@@ -13,7 +13,7 @@ const Feeder = {
   },
   Mutation: {
     async createFeedTime(parent, args, { models }) {
-      return models.FeedTime.findOneAndUpdate({ _id: mongoose.Types.ObjectId() }, args, {
+      return models.FeedTime.findOneAndUpdate({ _id: mongoose.Types.ObjectId(), user_set: true }, args, {
         new: true,
         upsert: true
       })

@@ -16,6 +16,9 @@ const FeedTime = new Schema({
   quantity: {
     type: Number,
     required: true
+  },
+  user_set: {
+    type: Boolean
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }

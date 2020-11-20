@@ -7,6 +7,7 @@ const FeedTime = gql`
     feeder: Feeder
     timestamp: DateTime
     quantity: Float
+    user_set: Boolean
     created_at: DateTime
     updated_at: DateTime
   }
