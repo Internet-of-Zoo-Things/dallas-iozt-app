@@ -1,13 +1,14 @@
 const moment = require('moment')
-const mongoose = require('mongoose')
 const { FeedTime, Animal, Feeder } = require('../../../server/models')
 
+/* CONSTANTS */
 const unit = 'kg'
 /* expected range of hours for feed times to occur, in military time */
 const range = {
-  start: 6,
+  start: 7,
   end: 22
 }
+const avgFeedTimes = 5
 
 /* approximate a guassian (normal) distribution */
 const gaussian = (mean, stdev) => {
@@ -34,9 +35,21 @@ const gaussian = (mean, stdev) => {
     }
 
     const retval = mean + stdev * y1
-    if (retval > 0) return retval
-    return -retval
+    // if (retval > 0) return retval
+    // return -retval
+    return retval
   }
+}
+
+const randomizeTimes = gaussian(0, 1)
+const randomizeQuantity = gaussian(1, 0.5)
+
+const timeAtHour = (hour) => {
+  const dt = new Date()
+  dt.setHours(hour)
+  dt.setMinutes(0)
+  dt.setSeconds(0)
+  return dt
 }
 
 /* algorithm for automatically creating a daily schedule */
@@ -82,15 +95,43 @@ const createSchedule = async (debug = false) => {
 
   const remaining_quantity = required_quantity - dispensed_quantity // quantity of food that still needs to be dispensed
 
+  logDebug('\n')
   if (remaining_quantity === 0) {
     logDebug('Daily allottment of feed has already been dispersed! No changes needed.')
     return
   }
+  const num_feed_times = Math.floor(
+    // subtract number of times that have already elapsed if fewer than the constant value
+    (avgFeedTimes <= (times.length - remaining_times.length) ? 1 : avgFeedTimes - (times.length - remaining_times.length))
+    + randomizeTimes() // add some randomness
+  )
+  logDebug(`Target number of feed times: ${num_feed_times}`)
   if (remaining_quantity > 0) {
     logDebug('Not enough feed is scheduled to be dispensed. Creating new feed times and/or modifying exist times...')
+
+    // set time range to create feed times within
+    const start = range.start > (new Date()).getHours() ? range.start : (new Date()).getHours() + 1
+    const { end } = range
+    logDebug(`Creating/modifying times within range ${start}:00-${end}:00`)
+
+    if (remaining_times.length === 0) {
+      logDebug('No times scheduled; creating new schedule')
+      const new_feed_times = []
+    } else {
+      //
+    }
   } else {
     logDebug('Too much feed is scheduled to be dispense. Deleting and/or modifying existing feed times...')
   }
 }
 
 module.exports = { createSchedule }
+
+/*
+Questions:
+
+* expected window for feeding (ex 6am-10pm)?
+* how many feed times per day?
+* how much feed can be dispensed from one feeder at a time?
+
+*/
