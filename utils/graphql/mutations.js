@@ -107,3 +107,13 @@ export const DELETE_ALL_FEED_TIMES = gql`
     deleteAllUpcomingFeedTimes
   }
 `
+
+export const CREATE_HABITAT = gql`
+  mutation createHabitat($name: String!, $description: String) {
+    createHabitat(name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`

@@ -29,7 +29,11 @@ const Dashboard = ({ client }) => {
     notifyOnNetworkStatusChange: true
     // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
-  const { data: habitats, habitatsLoading } = useQuery(GET_HABITATS)
+  const { data: habitats, habitatsLoading } = useQuery(GET_HABITATS, {
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
+  })
 
   return (
     <Layout title="Dashboard" error={animalsError || feedersError || feedTimesError}>

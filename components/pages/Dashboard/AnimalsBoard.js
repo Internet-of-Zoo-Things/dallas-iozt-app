@@ -4,9 +4,10 @@ import {
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
-import { Typography, toast } from '../../primitives'
+import { Typography, toast, Button } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
+import { AddHabitat } from './Dialogs'
 
 const constructState = (animals, habitats) => {
   const cols = { off: [] }
@@ -23,6 +24,7 @@ const constructState = (animals, habitats) => {
 
 const AnimalsBoard = ({ animals, habitats, onDelete }) => {
   const [animalsState, setAnimals] = useState(constructState(animals, habitats))
+  const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
@@ -77,7 +79,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
-      {(list).map((item, index) => (
+      {(list || []).map((item, index) => (
         <Draggable
           key={item.id}
           draggableId={item.id}
@@ -110,6 +112,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
               <Droppable droppableId={_id}>
                 {(provided, snapshot) => renderList(provided, snapshot, animalsState[_id])}
               </Droppable>
+              <Button minimal className="mt-2">Edit Habitat</Button>
             </div>
           ))
         }
@@ -118,8 +121,10 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
           <Droppable droppableId="off">
             {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
           </Droppable>
+          <Button minimal className="mt-2" onClick={() => setShowAddHabitatDialog(true)}>Create Habitat</Button>
         </div>
       </div>
+      <AddHabitat isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
     </DragDropContext>
   )
 }
