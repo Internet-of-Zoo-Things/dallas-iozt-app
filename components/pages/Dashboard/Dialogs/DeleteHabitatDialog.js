@@ -4,7 +4,7 @@ import { Dialog, Classes } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
 import { DELETE_HABITAT } from '../../../../utils/graphql/mutations'
 import { Button } from '../../../primitives'
-import { GET_HABITATS } from '../../../../utils/graphql/queries'
+import { GET_HABITATS, GET_ANIMALS } from '../../../../utils/graphql/queries'
 
 const _ = ({
   isOpen, close, data, onSubmit
@@ -16,7 +16,7 @@ const _ = ({
       onSubmit()
       close()
     },
-    refetchQueries: () => [{ query: GET_HABITATS }],
+    refetchQueries: () => [{ query: GET_HABITATS }, { query: GET_ANIMALS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
   })
