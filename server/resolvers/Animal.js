@@ -15,6 +15,7 @@ const Animal = {
         }))
       }
       return models.Animal.find(where)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
@@ -25,6 +26,7 @@ const Animal = {
         type: ensureCapitalized(type),
         intake
       })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Created animal "${name}"`, 'animal')
@@ -35,6 +37,7 @@ const Animal = {
       if (args.name) args.name = ensureCapitalized(args.name)
       if (args.type) args.type = ensureCapitalized(args.type)
       return models.Animal.findByIdAndUpdate(_id, args, { new: true })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Updated animal "${data.name}"`, 'animal')
@@ -43,6 +46,7 @@ const Animal = {
     },
     async deleteAnimal(parent, { _id }, { models }) {
       return models.Animal.findByIdAndDelete(_id)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Deleted animal "${data.name}"`, 'animal')

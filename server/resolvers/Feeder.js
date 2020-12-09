@@ -5,6 +5,7 @@ const Feeder = {
   Query: {
     async feeders(parent, args, { models }) {
       return models.Feeder.find()
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
@@ -15,6 +16,7 @@ const Feeder = {
         description: ensureCapitalized(description),
         status: 'online'
       })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Created feeder "${name}"`, 'feeder')
@@ -24,6 +26,7 @@ const Feeder = {
     async updateFeeder(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
       return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Updated feeder "${args.name}"`, 'feeder')
@@ -32,6 +35,7 @@ const Feeder = {
     },
     async deleteFeeder(parent, { _id }, { models }) {
       return models.Feeder.findByIdAndDelete(_id)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Deleted feeder "${data.name}"`, 'feeder')

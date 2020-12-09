@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const HabitatModel = require('./Habitat')
 
 const { Schema } = mongoose
 
@@ -13,6 +14,11 @@ const Feeder = new Schema({
   },
   status: {
     type: String,
+    required: true
+  },
+  habitat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: HabitatModel,
     required: true
   }
 }, {
