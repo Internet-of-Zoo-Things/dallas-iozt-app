@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
 import { Position } from '@blueprintjs/core'
 import {
-  Typography, Button, Card, Tooltip
+  Typography, Button, Card, Tooltip, Tag
 } from '../../primitives'
 import { FeederStatuses } from '../../../utils/models'
 import { capitalize } from '../../../utils/functions/ui'
@@ -12,7 +12,7 @@ import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import { DeleteFeederDialog, UpdateFeederDialog } from './Dialogs'
 
 const FeederCard = ({
-  name, status, _id, description, ...props
+  name, status, _id, description, habitat, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
@@ -42,7 +42,12 @@ const FeederCard = ({
         {...props}
       >
         <div className="flex flex-col justify-center items-center">
-          <Typography variant="h5" weight="thin" className="truncate">{capitalize(status)}</Typography>
+          <div className="flex flex-wrap">
+            <Tag className="mx-1" intent={{ online: 'success', offline: 'danger', disabled: 'neutral' }[status]}>
+              {capitalize(status)}
+            </Tag>
+            <Tag className="mx-1">{habitat.name}</Tag>
+          </div>
           <div className="flex flex-row pt-3 justify-around">
             {
               status === FeederStatuses.DISABLED
@@ -85,6 +90,7 @@ FeederCard.propTypes = {
   /** Optional description for feeder */
   description: PropTypes.string,
   _id: PropTypes.string,
+  habitat: PropTypes.object,
   client: PropTypes.any
 }
 

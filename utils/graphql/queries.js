@@ -38,6 +38,9 @@ export const GET_FEEDERS = gql`
       name
       description
       status
+      habitat {
+        name
+      }
     }
   }
 `
