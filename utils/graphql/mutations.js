@@ -117,3 +117,13 @@ export const CREATE_HABITAT = gql`
     }
   }
 `
+
+export const UPDATE_HABITAT = gql`
+  mutation updateHabitat($_id: String!, $name: String, $description: String) {
+    updateHabitat(_id: $_id, name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`

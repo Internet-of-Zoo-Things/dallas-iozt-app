@@ -7,7 +7,7 @@ import { useMutation } from 'react-apollo'
 import { Typography, toast, Button } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
-import { AddHabitat } from './Dialogs'
+import { AddHabitatDialog, UpdateHabitatDialog } from './Dialogs'
 
 const constructState = (animals, habitats) => {
   const cols = { off: [] }
@@ -25,6 +25,7 @@ const constructState = (animals, habitats) => {
 const AnimalsBoard = ({ animals, habitats, onDelete }) => {
   const [animalsState, setAnimals] = useState(constructState(animals, habitats))
   const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
+  const [updateHabitat, setUpdateHabitat] = useState(null)
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
@@ -106,13 +107,13 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row mx-4">
         {
-          habitats.map(({ _id, name }, i) => (
+          habitats.map((h, i) => (
             <div className={`flex flex-col items-center w-1/${habitats.length + 1} mx-2`} key={i}>
-              <Typography variant="h6" className="mb-2">{name}</Typography>
-              <Droppable droppableId={_id}>
-                {(provided, snapshot) => renderList(provided, snapshot, animalsState[_id])}
+              <Typography variant="h6" className="mb-2">{h.name}</Typography>
+              <Droppable droppableId={h._id}>
+                {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
               </Droppable>
-              <Button minimal className="mt-2">Edit Habitat</Button>
+              <Button minimal className="mt-2" onClick={() => setUpdateHabitat(h)}>Edit Habitat</Button>
             </div>
           ))
         }
@@ -124,7 +125,8 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
           <Button minimal className="mt-2" onClick={() => setShowAddHabitatDialog(true)}>Create Habitat</Button>
         </div>
       </div>
-      <AddHabitat isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
+      <AddHabitatDialog isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
+      <UpdateHabitatDialog isOpen={updateHabitat} close={() => setUpdateHabitat(null)} data={updateHabitat} />
     </DragDropContext>
   )
 }

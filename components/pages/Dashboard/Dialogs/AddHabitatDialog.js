@@ -7,14 +7,11 @@ import { Form } from '../../../primitives'
 import { InputTypes } from '../../../../utils/models'
 import { GET_HABITATS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, updateCache }) => {
+const _ = ({ isOpen, close }) => {
   /* api interaction */
   const [createHabitat, { loading }] = useMutation(CREATE_HABITAT, {
     onError: (e) => console.error(JSON.stringify(e)),
-    onCompleted: (d) => {
-      // updateCache(d)
-      close()
-    },
+    onCompleted: close,
     refetchQueries: [{ query: GET_HABITATS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
@@ -58,7 +55,7 @@ const _ = ({ isOpen, close, updateCache }) => {
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  updateCache: PropTypes.func.isRequired
+  updateCache: PropTypes.func
 }
 
 export default _
