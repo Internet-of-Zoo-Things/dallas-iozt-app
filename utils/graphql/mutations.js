@@ -127,3 +127,11 @@ export const UPDATE_HABITAT = gql`
     }
   }
 `
+
+export const DELETE_HABITAT = gql`
+  mutation deleteHabitat($_id: String!) {
+    deleteHabitat(_id: $_id) {
+      _id
+    }
+  }
+`
