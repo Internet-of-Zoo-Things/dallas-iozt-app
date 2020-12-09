@@ -21,11 +21,6 @@ const constructState = (animals, habitats) => {
   return cols
 }
 
-// ({
-//   on: animals.filter((a) => a.onExhibit).map((a) => ({ id: a._id, content: a })),
-//   off: animals.filter((a) => !a.habitat).map((a) => ({ id: a._id, content: a }))
-// })
-
 const AnimalsBoard = ({ animals, habitats, onDelete }) => {
   const [animalsState, setAnimals] = useState(constructState(animals, habitats))
 
@@ -72,7 +67,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
         source,
         destination
       )
-      setAnimals(res)
+      setAnimals((prev) => ({ ...prev, ...res }))
     }
   }
 
@@ -82,8 +77,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
-      { !list && console.error('Null passed to animal habitat column!') }
-      {(list || []).map((item, index) => (
+      {(list).map((item, index) => (
         <Draggable
           key={item.id}
           draggableId={item.id}
