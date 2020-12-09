@@ -24,7 +24,9 @@ export const GET_ANIMALS = gql`
       name
       type
       intake
-      onExhibit
+      habitat {
+        _id
+      }
     }
   }
 `
@@ -50,6 +52,16 @@ export const GET_FEED_TIMES = gql`
       }
       timestamp
       quantity
+    }
+  }
+`
+
+export const GET_HABITATS = gql`
+  query habitats {
+    habitats {
+      _id
+      name
+      description
     }
   }
 `

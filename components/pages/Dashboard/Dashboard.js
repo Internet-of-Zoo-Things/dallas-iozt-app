@@ -22,6 +22,8 @@ const Dashboard = ({
   animalSearch,
   setAnimalSearch,
   animalsLoading,
+  habitats,
+  habitatsLoading,
   client
 }) => {
   /* dialogs */
@@ -129,10 +131,11 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            animals.length !== 0 || animalsLoading
-              ? <div className={animalsLoading ? 'bp3-skeleton h-32' : ''}>
+            animals.length !== 0 || animalsLoading || habitatsLoading
+              ? <div className={animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}>
                 <AnimalsBoard
                   animals={animals}
+                  habitats={habitats}
                   onDelete={(id) => {
                     client.writeQuery({
                       query: GET_ANIMALS,
@@ -184,6 +187,8 @@ Dashboard.propTypes = {
   animalSearch: PropTypes.string,
   setAnimalSearch: PropTypes.func,
   animalsLoading: PropTypes.bool,
+  habitats: PropTypes.array,
+  habitatsLoading: PropTypes.bool,
   client: PropTypes.any
 }
 Dashboard.defaultProps = {

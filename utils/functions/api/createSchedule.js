@@ -87,7 +87,7 @@
 //   logDebug(`${remaining_times.length} upcoming feed times for today`)
 
 //   // get all animals that require feeding
-//   const animals = await Animal.find({ onExhibit: true })
+//   const animals = await Animal.find({ habitat: { $ne: null } })
 //   const required_quantity = animals.reduce((acc, curr) => acc + curr.intake, 0) // quantity of food required daily
 //   logDebug(`${required_quantity} ${unit} of feed required for today`)
 

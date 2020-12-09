@@ -8,13 +8,26 @@ import { Typography, toast } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 
-const constructState = (animals) => ({
-  on: animals.filter((a) => a.onExhibit).map((a) => ({ id: a._id, content: a })),
-  off: animals.filter((a) => !a.onExhibit).map((a) => ({ id: a._id, content: a }))
-})
+const constructState = (animals, habitats) => {
+  const cols = { off: [] }
+  habitats.forEach(({ _id }) => {
+    cols[_id] = []
+  })
+  animals.forEach((a) => {
+    if (!a.habitat) cols.off.push({ id: a._id, content: a })
+    else if (a.habitat._id in cols) cols[a.habitat._id].push({ id: a._id, content: a })
+    else console.warn(`Animal in nonexistent habitat ${a.habitat._id}`)
+  })
+  return cols
+}
 
-const AnimalsBoard = ({ animals, onDelete }) => {
-  const [animalsState, setAnimals] = useState(constructState(animals))
+// ({
+//   on: animals.filter((a) => a.onExhibit).map((a) => ({ id: a._id, content: a })),
+//   off: animals.filter((a) => !a.habitat).map((a) => ({ id: a._id, content: a }))
+// })
+
+const AnimalsBoard = ({ animals, habitats, onDelete }) => {
+  const [animalsState, setAnimals] = useState(constructState(animals, habitats))
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
@@ -26,7 +39,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   })
 
   useEffect(() => {
-    setAnimals(constructState(animals))
+    setAnimals(constructState(animals, habitats))
   }, [animals])
 
   const move = (source, destination, droppableSource, droppableDestination) => {
@@ -39,7 +52,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     updateAnimal({
       variables: {
         _id: removed.id,
-        onExhibit: droppableDestination.droppableId === 'on'
+        habitat: droppableDestination.droppableId === 'off' ? null : droppableDestination.droppableId
       }
     })
 
@@ -69,7 +82,8 @@ const AnimalsBoard = ({ animals, onDelete }) => {
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
     >
-      {list.map((item, index) => (
+      { !list && console.error('Null passed to animal habitat column!') }
+      {(list || []).map((item, index) => (
         <Draggable
           key={item.id}
           draggableId={item.id}
@@ -95,13 +109,17 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row mx-4">
-        <div className="flex flex-col items-center w-1/2 mx-2">
-          <Typography variant="h6" className="mb-2">On Exhibit</Typography>
-          <Droppable droppableId="on">
-            {(provided, snapshot) => renderList(provided, snapshot, animalsState.on)}
-          </Droppable>
-        </div>
-        <div className="flex flex-col items-center w-1/2 mx-2">
+        {
+          habitats.map(({ _id, name }, i) => (
+            <div className={`flex flex-col items-center w-1/${habitats.length + 1} mx-2`} key={i}>
+              <Typography variant="h6" className="mb-2">{name}</Typography>
+              <Droppable droppableId={_id}>
+                {(provided, snapshot) => renderList(provided, snapshot, animalsState[_id])}
+              </Droppable>
+            </div>
+          ))
+        }
+        <div className={`flex flex-col items-center w-1/${habitats.length + 1} mx-2`}>
           <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
           <Droppable droppableId="off">
             {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
@@ -113,6 +131,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
 }
 AnimalsBoard.propTypes = {
   animals: PropTypes.array.isRequired,
+  habitats: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired
 }
 

@@ -31,7 +31,7 @@ const Habitat = {
         })
     },
     async deleteHabitat(parent, { _id }, { models }) {
-      return models.Habitat.findByIdAndDelete(_id)
+      return models.Habitat.findByIdAndDelete(_id) //todo: move animals from this habitat
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Deleted habitat "${data.name}"`, 'habitat')
