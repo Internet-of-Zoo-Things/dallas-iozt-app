@@ -126,7 +126,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
         </div>
       </div>
       <AddHabitatDialog isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
-      <UpdateHabitatDialog isOpen={updateHabitat} close={() => setUpdateHabitat(null)} data={updateHabitat} />
+      <UpdateHabitatDialog isOpen={updateHabitat !== null} close={() => setUpdateHabitat(null)} data={updateHabitat} />
     </DragDropContext>
   )
 }

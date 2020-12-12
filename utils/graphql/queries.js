@@ -1,5 +1,11 @@
 import gql from 'graphql-tag'
 
+export const CHECK_SOFTWARE_VERSION = gql`
+  query checkSoftwareVersion {
+    checkSoftwareVersion
+  }
+`
+
 export const GET_LOGS = gql`
   query logs($tag: String, $limit: Int, $skip: Int) {
     logs(tag: $tag, limit: $limit, skip: $skip) {
