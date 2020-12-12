@@ -4,9 +4,9 @@ const Update = gql`
   type UpdateReponse {
     update: Boolean
     latestVersion: String
-    datePublished: DateTime
   }
   extend type Query {
+    checkSoftwareVersion: String
     checkForUpdate: UpdateReponse
   }
 `

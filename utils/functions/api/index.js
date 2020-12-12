@@ -1,4 +1,5 @@
 const axios = require('axios')
+const fs = require('fs')
 const { Log } = require('../../../server/models')
 const { createSchedule } = require('./createSchedule')
 
@@ -21,16 +22,22 @@ const writeLog = async (message, tag = 'general') => {
 
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
-const version = '0.1.0'
-
 const checkLatestVersion = async () => {
-  return axios.get('https://api.github.com/repos/Internet-of-Zoo-Things/dallas-iozt-app/commits/master')
+  return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/develop/version')
     .then(({ data }) => {
       return {
-        latestVersion: '',
-        datePublished: new Date(data.commit.committer.date)
+        latestVersion: data
       }
     })
+}
+
+const checkCurrentVersion = () => {
+  try {
+    return fs.readFileSync('version', 'utf8')
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
 }
 
 module.exports = {
@@ -38,5 +45,6 @@ module.exports = {
   writeLog,
   ensureCapitalized,
   createSchedule,
-  checkLatestVersion
+  checkLatestVersion,
+  checkCurrentVersion
 }
