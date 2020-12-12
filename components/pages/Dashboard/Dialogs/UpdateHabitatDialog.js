@@ -63,7 +63,7 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   updateCache: PropTypes.func,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object
 }
 
 export default _

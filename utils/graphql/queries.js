@@ -6,6 +6,15 @@ export const CHECK_SOFTWARE_VERSION = gql`
   }
 `
 
+export const CHECK_FOR_UPDATE = gql`
+  query checkForUpdate {
+    checkForUpdate {
+      update
+      latestVersion
+    }
+  }
+`
+
 export const GET_LOGS = gql`
   query logs($tag: String, $limit: Int, $skip: Int) {
     logs(tag: $tag, limit: $limit, skip: $skip) {
