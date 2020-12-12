@@ -13,7 +13,10 @@ export const CHECK_FOR_UPDATE = gql`
   query checkForUpdate {
     checkForUpdate {
       update
-      latestVersion
+      latestVersion {
+        version
+        date
+      }
     }
   }
 `

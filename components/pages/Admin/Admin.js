@@ -2,15 +2,20 @@ import React from 'react'
 import moment from 'moment'
 import { Elevation, Spinner } from '@blueprintjs/core'
 import { useQuery } from 'react-apollo'
-import { Typography, Button, Card } from '../../primitives'
+import {
+  Typography, Button, Card, toast
+} from '../../primitives'
 import { CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE } from '../../../utils/graphql/queries'
 
 const Admin = () => {
   const pi_start = moment().subtract(2, 'weeks')
-  const update = moment().subtract(1, 'day')
 
-  const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION)
-  const { data: webUpdate } = useQuery(CHECK_FOR_UPDATE)
+  const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
+    onError: (err) => toast.error(err)
+  })
+  const { data: webUpdate } = useQuery(CHECK_FOR_UPDATE, {
+    onError: (err) => toast.error(err)
+  })
 
   return (
     <div className="flex">
@@ -28,8 +33,8 @@ const Admin = () => {
             <div className="flex">
               <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
               <Typography variant="body" className="mr-2">{(moment().diff(pi_start, 'days'))} days</Typography>
-              <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, hh:mm:ss a')})</Typography>
             </div>
+            <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, hh:mm:ss a')})</Typography>
           </div>
         </Card>
         <Card
@@ -52,14 +57,17 @@ const Admin = () => {
                   </div>
                   <div className="flex mb-4">
                     <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
-                    <Typography variant="body" className="mr-2">{update.format('MMM Do, hh:mm:ss a')}</Typography>
-                    <Typography variant="body" className="text-gray mr-2">({update.fromNow()})</Typography>
+                    <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
+                    <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
                   </div>
                   {
-                    webUpdate.update
+                    webUpdate.checkForUpdate.update
                       ? <div className="flex flex-col items-center w-full">
-                        <Typography variant="h6" weight="bold" className="text-primary">
+                        <Typography variant="h6" weight="bold" className="text-primary mb-2">
                           A software update is available!
+                        </Typography>
+                        <Typography variant="subtitle">
+                          IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
                         </Typography>
                         {/* todo: update software somehow */}
                         <Button className="mt-2">
