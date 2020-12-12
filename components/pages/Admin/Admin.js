@@ -5,7 +5,7 @@ import { useQuery } from 'react-apollo'
 import {
   Typography, Button, Card, toast
 } from '../../primitives'
-import { CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE } from '../../../utils/graphql/queries'
+import { CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY } from '../../../utils/graphql/queries'
 
 const Admin = () => {
   const pi_start = moment().subtract(2, 'weeks')
@@ -14,6 +14,9 @@ const Admin = () => {
     onError: (err) => toast.error(err)
   })
   const { data: webUpdate } = useQuery(CHECK_FOR_UPDATE, {
+    onError: (err) => toast.error(err)
+  })
+  const { data: versionHistory } = useQuery(GET_VERSION_HISTORY, {
     onError: (err) => toast.error(err)
   })
 
@@ -86,6 +89,33 @@ const Admin = () => {
             <Typography variant="h6" className="mb-4 text-center">Feeder Controller Service</Typography>
             <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
           </div>
+        </Card>
+        <Card
+          header={
+            <div className="flex w-full py-3 ml-6 justify-center">
+              <Typography variant="h4" className="text-dark-gray">Web Application Version History</Typography>
+            </div>
+          }
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          {
+            versionHistory
+              ? versionHistory.getVersionHistory.map((v, i) => (
+                <div key={i} className="flex flex-col w-full">
+                  <Typography variant="h6" className="text-center">{v.version}</Typography>
+                  <Typography variant="subtitle" className="text-center text-disabled">{moment(v.date).format('MMM Do, hh:mm:ss a')}</Typography>
+                  <ul className="list-disc ml-4 mt-2">
+                    {
+                      v.changes.map((c, j) => (
+                        <li key={j}>{c}</li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              ))
+              : <Spinner />
+          }
         </Card>
       </div>
       <div className="flex flex-col items-center w-full md:w-1/2 lg:w-2/3 xl:w-2/3">

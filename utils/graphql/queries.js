@@ -21,6 +21,16 @@ export const CHECK_FOR_UPDATE = gql`
   }
 `
 
+export const GET_VERSION_HISTORY = gql`
+  query getVersionHistory {
+    getVersionHistory {
+      version
+      date
+      changes
+    }
+  }
+`
+
 export const GET_LOGS = gql`
   query logs($tag: String, $limit: Int, $skip: Int) {
     logs(tag: $tag, limit: $limit, skip: $skip) {
