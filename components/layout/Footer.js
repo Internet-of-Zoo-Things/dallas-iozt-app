@@ -9,6 +9,7 @@ import {
 const _ = () => (
   <div className="flex items-center bg-background-darker text-gray p-4 relative z-10">
     <div className="flex items-center pr-4">
+      {/* todo: fetch version no */}
       <Typography variant="subtitle">IoZT version 0.1.0</Typography>
     </div>
     <div className="flex flex-grow justify-end items-center pl-4">

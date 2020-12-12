@@ -4,13 +4,15 @@ const Animal = require('./Animal')
 const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
 const Habitat = require('./Habitat')
+const Update = require('./Update')
 
 const resolvers = lodash.merge(
   Log,
   Animal,
   Feeder,
   FeedTime,
-  Habitat
+  Habitat,
+  Update
 )
 
 module.exports = resolvers

@@ -1,3 +1,4 @@
+const axios = require('axios')
 const { Log } = require('../../../server/models')
 const { createSchedule } = require('./createSchedule')
 
@@ -20,9 +21,22 @@ const writeLog = async (message, tag = 'general') => {
 
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
+const version = '0.1.0'
+
+const checkLatestVersion = async () => {
+  return axios.get('https://api.github.com/repos/Internet-of-Zoo-Things/dallas-iozt-app/commits/master')
+    .then(({ data }) => {
+      return {
+        latestVersion: '',
+        datePublished: new Date(data.commit.committer.date)
+      }
+    })
+}
+
 module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
-  createSchedule
+  createSchedule,
+  checkLatestVersion
 }
