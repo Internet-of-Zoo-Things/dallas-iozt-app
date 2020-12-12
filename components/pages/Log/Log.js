@@ -4,7 +4,9 @@ import { Elevation } from '@blueprintjs/core'
 import styled from 'styled-components'
 import moment from 'moment'
 import tw from 'twin.macro'
-import { Typography, Card, Tag } from '../../primitives'
+import {
+  Typography, Card, Tag, Pagination
+} from '../../primitives'
 
 const NoWrap = styled.div`
   width: min-content;
@@ -13,7 +15,7 @@ const NoWrap = styled.div`
 `
 
 const Log = ({
-  logs, loading, filter, setFilter, allTags
+  logs, loading, filter, setFilter, allTags, currentPage, changePage, totalPages
 }) => (
   <div className="flex flex-col">
     <Card
@@ -44,12 +46,11 @@ const Log = ({
       className={`w-full ${loading && 'bp3-skeleton'}`}
       elevation={Elevation.TWO}
     >
-      <div className="m-6">
+      <div className="m-6 w-full">
         <table className="bp3-html-table .modifier w-full">
           <thead>
             <tr>
               <th>Timestamp</th>
-              <th>Username</th>
               <th>Message</th>
               <th>Type</th>
             </tr>
@@ -60,13 +61,8 @@ const Log = ({
                 <tr key={i}>
                   <td>
                     <NoWrap>
-                      <Typography variant="subtitle">{moment(log.timestamp).format()}</Typography>
+                      <Typography variant="subtitle">{moment(log.timestamp).format('MMM Do, hh:mm:ss a')}</Typography>
                       <Typography variant="subtitle" className="text-gray">{moment(log.timestamp).fromNow()}</Typography>
-                    </NoWrap>
-                  </td>
-                  <td>
-                    <NoWrap>
-                      {log.username}
                     </NoWrap>
                   </td>
                   <td className="break-normal">{log.message}</td>
@@ -85,6 +81,7 @@ const Log = ({
           </tbody>
         </table>
       </div>
+      { logs ? <Pagination changePage={changePage} currentPage={currentPage} totalPages={totalPages} className="mt-4" /> : null }
     </Card>
   </div>
 )
@@ -96,7 +93,11 @@ Log.propTypes = {
   filter: PropTypes.string,
   setFilter: PropTypes.func,
   /** All tag filter options */
-  allTags: PropTypes.array
+  allTags: PropTypes.array,
+  /** Change the page of results being viewed */
+  changePage: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalPages: PropTypes.number
 }
 Log.defaultProps = {
   logs: []

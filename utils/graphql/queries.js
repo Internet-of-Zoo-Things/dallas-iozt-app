@@ -1,36 +1,13 @@
 import gql from 'graphql-tag'
 
-export const ACTIVE_USER = gql`
-  query activeUser {
-    activeUser {
-      username
-      name
-      role
-    }
-  }
-`
-
-export const ALL_USERS = gql`
-  query users {
-    users {
-      username
-      name
-      role
-      email
-      created_at
-      updated_at
-    }
-  }
-`
-
 export const GET_LOGS = gql`
-  query logs($tag: String) {
-    logs(tag: $tag) {
-      username
+  query logs($tag: String, $limit: Int, $skip: Int) {
+    logs(tag: $tag, limit: $limit, skip: $skip) {
       timestamp
       message
       tag
     }
+    logCount(tag: $tag)
   }
 `
 
@@ -47,6 +24,9 @@ export const GET_ANIMALS = gql`
       name
       type
       intake
+      habitat {
+        _id
+      }
     }
   }
 `
@@ -58,6 +38,33 @@ export const GET_FEEDERS = gql`
       name
       description
       status
+      habitat {
+        name
+      }
+    }
+  }
+`
+
+export const GET_FEED_TIMES = gql`
+  query feedTimes {
+    feedTimes {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`
+
+export const GET_HABITATS = gql`
+  query habitats {
+    habitats {
+      _id
+      name
+      description
     }
   }
 `

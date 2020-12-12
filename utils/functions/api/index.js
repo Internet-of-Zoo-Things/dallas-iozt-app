@@ -1,5 +1,6 @@
-const mongoose = require('mongoose')
+const axios = require('axios')
 const { Log } = require('../../../server/models')
+const { createSchedule } = require('./createSchedule')
 
 const isEmail = (str) => {
   // eslint-disable-next-line no-control-regex
@@ -9,37 +10,33 @@ const isEmail = (str) => {
 }
 
 /* writes a log entry to the database */
-const writeLog = async (username, message, tag = 'general') => {
+const writeLog = async (message, tag = 'general') => {
   return Log.create({
     timestamp: new Date(),
-    username,
     message,
     tag
   })
     .catch((err) => { throw Error(err) })
 }
 
-const ensureCapitalized = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
-/* creates a notification for given users or all users */
-const createNotifications = async (models, message, usernames) => {
-  if (usernames && !Array.isArray(usernames)) throw Error(`usernames argument must be an array of strings, recevied ${usernames}`)
-  const notification = {
-    message,
-    timestamp: new Date(),
-    viewed: false,
-    _id: mongoose.Types.ObjectId()
-  }
-  return models.User.updateMany(
-    usernames ? { username: { $in: usernames } } : {},
-    { $push: { notifications: notification } },
-    { new: true }
-  ).catch((err) => { throw Error(err) })
+const version = '0.1.0'
+
+const checkLatestVersion = async () => {
+  return axios.get('https://api.github.com/repos/Internet-of-Zoo-Things/dallas-iozt-app/commits/master')
+    .then(({ data }) => {
+      return {
+        latestVersion: '',
+        datePublished: new Date(data.commit.committer.date)
+      }
+    })
 }
 
 module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
-  createNotifications
+  createSchedule,
+  checkLatestVersion
 }

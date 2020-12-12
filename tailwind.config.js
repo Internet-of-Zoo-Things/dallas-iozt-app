@@ -13,6 +13,7 @@ module.exports = {
     colors: {
       primary: '#3498db',
       'primary-darker': '#217dbb',
+      'primary-transparent': '#3498db40',
       background: '#eee',
       'background-darker': '#ddd',
       success: '#1bb460',
@@ -46,13 +47,19 @@ module.exports = {
       auto: 'auto',
       16: '4rem',
       64: '16rem'
+    },
+    extend: {
+      boxShadow: {
+        border: '0 0 0 1px rgba(16, 22, 26, 0.15), 0 0 0 rgba(16, 22, 26, 0), 0 0 0 rgba(16, 22, 26, 0)'
+      }
     }
   },
   variants: {
     borderColor: ['hover', 'disabled'],
     backgroundColor: ['hover', 'disabled'],
     opacity: ['hover', 'disabled'],
-    gridAutoFlow: ['responsive', 'hover', 'focus']
+    gridAutoFlow: ['responsive', 'hover', 'focus'],
+    boxShadow: ['responsive', 'hover']
   },
   plugins: [
     plugin(({ addVariant }) => {

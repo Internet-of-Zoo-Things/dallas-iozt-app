@@ -7,17 +7,23 @@ export const CREATE_ANIMAL = gql`
       name
       type
       intake
+      habitat {
+        _id
+      }
     }
   }
 `
 
 export const UPDATE_ANIMAL = gql`
-  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float) {
-    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake) {
+  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float, $habitat: String) {
+    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, habitat: $habitat) {
       _id
       name
       type
       intake
+      habitat {
+        _id
+      }
     }
   }
 `
@@ -55,6 +61,76 @@ export const UPDATE_FEEDER = gql`
 export const DELETE_FEEDER = gql`
   mutation deleteFeeder($_id: String!) {
     deleteFeeder(_id: $_id) {
+      _id
+    }
+  }
+`
+
+export const CREATE_FEED_TIME = gql`
+  mutation createFeedTime($feeder: String!, $timestamp: DateTime!, $quantity: Float!) {
+    createFeedTime(feeder: $feeder, timestamp: $timestamp, quantity: $quantity) {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`
+
+export const UPDATE_FEED_TIME = gql`
+  mutation updateFeedTime($_id: String!, $feeder: String, $timestamp: DateTime, $quantity: Float) {
+    updateFeedTime(_id: $_id, feeder: $feeder, timestamp: $timestamp, quantity: $quantity) {
+      _id
+      feeder {
+        _id
+        name
+      }
+      timestamp
+      quantity
+    }
+  }
+`
+
+export const DELETE_FEED_TIME = gql`
+  mutation deleteFeedTime($_id: String!) {
+    deleteFeedTime(_id: $_id) {
+      _id
+    }
+  }
+`
+
+export const DELETE_ALL_FEED_TIMES = gql`
+  mutation deleteAllUpcomingFeedTimes {
+    deleteAllUpcomingFeedTimes
+  }
+`
+
+export const CREATE_HABITAT = gql`
+  mutation createHabitat($name: String!, $description: String) {
+    createHabitat(name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`
+
+export const UPDATE_HABITAT = gql`
+  mutation updateHabitat($_id: String!, $name: String, $description: String) {
+    updateHabitat(_id: $_id, name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`
+
+export const DELETE_HABITAT = gql`
+  mutation deleteHabitat($_id: String!) {
+    deleteHabitat(_id: $_id) {
       _id
     }
   }

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const HabitatModel = require('./Habitat')
 
 const { Schema } = mongoose
 
@@ -15,14 +16,13 @@ const Feeder = new Schema({
     type: String,
     required: true
   },
-  created_at: {
-    type: Date,
-    required: true
-  },
-  updated_at: {
-    type: Date,
+  habitat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: HabitatModel,
     required: true
   }
+}, {
+  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
 
 module.exports = mongoose.model('feeder', Feeder)

@@ -5,23 +5,25 @@ import {
   Typography, Button, Card, TextInput
 } from '../../primitives'
 import FeederCard from './FeederCard'
-import AnimalCard from './AnimalCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
 import {
   AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
 } from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
-  user,
   schedule,
+  scheduleLoading,
   feeders,
   feedersLoading,
   animals,
   animalSearch,
   setAnimalSearch,
   animalsLoading,
+  habitats,
+  habitatsLoading,
   client
 }) => {
   /* dialogs */
@@ -50,24 +52,28 @@ const Dashboard = ({
             <Typography variant="subtitle" className="text-gray">UPCOMING</Typography>
             <div className="flex flex-col w-full items-center">
               {
-                schedule.length !== 0
-                  ? <>
+                schedule.length !== 0 || scheduleLoading
+                  ? <div className={`${animalsLoading ? 'bp3-skeleton h-32' : ''} w-full`}>
                     {
                       schedule.map((s, i) => (
-                        <FeedTimeCard key={i} data={s} user={user} />
+                        <FeedTimeCard key={i} data={s} feeders={feeders || []} />
                       ))
                     }
                     <Button className="mt-2" minimal intent="danger" fill onClick={() => setShowDeleteAllFeedTimesDialog(true)}>
                       <Typography variant="subtitle">Clear All</Typography>
                     </Button>
-                  </>
+                  </div>
                   : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
               }
             </div>
           </div>
           <div className="w-full flex flex-col items-center">
             <Typography variant="subtitle" className="text-gray">GRAPHICAL TIMELINE</Typography>
-            <FeedTimeline schedule={schedule} />
+            {
+              schedule.length !== 0
+                ? <FeedTimeline schedule={schedule} />
+                : <Typography variant="body" className="flex w-full justify-center text-gray my-8">No scheduled feeds!</Typography>
+            }
           </div>
         </Card>
       </div>
@@ -125,26 +131,21 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           {
-            animals.length !== 0 || animalsLoading
-              ? <div className={`flex flex-row flex-wrap mx-4 ${animalsLoading ? 'bp3-skeleton h-32' : ''}`}>
-                {
-                  animals.map((a, i) => (
-                    <AnimalCard
-                      key={i}
-                      {...a}
-                      user={user}
-                      onDelete={() => {
-                        client.writeQuery({
-                          query: GET_ANIMALS,
-                          variables: { filter: animalSearch },
-                          data: {
-                            animals: animals.filter((t) => t._id !== a._id)
-                          }
-                        })
-                      }}
-                    />
-                  ))
-                }
+            animals.length !== 0 || animalsLoading || habitatsLoading
+              ? <div className={animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}>
+                <AnimalsBoard
+                  animals={animals}
+                  habitats={habitats}
+                  onDelete={(id) => {
+                    client.writeQuery({
+                      query: GET_ANIMALS,
+                      variables: { filter: animalSearch },
+                      data: {
+                        animals: animals.filter((t) => t._id !== id)
+                      }
+                    })
+                  }}
+                />
               </div>
               : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
           }
@@ -178,14 +179,16 @@ const Dashboard = ({
   )
 }
 Dashboard.propTypes = {
-  user: PropTypes.object,
   schedule: PropTypes.array,
+  scheduleLoading: PropTypes.bool,
   feeders: PropTypes.array,
   feedersLoading: PropTypes.bool,
   animals: PropTypes.array,
   animalSearch: PropTypes.string,
   setAnimalSearch: PropTypes.func,
   animalsLoading: PropTypes.bool,
+  habitats: PropTypes.array,
+  habitatsLoading: PropTypes.bool,
   client: PropTypes.any
 }
 Dashboard.defaultProps = {

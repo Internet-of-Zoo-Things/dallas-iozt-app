@@ -15,42 +15,42 @@ const Animal = {
         }))
       }
       return models.Animal.find(where)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
   Mutation: {
-    async createAnimal(parent, { name, type, intake }, { models, user }) {
+    async createAnimal(parent, { name, type, intake }, { models }) {
       return models.Animal.create({
         name: ensureCapitalized(name),
         type: ensureCapitalized(type),
-        intake,
-        created_at: new Date(),
-        updated_at: new Date()
+        intake
       })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Created animal "${name}"`, 'animal')
+          await writeLog(`Created animal "${name}"`, 'animal')
           return data
         })
     },
-    async updateAnimal(parent, { _id, ...args }, { models, user }) {
+    async updateAnimal(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
       if (args.type) args.type = ensureCapitalized(args.type)
-      return models.Animal.findByIdAndUpdate(_id, {
-        ...args,
-        updated_at: new Date()
-      }, { new: true })
+      return models.Animal.findByIdAndUpdate(_id, args, { new: true })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Updated animal "${args.name}"`, 'animal')
+          // write to the long for changes other than switching between habitats
+          if (!(Object.keys(args).length === 1 && args.habitat)) await writeLog(`Updated animal "${data.name}"`, 'animal')
           return data
         })
     },
-    async deleteAnimal(parent, { _id }, { models, user }) {
+    async deleteAnimal(parent, { _id }, { models }) {
       return models.Animal.findByIdAndDelete(_id)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Deleted animal "${data.name}"`, 'animal')
+          await writeLog(`Deleted animal "${data.name}"`, 'animal')
           return data
         })
     }

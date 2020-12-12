@@ -1,10 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Classes } from '@blueprintjs/core'
+import { useMutation } from 'react-apollo'
 import moment from 'moment'
 import { Button } from '../../../primitives'
+import { DELETE_FEED_TIME } from '../../../../utils/graphql/mutations'
+import { GET_FEED_TIMES } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, timestamp }) => {
+const _ = ({
+  isOpen, close, timestamp, id
+}) => {
+  /* api interaction */
+  const [deleteFeedTime, { loading }] = useMutation(DELETE_FEED_TIME, {
+    onError: (e) => console.error(JSON.stringify(e)),
+    onCompleted: () => {
+      close()
+    },
+    refetchQueries: () => [{ query: GET_FEED_TIMES }],
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+  })
+
   return (
     <Dialog
       icon="trash"
@@ -18,7 +34,7 @@ const _ = ({ isOpen, close, timestamp }) => {
         </div>
         <div className={`${Classes.DIALOG_FOOTER} ml-auto`}>
           <Button intent="primary" className="mr-2" onClick={close}>Cancel</Button>
-          <Button intent="danger" onClick={() => {}} loading={false}>Delete</Button>
+          <Button intent="danger" onClick={() => deleteFeedTime({ variables: { _id: id } })} loading={loading}>Delete</Button>
         </div>
       </>
     </Dialog>
@@ -28,7 +44,8 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   /** Time for feeding */
-  timestamp: PropTypes.any.isRequired
+  timestamp: PropTypes.any.isRequired,
+  id: PropTypes.string.isRequired
 }
 
 export default _

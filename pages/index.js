@@ -1,32 +1,14 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { useQuery } from 'react-apollo'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
-import { withCurrentUser } from '../components/providers'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
-import { GET_ANIMALS, GET_FEEDERS } from '../utils/graphql/queries'
+import {
+  GET_ANIMALS, GET_FEEDERS, GET_FEED_TIMES, GET_HABITATS
+} from '../utils/graphql/queries'
 
-const dummySchedule = [{
-  timestamp: moment().add(30, 'minutes'),
-  feeder: 'Feeder 1',
-  quantity: 2
-}, {
-  timestamp: moment().add(2, 'hours'),
-  feeder: 'Feeder 2',
-  quantity: 1
-}, {
-  timestamp: moment().add(7, 'hours'),
-  feeder: 'Feeder 2',
-  quantity: 3
-}, {
-  timestamp: moment().add(8, 'hours'),
-  feeder: 'Feeder 1',
-  quantity: 2
-}]
-
-const Dashboard = ({ user, client }) => {
+const Dashboard = ({ client }) => {
   /* searchbars */
   const [animalSearch, setAnimalSearch] = useState('')
 
@@ -42,28 +24,38 @@ const Dashboard = ({ user, client }) => {
     notifyOnNetworkStatusChange: true
     // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
+  const { data: feedTimesData, loading: feedTimesLoading, error: feedTimesError } = useQuery(GET_FEED_TIMES, {
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
+  })
+  const { data: habitats, habitatsLoading } = useQuery(GET_HABITATS, {
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
+  })
 
   return (
-    <Layout title="Dashboard" user={user && user.activeUser} error={animalsError || feedersError}>
+    <Layout title="Dashboard" error={animalsError || feedersError || feedTimesError}>
       <DashboardComponent
-        user={user && user.activeUser}
-        schedule={dummySchedule}
+        schedule={feedTimesData ? feedTimesData.feedTimes : []}
+        scheduleLoading={feedTimesLoading}
         feeders={feedersData ? feedersData.feeders : []}
         feedersLoading={feedersLoading}
         animals={animalsData ? animalsData.animals : []}
         animalSearch={animalSearch}
         setAnimalSearch={setAnimalSearch}
         animalsLoading={animalsLoading}
+        habitats={habitats ? habitats.habitats : []}
+        habitatsLoading={habitatsLoading}
         client={client}
       />
     </Layout>
   )
 }
 Dashboard.propTypes = {
-  /** Currently signed-in user */
-  user: PropTypes.object,
   /* apollo client used to write to the cache */
   client: PropTypes.any
 }
 
-export default withApollo({ ssr: true })(withCurrentUser(Dashboard))
+export default withApollo({ ssr: true })(Dashboard)

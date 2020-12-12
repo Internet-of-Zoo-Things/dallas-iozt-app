@@ -5,41 +5,40 @@ const Feeder = {
   Query: {
     async feeders(parent, args, { models }) {
       return models.Feeder.find()
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
     }
   },
   Mutation: {
-    async createFeeder(parent, { name, description }, { models, user }) {
+    async createFeeder(parent, { name, description }, { models }) {
       return models.Feeder.create({
         name: ensureCapitalized(name),
         description: ensureCapitalized(description),
-        status: 'online',
-        created_at: new Date(),
-        updated_at: new Date()
+        status: 'online'
       })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Created feeder "${name}"`, 'feeder')
+          await writeLog(`Created feeder "${name}"`, 'feeder')
           return data
         })
     },
-    async updateFeeder(parent, { _id, ...args }, { models, user }) {
+    async updateFeeder(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
-      return models.Feeder.findByIdAndUpdate(_id, {
-        ...args,
-        updated_at: new Date()
-      }, { new: true })
+      return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Updated feeder "${args.name}"`, 'feeder')
+          await writeLog(`Updated feeder "${args.name}"`, 'feeder')
           return data
         })
     },
-    async deleteFeeder(parent, { _id }, { models, user }) {
+    async deleteFeeder(parent, { _id }, { models }) {
       return models.Feeder.findByIdAndDelete(_id)
+        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(user.username, `Deleted feeder "${data.name}"`, 'feeder')
+          await writeLog(`Deleted feeder "${data.name}"`, 'feeder')
           return data
         })
     }

@@ -1,24 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
-import tw from 'twin.macro'
 import PropTypes from 'prop-types'
-import {
-  Popover as _Popover, Position, Navbar, Alignment, Menu, MenuItem, MenuDivider
-} from '@blueprintjs/core'
+import { Navbar, Alignment } from '@blueprintjs/core'
 import {
   Typography,
   Button,
   StyledLink,
   Tag
 } from '../primitives'
-
-const Popover = styled(_Popover)`
-  &&& {
-    .bp3-popover-target {
-      ${tw`h-12 flex items-center`}
-    }
-  }
-`
 
 const Divider = styled(Navbar.Divider)`
   border-color: #ffffff60;
@@ -31,21 +20,19 @@ const routes = [
     icon: 'dashboard'
   },
   {
-    href: '/users',
-    currentPage: 'Users',
-    icon: 'user'
-  },
-  {
     href: '/log',
     currentPage: 'Log',
     icon: 'document'
+  },
+  {
+    href: '/admin',
+    currentPage: 'Admin',
+    icon: 'cog'
   }
 ]
 
 const _ = ({
-  currentPage,
-  notifications,
-  user
+  currentPage
 }) => (
   <Navbar className="bg-primary text-white">
     <Navbar.Group align={Alignment.LEFT}>
@@ -76,51 +63,10 @@ const _ = ({
         }
       </div>
     </Navbar.Group>
-    <Navbar.Group align={Alignment.RIGHT}>
-      <Popover
-        target={
-          <Button icon="notifications" />
-        }
-        content={
-          <Menu className="max-w-xs">
-            {
-              notifications.length > 0
-                ? notifications.map((n, i) => (
-                  <MenuItem icon="envelope" text={n.message} multiline key={i} />
-                ))
-                : <MenuItem text="No new notifications!" disabled />
-            }
-            <MenuDivider />
-            <MenuItem icon="align-left" text="View full log" href="/log" />
-          </Menu>
-        }
-        position={Position.BOTTOM}
-        className="h-12"
-      />
-      <Popover
-        target={
-          <Button icon="user" />
-        }
-        content={
-          <Menu>
-            <MenuDivider title={`${user && user.name} (${user && user.username})`} />
-            <MenuItem icon="cog" text="Settings" />
-            <MenuItem icon="log-out" text="Sign Out" intent="danger" />
-          </Menu>
-        }
-        position={Position.BOTTOM}
-        className="h-12"
-      />
-    </Navbar.Group>
   </Navbar>
 )
 _.propTypes = {
-  currentPage: PropTypes.string,
-  notifications: PropTypes.array,
-  user: PropTypes.object
-}
-_.defaultProps = {
-  notifications: []
+  currentPage: PropTypes.string
 }
 
 export default _

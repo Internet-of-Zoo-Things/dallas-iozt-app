@@ -4,12 +4,12 @@ const Log = gql`
   type Log {
     _id: String
     timestamp: DateTime
-    username: String
     message: String
     tag: String
   }
   extend type Query {
-    logs(tag: String): [Log]
+    logs(tag: String, limit: Int, skip: Int): [Log]
+    logCount(tag: String): Int
     logTags: [String]
   }
 `

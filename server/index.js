@@ -4,10 +4,12 @@ const cors = require('cors')
 const express = require('express')
 const next = require('next')
 const mongoose = require('mongoose')
+const cron = require('node-cron')
 
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 const models = require('./models')
+const { createSchedule } = require('../utils/functions/api')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -38,9 +40,8 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
-    const user = { username: 'admin', name: 'Test User', role: 'ADMIN' }
     return {
-      req, res, user, models
+      req, res, models
     }
   },
   playground: { version: '1.7.25' }
@@ -49,6 +50,19 @@ const corsOptions = {
   origin: true,
   credentials: true
 }
+
+/* set up cron job to automatically create daily schedule */
+const job = cron.schedule('* 6 * * *', () => { // 6 am daily
+  console.warn('CRON: Creating daily schedule')
+  createSchedule()
+    .catch((err) => {
+      console.error('Could not create daily schedule!')
+      console.error(err)
+    })
+    .then(() => {
+      // todo: expire old feedtimes (past 1 week)
+    })
+})
 
 /* prepare the api */
 app.prepare()
@@ -70,5 +84,6 @@ app.prepare()
   })
   .catch((ex) => {
     console.error(ex.stack)
+    job.destroy()
     process.exit(1)
   })
