@@ -26,6 +26,14 @@ const Update = {
           date: data && data.date
         }
       }
+    },
+    async getVersionHistory() {
+      const hist = getVersionData()
+      const versions = Object.keys(hist).map((v) => ({
+        version: v,
+        ...hist[v]
+      }))
+      return versions
     }
   }
 }

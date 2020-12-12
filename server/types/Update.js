@@ -8,10 +8,12 @@ const Update = gql`
   type SoftwareVersion {
     version: String
     date: DateTime
+    changes: [String]
   }
   extend type Query {
     checkSoftwareVersion: SoftwareVersion
     checkForUpdate: UpdateReponse
+    getVersionHistory: [SoftwareVersion]
   }
 `
 
