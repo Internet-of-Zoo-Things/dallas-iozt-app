@@ -14,7 +14,7 @@ const _ = () => {
   return (
     <div className="flex items-center bg-background-darker text-gray p-4 relative z-10">
       <div className="flex items-center pr-4">
-        { data && <Typography variant="subtitle">IoZT version {data.checkSoftwareVersion}</Typography> }
+        { data && <Typography variant="subtitle">IoZT version {data.checkSoftwareVersion.version}</Typography> }
       </div>
       <div className="flex flex-grow justify-end items-center pl-4">
         {

@@ -1,10 +1,15 @@
 const { ApolloError } = require('apollo-server-express')
-const { checkLatestVersion, checkCurrentVersion } = require('../../utils/functions/api')
+const { checkLatestVersion, checkCurrentVersion, getVersionData } = require('../../utils/functions/api')
 
 const Update = {
   Query: {
     async checkSoftwareVersion() {
-      return checkCurrentVersion()
+      const version = checkCurrentVersion()
+      const data = getVersionData(version)
+      return {
+        version,
+        date: data && data.date
+      }
     },
     async checkForUpdate() {
       const latest = await checkLatestVersion()
@@ -13,9 +18,13 @@ const Update = {
           throw new ApolloError('Unable to access repository')
         })
       const current = checkCurrentVersion()
+      const data = getVersionData(latest)
       return {
-        update: current === latest,
-        ...latest
+        update: current !== latest,
+        latestVersion: {
+          version: latest,
+          date: data && data.date
+        }
       }
     }
   }

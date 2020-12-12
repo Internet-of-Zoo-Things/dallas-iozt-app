@@ -48,7 +48,7 @@ const Admin = () => {
                 ? <>
                   <div className="flex">
                     <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
-                    <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion}</Typography>
+                    <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
                   </div>
                   <div className="flex mb-4">
                     <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>

@@ -3,10 +3,14 @@ const { gql } = require('apollo-server-express')
 const Update = gql`
   type UpdateReponse {
     update: Boolean
-    latestVersion: String
+    latestVersion: SoftwareVersion
+  }
+  type SoftwareVersion {
+    version: String
+    date: DateTime
   }
   extend type Query {
-    checkSoftwareVersion: String
+    checkSoftwareVersion: SoftwareVersion
     checkForUpdate: UpdateReponse
   }
 `

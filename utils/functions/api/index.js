@@ -25,9 +25,7 @@ const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slic
 const checkLatestVersion = async () => {
   return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/develop/version')
     .then(({ data }) => {
-      return {
-        latestVersion: data
-      }
+      return data
     })
 }
 
@@ -40,11 +38,22 @@ const checkCurrentVersion = () => {
   }
 }
 
+const getVersionData = (version) => {
+  try {
+    const data = JSON.parse(fs.readFileSync('changelog.json'))
+    return version ? data[version] : data
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
 module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
   createSchedule,
   checkLatestVersion,
-  checkCurrentVersion
+  checkCurrentVersion,
+  getVersionData
 }

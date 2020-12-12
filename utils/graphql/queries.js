@@ -2,7 +2,10 @@ import gql from 'graphql-tag'
 
 export const CHECK_SOFTWARE_VERSION = gql`
   query checkSoftwareVersion {
-    checkSoftwareVersion
+    checkSoftwareVersion {
+      version
+      date
+    }
   }
 `
 
