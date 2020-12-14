@@ -45,11 +45,11 @@ const _ = ({
               defaultValue: data.feeder.name
             },
             {
-              label: 'Food Quantity (lbs)',
+              label: 'Food Quantity (s)',
               id: 'quantity',
               required: true,
-              type: InputTypes.NUMERIC,
-              placeholder: 'Enter amount of food to dispense in lbs',
+              type: InputTypes.INTAKE,
+              placeholder: 'Enter amount of food to dispense in s',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0,
               defaultValue: data.quantity
             },

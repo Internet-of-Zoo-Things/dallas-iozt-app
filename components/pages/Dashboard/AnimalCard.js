@@ -26,7 +26,7 @@ const AnimalCard = ({
             {name}
           </Typography>
           <Typography variant="subtitle" weight="thin" className="px-2 truncate">
-            ({intake} lbs/day)
+            ({intake} s/day)
           </Typography>
         </div>
         <div className="flex flex-no-wrap">
@@ -58,7 +58,7 @@ AnimalCard.propTypes = {
   name: PropTypes.string.isRequired,
   /** Species of animal */
   type: PropTypes.string.isRequired,
-  /** Daily food intake in lbs */
+  /** Daily food intake in s */
   intake: PropTypes.number.isRequired,
   /** id of animal in database */
   _id: PropTypes.string.isRequired,

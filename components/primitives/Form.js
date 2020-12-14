@@ -192,6 +192,7 @@ const _ = ({
                   id={field.id}
                   placeholder="Custom amount"
                   defaultValue={field.defaultValue}
+                  value={data[field.id]}
                   onValueChange={(e) => {
                     const tmp = e
                     setData((prev) => ({ ...prev, [field.id]: tmp }))
