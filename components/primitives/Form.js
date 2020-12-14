@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { FormGroup, InputGroup, NumericInput } from '@blueprintjs/core'
+import {
+  FormGroup, InputGroup, NumericInput, Spinner
+} from '@blueprintjs/core'
 import { DatePicker } from '@blueprintjs/datetime'
 import moment from 'moment'
+import { useQuery } from 'react-apollo'
 import { InputTypes } from '../../utils/models'
+import { capitalize } from '../../utils/functions/ui'
 import Tooltip from './Tooltip'
 import Button from './Button'
 import { Select, SelectItem } from './Select'
+import { GET_INTAKE_DEFAULTS } from '../../utils/graphql/queries'
 
 const validateEmail = (val) => (
   // eslint-disable-next-line no-control-regex
@@ -164,6 +169,41 @@ const _ = ({
         }}
       />
     )
+    case InputTypes.INTAKE: {
+      const { data: intakeDefaults, loading: intakeDefaultsLoading } = useQuery(GET_INTAKE_DEFAULTS)
+      return (
+        <div className="flex w-full justify-between">
+          {
+            intakeDefaultsLoading
+              ? <Spinner />
+              : <>
+                {
+                  intakeDefaults.defaults.map((d, i) => (
+                    <Button
+                      key={i}
+                      onClick={() => setData((prev) => ({ ...prev, [field.id]: d.value }))}
+                      intent={data[field.id] === d.value ? 'primary' : 'neutral'}
+                    >
+                      {capitalize(d.name)} ({d.value}s)
+                    </Button>
+                  ))
+                }
+                <NumericInput
+                  id={field.id}
+                  placeholder="Custom amount"
+                  defaultValue={field.defaultValue}
+                  onValueChange={(e) => {
+                    const tmp = e
+                    setData((prev) => ({ ...prev, [field.id]: tmp }))
+                  }}
+                  buttonPosition="none"
+                  {...field.props}
+                />
+              </>
+          }
+        </div>
+      )
+    }
     default: console.error(`Unknown input type "${field.type}"`)
     }
   }

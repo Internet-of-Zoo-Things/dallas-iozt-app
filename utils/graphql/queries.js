@@ -99,3 +99,12 @@ export const GET_HABITATS = gql`
     }
   }
 `
+
+export const GET_INTAKE_DEFAULTS = gql`
+  query defaults {
+    defaults(type: "intake") {
+      name
+      value
+    }
+  }
+`

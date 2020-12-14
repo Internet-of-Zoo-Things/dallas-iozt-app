@@ -4,5 +4,6 @@ export default {
   EMAIL: 'email',
   SELECT: 'select',
   NUMERIC: 'numeric',
-  DATETIME: 'datetime'
+  DATETIME: 'datetime',
+  INTAKE: 'intake'
 }
