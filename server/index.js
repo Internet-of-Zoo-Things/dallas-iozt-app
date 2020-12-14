@@ -9,7 +9,7 @@ const cron = require('node-cron')
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 const models = require('./models')
-const { createSchedule } = require('../utils/functions/api')
+const { createSchedule, checkCurrentVersion, checkLatestVersion } = require('../utils/functions/api')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -52,7 +52,9 @@ const corsOptions = {
 }
 
 /* set up cron job to automatically create daily schedule */
-const job = cron.schedule('* 6 * * *', () => { // 6 am daily
+const schedule = '* 6 * * *'
+console.warn(`* Initializing automatic daily scheduling (${schedule})`)
+const job = cron.schedule(schedule, () => { // 6 am daily
   console.warn('CRON: Creating daily schedule')
   createSchedule()
     .catch((err) => {
@@ -63,6 +65,19 @@ const job = cron.schedule('* 6 * * *', () => { // 6 am daily
       // todo: expire old feedtimes (past 1 week)
     })
 })
+
+/* check app versioning and look for updates */
+const curr_version = checkCurrentVersion()
+console.warn(`* Currently running webapp version ${curr_version}`)
+checkLatestVersion()
+  .then((d) => {
+    if (curr_version === d) console.warn('* Webapp software is up-to-date')
+    else console.warn(`* UPDATE NEEDED: ${curr_version} -> ${d}\n* Go to the Admin page to perform this update`)
+  })
+  .catch((err) => {
+    console.error('! Could not access GitHub to check for software updates')
+    console.error(err)
+  })
 
 /* prepare the api */
 app.prepare()

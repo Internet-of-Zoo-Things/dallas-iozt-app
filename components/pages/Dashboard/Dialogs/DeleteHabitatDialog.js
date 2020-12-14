@@ -44,7 +44,7 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   /** Existing data for habitat */
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object,
   onSubmit: PropTypes.func.isRequired
 }
 

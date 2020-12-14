@@ -23,10 +23,13 @@ const writeLog = async (message, tag = 'general') => {
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
 const checkLatestVersion = async () => {
-  return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/develop/version')
+  return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/develop/version', {
+    timeout: 1000
+  })
     .then(({ data }) => {
       return data
     })
+    .catch((err) => { throw err })
 }
 
 const checkCurrentVersion = () => {
