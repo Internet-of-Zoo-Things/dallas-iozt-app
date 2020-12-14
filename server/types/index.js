@@ -5,6 +5,7 @@ const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
 const Habitat = require('./Habitat')
 const Update = require('./Update')
+const Default = require('./Default')
 
 const types = gql`
   type Query {
@@ -22,6 +23,7 @@ const types = gql`
   ${FeedTime}
   ${Habitat}
   ${Update}
+  ${Default}
 `
 
 module.exports = types

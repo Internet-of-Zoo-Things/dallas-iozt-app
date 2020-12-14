@@ -5,6 +5,7 @@ const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
 const Habitat = require('./Habitat')
 const Update = require('./Update')
+const Default = require('./Default')
 
 const resolvers = lodash.merge(
   Log,
@@ -12,7 +13,8 @@ const resolvers = lodash.merge(
   Feeder,
   FeedTime,
   Habitat,
-  Update
+  Update,
+  Default
 )
 
 module.exports = resolvers

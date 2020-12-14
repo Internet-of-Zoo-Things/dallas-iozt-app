@@ -40,7 +40,7 @@ const Animal = {
         .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          // write to the long for changes other than switching between habitats
+          // write to the log for changes other than switching between habitats
           if (!(Object.keys(args).length === 1 && args.habitat)) await writeLog(`Updated animal "${data.name}"`, 'animal')
           return data
         })

@@ -76,7 +76,7 @@ checkLatestVersion()
   })
   .catch((err) => {
     console.error('! Could not access GitHub to check for software updates')
-    console.error(err)
+    console.error(`Error: ${err.message}`)
   })
 
 /* prepare the api */
