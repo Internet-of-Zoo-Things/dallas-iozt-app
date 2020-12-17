@@ -32,7 +32,9 @@ mongoose.connection.on('error', (err) => {
   console.error(err)
 })
 
-/* configure one-time job scheduling for feedings, animal habitat transitions */
+/* configure one-time job scheduling dict for feedings, animal habitat transitions */
+const schedule = {}
+/* initialize schedule based on existing feed times */
 
 /* set up apollo graphql */
 const app = next({ dev })
@@ -43,7 +45,7 @@ const apolloServer = new ApolloServer({
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
     return {
-      req, res, models
+      req, res, models, schedule
     }
   },
   playground: { version: '1.7.25' }

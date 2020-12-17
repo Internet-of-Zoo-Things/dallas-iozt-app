@@ -1,7 +1,6 @@
 const axios = require('axios')
 const fs = require('fs')
 const { Log } = require('../../../server/models')
-const { createSchedule } = require('./createSchedule')
 
 const isEmail = (str) => {
   // eslint-disable-next-line no-control-regex
@@ -55,7 +54,6 @@ module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
-  createSchedule,
   checkLatestVersion,
   checkCurrentVersion,
   getVersionData
