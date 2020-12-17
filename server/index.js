@@ -70,14 +70,14 @@ const cron_schedule = '* 6 * * *'
 console.warn(`* Initializing automatic daily scheduling (${cron_schedule})`)
 const job = cron.schedule(cron_schedule, () => { // 6 am daily
   console.warn('CRON: Creating daily schedule')
-  createSchedule()
-    .catch((err) => {
-      console.error('Could not create daily schedule!')
-      console.error(err)
-    })
-    .then(() => {
-      // todo: expire old feedtimes (past 1 week)
-    })
+  // createSchedule()
+  //   .catch((err) => {
+  //     console.error('Could not create daily schedule!')
+  //     console.error(err)
+  //   })
+  //   .then(() => {
+  //     // todo: expire old feedtimes (past 1 week)
+  //   })
 })
 
 /* check app versioning and look for updates */
