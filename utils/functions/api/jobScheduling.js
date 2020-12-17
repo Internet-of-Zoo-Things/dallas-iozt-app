@@ -67,8 +67,18 @@ const deleteAllJobs = (schedule) => {
   })
 }
 
+const initializeSchedule = async (schedule) => {
+  return FeedTimeModel.find({ timestamp: { $gte: new Date() } })
+    .populate('feeder')
+    .catch((err) => { throw err })
+    .then((feedtimes) => {
+      feedtimes.forEach((f) => scheduleJob(f, schedule))
+    })
+}
+
 module.exports = {
   scheduleJob,
   deleteJob,
-  deleteAllJobs
+  deleteAllJobs,
+  initializeSchedule
 }

@@ -10,6 +10,7 @@ const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 const models = require('./models')
 const { createSchedule, checkCurrentVersion, checkLatestVersion } = require('../utils/functions/api')
+const { initializeSchedule } = require('../utils/functions/api/jobScheduling')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -35,6 +36,15 @@ mongoose.connection.on('error', (err) => {
 /* configure one-time job scheduling dict for feedings, animal habitat transitions */
 const schedule = {}
 /* initialize schedule based on existing feed times */
+initializeSchedule(schedule)
+  .catch((err) => {
+    console.error('Unable to initialize feeding schedule:')
+    console.error(err)
+    process.exit(1)
+  })
+  .then(() => {
+    console.warn(`Initialized feeding schedule based on ${Object.keys(schedule).length} existing feed times.`)
+  })
 
 /* set up apollo graphql */
 const app = next({ dev })
