@@ -32,6 +32,8 @@ mongoose.connection.on('error', (err) => {
   console.error(err)
 })
 
+/* configure one-time job scheduling for feedings, animal habitat transitions */
+
 /* set up apollo graphql */
 const app = next({ dev })
 const handle = app.getRequestHandler()
@@ -52,9 +54,9 @@ const corsOptions = {
 }
 
 /* set up cron job to automatically create daily schedule */
-const schedule = '* 6 * * *'
-console.warn(`* Initializing automatic daily scheduling (${schedule})`)
-const job = cron.schedule(schedule, () => { // 6 am daily
+const cron_schedule = '* 6 * * *'
+console.warn(`* Initializing automatic daily scheduling (${cron_schedule})`)
+const job = cron.schedule(cron_schedule, () => { // 6 am daily
   console.warn('CRON: Creating daily schedule')
   createSchedule()
     .catch((err) => {

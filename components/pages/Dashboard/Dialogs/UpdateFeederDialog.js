@@ -44,7 +44,7 @@ const _ = ({ isOpen, close, data }) => {
               id: 'description',
               required: false,
               type: InputTypes.TEXT,
-              placeholder: 'Describe the feeder (optional)...',
+              placeholder: 'Describe the feeder...',
               defaultValue: data.description
             }
           ]}

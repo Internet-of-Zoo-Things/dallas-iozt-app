@@ -43,7 +43,7 @@ const _ = ({ isOpen, close }) => {
               id: 'description',
               required: false,
               type: InputTypes.TEXT,
-              placeholder: 'Describe the feeder (optional)...'
+              placeholder: 'Describe the feeder...'
             }
           ]}
         />

@@ -63,7 +63,6 @@ const _ = ({ isOpen, close, updateCache }) => {
             {
               label: 'Daily Food Intake (s)',
               id: 'intake',
-              required: true,
               type: InputTypes.NUMERIC,
               placeholder: 'Enter the daily food intake in s...',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0

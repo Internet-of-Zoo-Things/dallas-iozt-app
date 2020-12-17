@@ -219,7 +219,7 @@ const _ = ({
           <FormGroup
             label={f.label}
             labelFor={f.id}
-            labelInfo={f.required ? '(required)' : ''}
+            labelInfo={f.required ? '(required)' : '(optional)'}
             key={i}
           >
             { renderField(f) }
