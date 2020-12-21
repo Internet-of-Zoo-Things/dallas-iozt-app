@@ -221,6 +221,7 @@ const _ = ({
             labelFor={f.id}
             labelInfo={f.required ? '(required)' : '(optional)'}
             key={i}
+            helperText={f.helperText}
           >
             { renderField(f) }
           </FormGroup>

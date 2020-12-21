@@ -9,13 +9,14 @@ import { FeederStatuses } from '../../../utils/models'
 import { capitalize } from '../../../utils/functions/ui'
 import { UPDATE_FEEDER } from '../../../utils/graphql/mutations'
 import { GET_FEEDERS } from '../../../utils/graphql/queries'
-import { DeleteFeederDialog, UpdateFeederDialog } from './Dialogs'
+import { DeleteFeederDialog, UpdateFeederDialog, RefillFeederDialog } from './Dialogs'
 
 const FeederCard = ({
   name, status, _id, description, habitat, remaining_percentage, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
+  const [showRefillFeederDialog, setShowRefillFeederDialog] = useState(false)
 
   const [updateFeeder] = useMutation(UPDATE_FEEDER, {
     onError: (e) => console.error(JSON.stringify(e)),
@@ -70,7 +71,7 @@ const FeederCard = ({
           </div>
           <div className="flex flex-row pt-3 justify-around">
             <Tooltip content="Mark this feeder as having been refilled to provide a more accurate estimate of remaining feed.">
-              <Button minimal>Refill</Button>
+              <Button minimal onClick={() => setShowRefillFeederDialog(true)}>Refill</Button>
             </Tooltip>
             {
               status === FeederStatuses.DISABLED
@@ -102,6 +103,7 @@ const FeederCard = ({
       {/* Dialogs */}
       <DeleteFeederDialog isOpen={showDeleteFeederDialog} close={() => setShowDeleteFeederDialog(false)} data={{ name, _id }} />
       <UpdateFeederDialog isOpen={showUpdateFeederDialog} close={() => setShowUpdateFeederDialog(false)} data={{ _id, name, description }} />
+      <RefillFeederDialog isOpen={showRefillFeederDialog} close={() => setShowRefillFeederDialog(false)} data={{ name, _id }} />
     </>
   )
 }

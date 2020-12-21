@@ -25,11 +25,19 @@ const Feeder = {
     },
     async updateFeeder(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
+      if (args.remaining_percentage) {
+        const trigger = await models.Default.findOne({ name: 'feeder_disable_capacity' })
+          .catch((err) => {
+            console.error('Could not pull defaults in order to update feeder status based on remaining_percentage manual update')
+            console.error(err)
+          })
+        args.status = args.remaining_percentage >= trigger.value ? 'online' : 'disabled'
+      }
       return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
         .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Updated feeder "${args.name}"`, 'feeder')
+          await writeLog(`Updated feeder "${data.name}"`, 'feeder')
           return data
         })
     },

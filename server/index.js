@@ -90,18 +90,20 @@ const job = cron.schedule(cron_schedule, () => { // 6 am daily
   //   })
 })
 
-/* check app versioning and look for updates */
-const curr_version = checkCurrentVersion()
-console.warn(`* Currently running webapp version ${curr_version}`)
-checkLatestVersion()
-  .then((d) => {
-    if (curr_version === d) console.warn('* Webapp software is up-to-date')
-    else console.warn(`* UPDATE NEEDED: ${curr_version} -> ${d}\n* Go to the Admin page to perform this update`)
-  })
-  .catch((err) => {
-    console.error('! Could not access GitHub to check for software updates')
-    console.error(`Error: ${err.message}`)
-  })
+if (process.env.NODE_ENV !== 'development') {
+  /* check app versioning and look for updates */
+  const curr_version = checkCurrentVersion()
+  console.warn(`* Currently running webapp version ${curr_version}`)
+  checkLatestVersion()
+    .then((d) => {
+      if (curr_version === d) console.warn('* Webapp software is up-to-date')
+      else console.warn(`* UPDATE NEEDED: ${curr_version} -> ${d}\n* Go to the Admin page to perform this update`)
+    })
+    .catch((err) => {
+      console.error('! Could not access GitHub to check for software updates')
+      console.error(`Error: ${err.message}`)
+    })
+}
 
 /* prepare the api */
 app.prepare()

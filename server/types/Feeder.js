@@ -16,7 +16,7 @@ const Feeder = gql`
   }
   extend type Mutation {
     createFeeder(name: String!, description: String, habitat: String!): Feeder
-    updateFeeder(_id: String!, name: String, description: String, status: String, habitat: String): Feeder
+    updateFeeder(_id: String!, name: String, description: String, status: String, habitat: String, remaining_percentage: Float): Feeder
     deleteFeeder(_id: String!): Feeder
   }
 `

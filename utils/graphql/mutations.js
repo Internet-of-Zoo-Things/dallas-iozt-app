@@ -52,8 +52,8 @@ export const CREATE_FEEDER = gql`
 `
 
 export const UPDATE_FEEDER = gql`
-  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String) {
-    updateFeeder(_id: $_id, name: $name, description: $description, status: $status) {
+  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String, $remaining_percentage: Float) {
+    updateFeeder(_id: $_id, name: $name, description: $description, status: $status, remaining_percentage: $remaining_percentage) {
       _id
       name
       description
