@@ -10,17 +10,17 @@ const Feeder = {
     }
   },
   Mutation: {
-    async createFeeder(parent, { name, description }, { models }) {
+    async createFeeder(parent, { name, description, habitat }, { models }) {
       return models.Feeder.create({
         name: ensureCapitalized(name),
         description: ensureCapitalized(description),
+        habitat,
         status: 'online'
       })
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Created feeder "${name}"`, 'feeder')
-          return data
+          return data.populate('habitat')
         })
     },
     async updateFeeder(parent, { _id, ...args }, { models }) {
@@ -34,16 +34,14 @@ const Feeder = {
         args.status = args.remaining_percentage >= trigger.value ? 'online' : 'disabled'
       }
       return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Updated feeder "${data.name}"`, 'feeder')
-          return data
+          return data.populate('habitat')
         })
     },
     async deleteFeeder(parent, { _id }, { models }) {
       return models.Feeder.findByIdAndDelete(_id)
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Deleted feeder "${data.name}"`, 'feeder')

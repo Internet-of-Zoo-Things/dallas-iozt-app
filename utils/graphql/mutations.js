@@ -37,8 +37,8 @@ export const DELETE_ANIMAL = gql`
 `
 
 export const CREATE_FEEDER = gql`
-  mutation createFeeder($name: String!, $description: String) {
-    createFeeder(name: $name, description: $description) {
+  mutation createFeeder($name: String!, $description: String, $habitat: String!) {
+    createFeeder(name: $name, description: $description, habitat: $habitat) {
       _id
       name
       description
@@ -52,8 +52,8 @@ export const CREATE_FEEDER = gql`
 `
 
 export const UPDATE_FEEDER = gql`
-  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String, $remaining_percentage: Float) {
-    updateFeeder(_id: $_id, name: $name, description: $description, status: $status, remaining_percentage: $remaining_percentage) {
+  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String, $habitat: String, $remaining_percentage: Float) {
+    updateFeeder(_id: $_id, name: $name, description: $description, status: $status, habitat: $habitat, remaining_percentage: $remaining_percentage) {
       _id
       name
       description

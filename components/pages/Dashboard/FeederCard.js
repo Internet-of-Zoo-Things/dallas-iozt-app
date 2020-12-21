@@ -102,7 +102,9 @@ const FeederCard = ({
       </Card>
       {/* Dialogs */}
       <DeleteFeederDialog isOpen={showDeleteFeederDialog} close={() => setShowDeleteFeederDialog(false)} data={{ name, _id }} />
-      <UpdateFeederDialog isOpen={showUpdateFeederDialog} close={() => setShowUpdateFeederDialog(false)} data={{ _id, name, description }} />
+      <UpdateFeederDialog isOpen={showUpdateFeederDialog} close={() => setShowUpdateFeederDialog(false)} data={{
+        _id, name, description, habitat
+      }} />
       <RefillFeederDialog isOpen={showRefillFeederDialog} close={() => setShowRefillFeederDialog(false)} data={{ name, _id }} />
     </>
   )
