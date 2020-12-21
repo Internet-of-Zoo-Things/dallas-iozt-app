@@ -43,6 +43,10 @@ export const CREATE_FEEDER = gql`
       name
       description
       status
+      habitat {
+        name
+      }
+      remaining_percentage
     }
   }
 `
@@ -54,6 +58,10 @@ export const UPDATE_FEEDER = gql`
       name
       description
       status
+      habitat {
+        name
+      }
+      remaining_percentage
     }
   }
 `

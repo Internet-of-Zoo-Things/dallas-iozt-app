@@ -12,7 +12,7 @@ import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import { DeleteFeederDialog, UpdateFeederDialog } from './Dialogs'
 
 const FeederCard = ({
-  name, status, _id, description, habitat, ...props
+  name, status, _id, description, habitat, remaining_percentage, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
@@ -42,6 +42,14 @@ const FeederCard = ({
         {...props}
       >
         <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-wrap mb-2">
+            <Typography variant="h5">{Number.parseFloat(remaining_percentage * 100).toFixed(0)}%</Typography>
+            <div className="flex flex-col justify-center items-center ml-2">
+              <Tooltip content="This is an estimation of the remaining percentage of feed in this feeder.">
+                <Typography variant="icon" icon="help" className='text-disabled' />
+              </Tooltip>
+            </div>
+          </div>
           <div className="flex flex-wrap">
             <Tag className="mx-1" intent={{ online: 'success', offline: 'danger', disabled: 'neutral' }[status]}>
               {capitalize(status)}
@@ -49,6 +57,9 @@ const FeederCard = ({
             <Tag className="mx-1">{habitat.name}</Tag>
           </div>
           <div className="flex flex-row pt-3 justify-around">
+            <Tooltip content="Mark this feeder as having been refilled to provide a more accurate estimate of remaining feed.">
+              <Button minimal>Refill</Button>
+            </Tooltip>
             {
               status === FeederStatuses.DISABLED
                 ? <Button
@@ -91,6 +102,7 @@ FeederCard.propTypes = {
   description: PropTypes.string,
   _id: PropTypes.string,
   habitat: PropTypes.object,
+  remaining_percentage: PropTypes.number,
   client: PropTypes.any
 }
 
