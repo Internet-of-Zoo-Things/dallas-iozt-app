@@ -34,7 +34,7 @@ const _ = ({ isOpen, close, updateCache }) => {
               variables: {
                 name: data.name,
                 type: data.type.label,
-                intake: parseFloat(data.intake)
+                intake: data.intake ? parseFloat(data.intake) : 5
               }
             })
           }}
@@ -56,8 +56,7 @@ const _ = ({ isOpen, close, updateCache }) => {
               // fixme: use dynamic list of possible animals from db
               items: [
                 { label: 'Elephant' },
-                { label: 'Giraffe' },
-                { label: 'Monkey' }
+                { label: 'Giraffe' }
               ]
             },
             {

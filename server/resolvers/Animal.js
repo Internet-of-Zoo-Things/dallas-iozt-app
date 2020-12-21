@@ -26,28 +26,25 @@ const Animal = {
         type: ensureCapitalized(type),
         intake
       })
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Created animal "${name}"`, 'animal')
-          return data
+          return data.populate('habitat')
         })
     },
     async updateAnimal(parent, { _id, ...args }, { models }) {
       if (args.name) args.name = ensureCapitalized(args.name)
       if (args.type) args.type = ensureCapitalized(args.type)
       return models.Animal.findByIdAndUpdate(_id, args, { new: true })
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           // write to the log for changes other than switching between habitats
           if (!(Object.keys(args).length === 1 && args.habitat)) await writeLog(`Updated animal "${data.name}"`, 'animal')
-          return data
+          return data.populate('habitat')
         })
     },
     async deleteAnimal(parent, { _id }, { models }) {
       return models.Animal.findByIdAndDelete(_id)
-        .populate('habitat')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await writeLog(`Deleted animal "${data.name}"`, 'animal')

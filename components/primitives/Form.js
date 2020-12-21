@@ -54,7 +54,7 @@ const _ = ({
       if (f.required && !f.validator) {
         if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false
       }
-      if (f.validator) {
+      if (data[f.id] && f.validator) {
         if (!f.validator(data[f.id])) return false
       }
       if (f.type === InputTypes.EMAIL && !validateEmail(data[f.id])) return false

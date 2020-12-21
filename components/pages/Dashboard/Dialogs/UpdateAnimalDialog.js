@@ -32,7 +32,7 @@ const _ = ({ isOpen, close, data }) => {
                 _id: data._id,
                 name: d.name,
                 type: d.type.label,
-                intake: parseFloat(d.intake)
+                intake: data.intake ? parseFloat(data.intake) : 5
               }
             })
           }}
@@ -55,8 +55,7 @@ const _ = ({ isOpen, close, data }) => {
               // fixme: use dynamic list of possible animals from db
               items: [
                 { label: 'Elephant' },
-                { label: 'Giraffe' },
-                { label: 'Monkey' }
+                { label: 'Giraffe' }
               ],
               defaultValue: data.type
             },
