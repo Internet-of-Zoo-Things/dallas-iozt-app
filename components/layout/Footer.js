@@ -21,7 +21,7 @@ const _ = () => {
           process.env.NODE_ENV !== 'production'
             ? <>
               <div className="mr-2">
-                <StyledLink href="/graphql">
+                <StyledLink href="/graphql" external>
                   <Button minimal className="h-full" icon="graph">GraphQL Playground</Button>
                 </StyledLink>
               </div>

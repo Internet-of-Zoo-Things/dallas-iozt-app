@@ -20,6 +20,9 @@ const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
 const mongo = process.env.DB_URL
 
+/* monitor uptime */
+const start_time = new Date()
+
 /* connect to the db */
 mongoose.connect(mongo, {
   useNewUrlParser: true,
@@ -59,7 +62,7 @@ const apolloServer = new ApolloServer({
   context: ({ req, res }) => {
     // here, the database connection could be passed in, and any cookies/JWT can be read
     return {
-      req, res, models, schedule
+      req, res, models, schedule, start_time
     }
   },
   playground: { version: '1.7.25' }

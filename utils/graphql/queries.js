@@ -108,3 +108,9 @@ export const GET_INTAKE_DEFAULTS = gql`
     }
   }
 `
+
+export const GET_UPTIME = gql`
+  query uptime {
+    uptime
+  }
+`

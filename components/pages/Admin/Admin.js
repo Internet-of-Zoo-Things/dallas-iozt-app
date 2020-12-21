@@ -5,7 +5,9 @@ import { useQuery } from 'react-apollo'
 import {
   Typography, Button, Card, toast
 } from '../../primitives'
-import { CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY } from '../../../utils/graphql/queries'
+import {
+  CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY, GET_UPTIME
+} from '../../../utils/graphql/queries'
 
 const Admin = () => {
   const pi_start = moment().subtract(2, 'weeks')
@@ -19,6 +21,7 @@ const Admin = () => {
   const { data: versionHistory } = useQuery(GET_VERSION_HISTORY, {
     onError: (err) => toast.error(err)
   })
+  const { data: uptime } = useQuery(GET_UPTIME)
 
   return (
     <div className="flex">
@@ -35,7 +38,7 @@ const Admin = () => {
           <div className="flex flex-col items-center">
             <div className="flex flex-wrap">
               <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
-              <Typography variant="body" className="mr-2">{(moment().diff(pi_start, 'days'))} days</Typography>
+              <Typography variant="body" className="mr-2">{uptime && (moment().diff(uptime.uptime, 'days'))} days</Typography>
             </div>
             <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, hh:mm:ss a')})</Typography>
           </div>
