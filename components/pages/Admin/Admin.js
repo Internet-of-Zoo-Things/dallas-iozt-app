@@ -25,7 +25,7 @@ const Admin = () => {
       <div className="flex flex-col items-center w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mr-8">
         <Card
           header={
-            <div className="flex w-full py-3 ml-6 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center">
               <Typography variant="h4" className="text-dark-gray">Web Application Overview</Typography>
             </div>
           }
@@ -33,7 +33,7 @@ const Admin = () => {
           className="w-full mb-8"
         >
           <div className="flex flex-col items-center">
-            <div className="flex">
+            <div className="flex flex-wrap">
               <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
               <Typography variant="body" className="mr-2">{(moment().diff(pi_start, 'days'))} days</Typography>
             </div>
@@ -42,7 +42,7 @@ const Admin = () => {
         </Card>
         <Card
           header={
-            <div className="flex w-full py-3 ml-6 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center">
               <Typography variant="h4" className="text-dark-gray">Software Updates</Typography>
             </div>
           }
@@ -54,11 +54,11 @@ const Admin = () => {
             {
               webVersion && webUpdate
                 ? <>
-                  <div className="flex">
+                  <div className="flex flex-wrap">
                     <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
                     <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
                   </div>
-                  <div className="flex mb-4">
+                  <div className="flex flex-wrap mb-4">
                     <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
                     <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
                     <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
@@ -92,7 +92,7 @@ const Admin = () => {
         </Card>
         <Card
           header={
-            <div className="flex w-full py-3 ml-6 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center">
               <Typography variant="h4" className="text-dark-gray">Web Application Version History</Typography>
             </div>
           }
@@ -121,8 +121,24 @@ const Admin = () => {
       <div className="flex flex-col items-center w-full md:w-1/2 lg:w-2/3 xl:w-2/3">
         <Card
           header={
-            <div className="flex w-full py-3 ml-6 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center">
               <Typography variant="h4" className="text-dark-gray">Data Parameters</Typography>
+            </div>
+          }
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          <div className="flex flex-col items-center">
+            <div className="flex mb-2">
+              <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
+              {/* This will be for updating animal types, alogrithm constants, etc */}
+            </div>
+          </div>
+        </Card>
+        <Card
+          header={
+            <div className="flex w-full py-3 px-2 justify-center">
+              <Typography variant="h4" className="text-dark-gray">Calibration</Typography>
             </div>
           }
           elevation={Elevation.TWO}

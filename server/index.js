@@ -9,7 +9,11 @@ const cron = require('node-cron')
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
 const models = require('./models')
-const { createSchedule, checkCurrentVersion, checkLatestVersion } = require('../utils/functions/api')
+const {
+  // createSchedule,
+  checkCurrentVersion,
+  checkLatestVersion
+} = require('../utils/functions/api')
 const { initializeSchedule } = require('../utils/functions/api/jobScheduling')
 
 const dev = process.env.NODE_ENV !== 'production'
