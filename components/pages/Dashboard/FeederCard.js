@@ -43,13 +43,25 @@ const FeederCard = ({
       >
         <div className="flex flex-col justify-center items-center">
           <div className="flex flex-wrap mb-2">
-            <Typography variant="h5">{Number.parseFloat(remaining_percentage * 100).toFixed(0)}%</Typography>
+            <Typography
+              variant="h5"
+              className={remaining_percentage > 0.4 ? '' : remaining_percentage > 0.2 ? 'text-warning' : 'text-danger'}
+            >
+              {Number.parseFloat(remaining_percentage * 100).toFixed(0)}%
+            </Typography>
             <div className="flex flex-col justify-center items-center ml-2">
               <Tooltip content="This is an estimation of the remaining percentage of feed in this feeder.">
                 <Typography variant="icon" icon="help" className='text-disabled' />
               </Tooltip>
             </div>
           </div>
+          {
+            remaining_percentage < 0.4 && (
+              <Typography variant="subtitle" className={`px-2 pb-2 text-center ${remaining_percentage > 0.2 ? 'text-warning' : 'text-danger'}`}>
+                Looks like this feeder may need a refill! Make sure to top it off and click the &quot;Refill&quot; button below to reset this estimation.
+              </Typography>
+            )
+          }
           <div className="flex flex-wrap">
             <Tag className="mx-1" intent={{ online: 'success', offline: 'danger', disabled: 'neutral' }[status]}>
               {capitalize(status)}
