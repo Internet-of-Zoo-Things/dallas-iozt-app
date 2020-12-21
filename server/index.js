@@ -40,6 +40,9 @@ mongoose.connection.on('error', (err) => {
   console.error(err)
 })
 
+/* initialize defaults in mongo if they don't already exist */
+require('../utils/functions/api/initializeDefaults')
+
 /* configure one-time job scheduling dict for feedings, animal habitat transitions */
 const schedule = {}
 /* initialize schedule based on existing feed times */
