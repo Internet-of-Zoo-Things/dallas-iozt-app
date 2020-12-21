@@ -7,6 +7,7 @@ const Feeder = gql`
     description: String
     status: String
     habitat: Habitat
+    remaining_percentage: Float
     created_at: DateTime
     updated_at: DateTime
   }

@@ -20,6 +20,11 @@ const Feeder = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: HabitatModel,
     required: true
+  },
+  remaining_percentage: {
+    type: Number,
+    required: true,
+    default: 1
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }

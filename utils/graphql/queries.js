@@ -72,6 +72,7 @@ export const GET_FEEDERS = gql`
       habitat {
         name
       }
+      remaining_percentage
     }
   }
 `
