@@ -178,7 +178,10 @@ const Admin = () => {
           className="w-full mb-8"
         >
           <div className="flex flex-col items-center">
-            <div className="flex pb-2 px-4 w-full">
+            <div className="flex flex-col pb-2 px-4 w-full">
+              <Typography variant="subtitle" className="text-center pb-2 text-disabled">
+                Below are some calibration parameters that can be used to fine-tune this application--don&apos;t change them if you don&apos;t need to!
+              </Typography>
               {
                 calibration
                   ? <table className="bp3-html-table .modifier w-full">

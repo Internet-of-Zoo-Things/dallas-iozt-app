@@ -1,4 +1,5 @@
 const { Default } = require('../../../server/models')
+const { writeLog } = require('.')
 
 console.warn('* Checking for required defaults...')
 
@@ -51,6 +52,9 @@ Default.find()
           console.error('Unable to insert missing required default values into database')
           console.error(err)
           process.exit(1)
+        })
+        .then(() => {
+          writeLog(`Some defaults were missing, automatically added ${missing.length} values to the db`)
         })
     }
   })
