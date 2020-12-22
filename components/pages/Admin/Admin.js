@@ -3,21 +3,16 @@ import moment from 'moment'
 import { Elevation, Spinner } from '@blueprintjs/core'
 import { useQuery, useMutation } from 'react-apollo'
 import {
-  Typography, Button, Card, toast, TextInput
+  Typography, Button, Card, toast
 } from '../../primitives'
 import {
   CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY, GET_UPTIME, GET_DEFAULTS
 } from '../../../utils/graphql/queries'
 import { UPDATE_DEFAULT } from '../../../utils/graphql/mutations'
-
-const validator = {
-  number: (val) => val.replace(/[^\d.]/g, ''),
-  string: (val) => val
-}
+import EditableTable from './EditableTable'
 
 const Admin = () => {
   const [data, setData] = useState({})
-  const [updatingId, setUpdatingId] = useState(null)
 
   const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
     onError: (err) => toast.error(err)
@@ -184,54 +179,7 @@ const Admin = () => {
               </Typography>
               {
                 calibration
-                  ? <table className="bp3-html-table .modifier w-full">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        calibration.defaults.map((c, i) => (
-                          <tr key={i}>
-                            <td>{c.name}</td>
-                            <td>{c.description}</td>
-                            <td className="flex flex-col justify-center">
-                              <TextInput
-                                clearButton={false}
-                                placeholder=""
-                                onChange={(e) => {
-                                  const val = e.target.value
-                                  setData((prev) => ({ ...prev, [c.name]: validator[typeof c.value](val) }))
-                                }}
-                                value={data[c.name]}
-                              />
-                              {
-                                data[c.name] !== c.value && (
-                                  <Button
-                                    minimal
-                                    className="mt-2"
-                                    loading={updating && updatingId === c._id}
-                                    onClick={() => {
-                                      setUpdatingId(c._id)
-                                      updateDefault({
-                                        variables: {
-                                          _id: c._id,
-                                          value: typeof c.value === 'number' ? parseFloat(data[c.name]) : data[c.name]
-                                        }
-                                      })
-                                    }}
-                                  >Save</Button>
-                                )
-                              }
-                            </td>
-                          </tr>
-                        ))
-                      }
-                    </tbody>
-                  </table>
+                  ? <EditableTable updateFunc={updateDefault} updating={updating} state={data} listData={calibration.defaults} setState={setData} />
                   : <Spinner className="m-auto" />
               }
             </div>
