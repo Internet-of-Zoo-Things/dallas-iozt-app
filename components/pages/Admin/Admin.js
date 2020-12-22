@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import { Elevation, Spinner } from '@blueprintjs/core'
-import { useQuery } from 'react-apollo'
+import { useQuery, useMutation } from 'react-apollo'
 import {
-  Typography, Button, Card, toast
+  Typography, Button, Card, toast, TextInput
 } from '../../primitives'
 import {
-  CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY, GET_UPTIME
+  CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY, GET_UPTIME, GET_DEFAULTS
 } from '../../../utils/graphql/queries'
+import { UPDATE_DEFAULT } from '../../../utils/graphql/mutations'
+
+const validator = {
+  number: (val) => val.replace(/[^\d.]/g, ''),
+  string: (val) => val
+}
 
 const Admin = () => {
-  const pi_start = moment().subtract(2, 'weeks')
+  const [data, setData] = useState({})
+  const [updatingId, setUpdatingId] = useState(null)
 
   const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
     onError: (err) => toast.error(err)
@@ -22,13 +29,36 @@ const Admin = () => {
     onError: (err) => toast.error(err)
   })
   const { data: uptime } = useQuery(GET_UPTIME)
+  const { data: calibration } = useQuery(GET_DEFAULTS, {
+    variables: { type: 'calibration' }
+  })
+  const [updateDefault, { loading: updating }] = useMutation(UPDATE_DEFAULT, {
+    onError: (err) => {
+      toast.error({ message: 'Could not update default at this time...' })
+      console.error(err)
+    },
+    onCompleted: () => toast.success({ message: 'Default successfully updated!' }),
+    refetchQueries: [{ query: GET_DEFAULTS, variables: { type: 'calibration' } }],
+    awaitRefetchQueries: true,
+    notifyOnNetworkStatusChange: true
+  })
+
+  useEffect(() => {
+    if (calibration) {
+      const dict = {}
+      calibration.defaults.forEach((d) => {
+        dict[d.name] = d.value
+      })
+      setData((prev) => ({ ...prev, ...dict }))
+    }
+  }, [calibration])
 
   return (
-    <div className="flex">
-      <div className="flex flex-col items-center w-full md:w-1/2 lg:w-1/3 xl:w-1/3 mr-8">
+    <div className="flex flex-col lg:flex-row">
+      <div className="flex flex-col items-center w-full lg:w-1/3 xl:w-1/3 mr-8">
         <Card
           header={
-            <div className="flex w-full py-3 px-2 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center text-center">
               <Typography variant="h4" className="text-dark-gray">Web Application Overview</Typography>
             </div>
           }
@@ -40,12 +70,12 @@ const Admin = () => {
               <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
               <Typography variant="body" className="mr-2">{uptime && (moment().diff(uptime.uptime, 'days'))} days</Typography>
             </div>
-            <Typography variant="body" className="text-gray">(started on {pi_start.format('MMM Do, hh:mm:ss a')})</Typography>
+            <Typography variant="body" className="text-gray">(started on {uptime && moment(uptime.uptime).format('MMM Do, hh:mm:ss a')})</Typography>
           </div>
         </Card>
         <Card
           header={
-            <div className="flex w-full py-3 px-2 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center text-center">
               <Typography variant="h4" className="text-dark-gray">Software Updates</Typography>
             </div>
           }
@@ -95,7 +125,7 @@ const Admin = () => {
         </Card>
         <Card
           header={
-            <div className="flex w-full py-3 px-2 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center text-center">
               <Typography variant="h4" className="text-dark-gray">Web Application Version History</Typography>
             </div>
           }
@@ -121,10 +151,10 @@ const Admin = () => {
           }
         </Card>
       </div>
-      <div className="flex flex-col items-center w-full md:w-1/2 lg:w-2/3 xl:w-2/3">
+      <div className="flex flex-col items-center w-full lg:w-2/3 xl:w-2/3">
         <Card
           header={
-            <div className="flex w-full py-3 px-2 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center text-center">
               <Typography variant="h4" className="text-dark-gray">Data Parameters</Typography>
             </div>
           }
@@ -140,7 +170,7 @@ const Admin = () => {
         </Card>
         <Card
           header={
-            <div className="flex w-full py-3 px-2 justify-center">
+            <div className="flex w-full py-3 px-2 justify-center text-center">
               <Typography variant="h4" className="text-dark-gray">Calibration</Typography>
             </div>
           }
@@ -148,9 +178,59 @@ const Admin = () => {
           className="w-full mb-8"
         >
           <div className="flex flex-col items-center">
-            <div className="flex mb-2">
-              <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
-              {/* This will be for updating animal types, alogrithm constants, etc */}
+            <div className="flex pb-2 px-4 w-full">
+              {
+                calibration
+                  ? <table className="bp3-html-table .modifier w-full">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        calibration.defaults.map((c, i) => (
+                          <tr key={i}>
+                            <td>{c.name}</td>
+                            <td>{c.description}</td>
+                            <td className="flex flex-col justify-center">
+                              <TextInput
+                                clearButton={false}
+                                placeholder=""
+                                onChange={(e) => {
+                                  const val = e.target.value
+                                  setData((prev) => ({ ...prev, [c.name]: validator[typeof c.value](val) }))
+                                }}
+                                value={data[c.name]}
+                              />
+                              {
+                                data[c.name] !== c.value && (
+                                  <Button
+                                    minimal
+                                    className="mt-2"
+                                    loading={updating && updatingId === c._id}
+                                    onClick={() => {
+                                      setUpdatingId(c._id)
+                                      updateDefault({
+                                        variables: {
+                                          _id: c._id,
+                                          value: typeof c.value === 'number' ? parseFloat(data[c.name]) : data[c.name]
+                                        }
+                                      })
+                                    }}
+                                  >Save</Button>
+                                )
+                              }
+                            </td>
+                          </tr>
+                        ))
+                      }
+                    </tbody>
+                  </table>
+                  : <Spinner className="m-auto" />
+              }
             </div>
           </div>
         </Card>

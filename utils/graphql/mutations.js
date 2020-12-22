@@ -143,3 +143,11 @@ export const DELETE_HABITAT = gql`
     }
   }
 `
+
+export const UPDATE_DEFAULT = gql`
+  mutation updateDefault($_id: String!, $value: Any!) {
+    updateDefault(_id: $_id, value: $value) {
+      _id
+    }
+  }
+`

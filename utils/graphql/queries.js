@@ -115,3 +115,15 @@ export const GET_UPTIME = gql`
     uptime
   }
 `
+
+export const GET_DEFAULTS = gql`
+  query defaults($type: String) {
+    defaults(type: $type) {
+      _id
+      name
+      type
+      description
+      value
+    }
+  }
+`

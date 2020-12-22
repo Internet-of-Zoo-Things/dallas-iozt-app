@@ -60,7 +60,8 @@ module.exports = {
     backgroundColor: ['hover', 'disabled'],
     opacity: ['hover', 'disabled'],
     gridAutoFlow: ['responsive', 'hover', 'focus'],
-    boxShadow: ['responsive', 'hover']
+    boxShadow: ['responsive', 'hover'],
+    flexWrap: ['responsive']
   },
   plugins: [
     plugin(({ addVariant }) => {
