@@ -76,6 +76,7 @@ const _ = ({
         }}
         autoComplete="off"
         fill
+        autoFocus={field.autoFocus}
       />
     )
     case InputTypes.PASSWORD: return (
@@ -98,6 +99,7 @@ const _ = ({
         }}
         autoComplete="off"
         fill
+        autoFocus={field.autoFocus}
       />
     )
     case InputTypes.EMAIL: return (
@@ -111,6 +113,7 @@ const _ = ({
           setData((prev) => ({ ...prev, [field.id]: tmp }))
         }}
         fill
+        autoFocus={field.autoFocus}
       />
     )
     case InputTypes.SELECT: return (
@@ -124,6 +127,7 @@ const _ = ({
         itemRenderer={Select.ItemRenderer}
         itemPredicate={Select.ItemPredicate}
         onItemSelect={(item) => { setData((prev) => ({ ...prev, [field.id]: item })) }}
+        autoFocus={field.autoFocus}
       >
         <Button
           outline
@@ -143,6 +147,7 @@ const _ = ({
         }}
         buttonPosition="none"
         fill
+        autoFocus={field.autoFocus}
         {...field.props}
       />
     )
@@ -167,6 +172,7 @@ const _ = ({
           const tmp = e
           setData((prev) => ({ ...prev, [field.id]: tmp }))
         }}
+        autoFocus={field.autoFocus}
       />
     )
     case InputTypes.INTAKE: {
@@ -198,6 +204,7 @@ const _ = ({
                     setData((prev) => ({ ...prev, [field.id]: tmp }))
                   }}
                   buttonPosition="none"
+                  autoFocus={field.autoFocus}
                   {...field.props}
                 />
               </>
@@ -223,7 +230,7 @@ const _ = ({
             key={i}
             helperText={f.helperText}
           >
-            { renderField(f) }
+            { renderField({ ...f, autoFocus: i === 0 }) }
           </FormGroup>
         ))
       }
