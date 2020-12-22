@@ -79,6 +79,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
       {...provided.droppableProps}
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
+      style={{ minHeight: '8rem' }}
     >
       {(list || []).map((item, index) => (
         <Draggable
@@ -108,7 +109,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
       <div className="flex flex-row mx-4">
         {
           habitats.map((h, i) => (
-            <div className={`flex flex-col items-center w-1/${habitats.length + 1} mx-2`} key={i}>
+            <div className={`flex flex-col items-center w-${habitats.length ? `1/${habitats.length + 1}` : 'full'} mx-2`} key={i}>
               <Typography variant="h6" className="mb-2">{h.name}</Typography>
               <Droppable droppableId={h._id}>
                 {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
@@ -117,7 +118,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
             </div>
           ))
         }
-        <div className={`flex flex-col items-center w-1/${habitats.length + 1} mx-2`}>
+        <div className={`flex flex-col items-center w-${habitats.length ? `1/${habitats.length + 1}` : 'full'} mx-2`}>
           <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
           <Droppable droppableId="off">
             {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
