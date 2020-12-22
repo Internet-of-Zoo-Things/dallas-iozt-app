@@ -38,7 +38,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
 
   useEffect(() => {
     setAnimals(constructState(animals, habitats))
-  }, [animals])
+  }, [animals, habitats])
 
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source)
@@ -109,7 +109,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
       <div className="flex flex-row mx-4">
         {
           habitats.map((h, i) => (
-            <div className={`flex flex-col items-center w-${habitats.length ? `1/${habitats.length + 1}` : 'full'} mx-2`} key={i}>
+            <div className="flex flex-col items-center flex-1 mx-2" key={i}>
               <Typography variant="h6" className="mb-2">{h.name}</Typography>
               <Droppable droppableId={h._id}>
                 {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
@@ -118,7 +118,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
             </div>
           ))
         }
-        <div className={`flex flex-col items-center w-${habitats.length ? `1/${habitats.length + 1}` : 'full'} mx-2`}>
+        <div className="flex flex-col items-center flex-1 mx-2">
           <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
           <Droppable droppableId="off">
             {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
