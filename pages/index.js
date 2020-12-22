@@ -46,7 +46,7 @@ const Dashboard = ({ client }) => {
         animalSearch={animalSearch}
         setAnimalSearch={setAnimalSearch}
         animalsLoading={animalsLoading}
-        habitats={habitats ? habitats.habitats : []}
+        habitats={habitats ? habitats.habitats : null}
         habitatsLoading={habitatsLoading}
         client={client}
       />

@@ -91,7 +91,7 @@ const Dashboard = ({
                 <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
               </div>
               <div className="flex justify-center items-center">
-                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)} disabled={!habitats.length}>
+                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)} disabled={habitats && habitats.length}>
                   <Typography variant="body">Add Feeder</Typography>
                 </Button>
               </div>
@@ -139,7 +139,7 @@ const Dashboard = ({
           <div className={animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}>
             <AnimalsBoard
               animals={animals}
-              habitats={habitats}
+              habitats={habitats || []}
               onDelete={(id) => {
                 client.writeQuery({
                   query: GET_ANIMALS,
