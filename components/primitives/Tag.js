@@ -20,10 +20,11 @@ const _ = ({
   children,
   clickable,
   className,
+  salt,
   ...props
 }) => (
   <Styled_
-    color={generateColor ? generateColorObj(children) : undefined}
+    color={generateColor ? generateColorObj(salt ? `${children} ${salt}` : children) : undefined}
     className={`whitespace-no-wrap ${clickable ? 'cursor-pointer' : ''} ${className}`}
     {...props}
   >
@@ -38,7 +39,9 @@ _.propTypes = {
   /** if the tag can be clicked/removed */
   clickable: PropTypes.bool,
   /** function to run when tag is removed */
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  /** string to be appended to the color generator input */
+  salt: PropTypes.string
 }
 
 export default _

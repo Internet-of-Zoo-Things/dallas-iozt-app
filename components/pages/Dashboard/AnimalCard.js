@@ -14,7 +14,6 @@ const AnimalCard = ({
   type,
   intake,
   onDelete,
-  habitat,
   ...props
 }) => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false)

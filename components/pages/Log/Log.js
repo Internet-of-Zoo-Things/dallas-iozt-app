@@ -35,6 +35,7 @@ const Log = ({
                   onClick={filter === tag ? undefined : () => setFilter(tag)}
                   onRemove={filter === tag ? () => setFilter(undefined) : undefined}
                   key={i}
+                  salt="hey wanna hear a udp joke? i don't care if you don't get it"
                 >
                   {tag}
                 </Tag>
