@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import {
+  Popover, Menu, MenuItem, Position
+} from '@blueprintjs/core'
+import {
   Typography, Button, Tag
 } from '../../primitives'
 import { UpdateAnimalDialog, DeleteAnimalDialog } from './Dialogs'
@@ -18,20 +21,30 @@ const AnimalCard = ({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   return (
-    <div className="flex w-full outline-none">
+    <div className="flex flex-col w-full outline-none">
+      <Tag large generateColor className="rounded-t-lg text-center">{name}</Tag>
       <div className="flex flex-row items-center w-full overflow-hidden outline-none" {...props}>
-        <Tag large generateColor className="rounded-lg">{type}</Tag>
-        <div className="flex flex-grow justify-center">
-          <Typography variant="subtitle" className="px-2">
-            {name}
+        <div className="flex flex-grow justify-start">
+          <Typography variant="subtitle" className="pl-3">
+            {type}
           </Typography>
-          <Typography variant="subtitle" weight="thin" className="px-2 truncate">
-            ({intake} s/day)
+          <Typography variant="subtitle" weight="thin" className="px-1 truncate">
+            ({intake}s/day)
           </Typography>
         </div>
         <div className="flex flex-no-wrap">
-          <Button minimal intent="primary" icon="edit" onClick={() => setShowUpdateDialog(true)} />
-          <Button minimal intent="danger" icon="cross" onClick={() => setShowDeleteDialog(true)} />
+          <Popover
+            target={
+              <Button minimal icon="more" intent="neutral" />
+            }
+            content={
+              <Menu>
+                <MenuItem text="Edit Animal" icon="edit" onClick={() => setShowUpdateDialog(true)} />
+                <MenuItem text="Delete Animal" icon="trash" intent="danger" onClick={() => setShowDeleteDialog(true)} />
+              </Menu>
+            }
+            position={Position.BOTTOM}
+          />
         </div>
       </div>
       {/* Dialogs */}

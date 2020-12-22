@@ -136,7 +136,7 @@ const Dashboard = ({
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          <div className={animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}>
+          <div className={`px-2 ${animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}`}>
             <AnimalsBoard
               animals={animals}
               habitats={habitats || []}
