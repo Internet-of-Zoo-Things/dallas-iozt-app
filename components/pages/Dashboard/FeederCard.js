@@ -51,7 +51,7 @@ const FeederCard = ({
               {Number.parseFloat(remaining_percentage * 100).toFixed(0)}%
             </Typography>
             <div className="flex flex-col justify-center items-center ml-2">
-              <Tooltip content="This is an estimation of the remaining percentage of feed in this feeder.">
+              <Tooltip content="This is an estimate of the remaining percentage of feed in this feeder">
                 <Typography variant="icon" icon="help" className='text-disabled' />
               </Tooltip>
             </div>

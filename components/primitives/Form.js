@@ -184,7 +184,7 @@ const _ = ({
               ? <Spinner />
               : <>
                 {
-                  intakeDefaults.defaults.map((d, i) => (
+                  intakeDefaults.defaults.sort((a, b) => a.value - b.value).map((d, i) => (
                     <Button
                       key={i}
                       onClick={() => setData((prev) => ({ ...prev, [field.id]: d.value }))}
