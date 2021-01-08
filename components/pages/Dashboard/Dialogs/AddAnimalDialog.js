@@ -34,7 +34,7 @@ const _ = ({ isOpen, close, updateCache }) => {
               variables: {
                 name: data.name,
                 type: data.type.label,
-                intake: parseFloat(data.intake)
+                intake: data.intake ? parseFloat(data.intake) : 5
               }
             })
           }}
@@ -56,16 +56,14 @@ const _ = ({ isOpen, close, updateCache }) => {
               // fixme: use dynamic list of possible animals from db
               items: [
                 { label: 'Elephant' },
-                { label: 'Giraffe' },
-                { label: 'Monkey' }
+                { label: 'Giraffe' }
               ]
             },
             {
-              label: 'Daily Food Intake (lbs)',
+              label: 'Daily Food Intake (s)',
               id: 'intake',
-              required: true,
               type: InputTypes.NUMERIC,
-              placeholder: 'Enter the daily food intake in lbs...',
+              placeholder: 'Enter the daily food intake in s...',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
             }
           ]}

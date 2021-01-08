@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const HabitatModel = require('./Habitat')
 
 const { Schema } = mongoose
 
@@ -14,10 +15,10 @@ const Animal = new Schema({
     type: Number,
     required: true
   },
-  onExhibit: {
-    type: Boolean,
-    required: true,
-    default: false
+  habitat: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: HabitatModel,
+    default: null
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }

@@ -27,6 +27,9 @@ const Styled_ = styled(Button)`
           case 'danger': {
             return tw`text-white bg-danger hover:bg-danger-hover disabled:hover:bg-danger`
           }
+          case 'neutral': {
+            return tw`text-white bg-gray hover:bg-gray-hover disabled:hover:bg-gray`
+          }
           default: return tw`text-white bg-primary hover:bg-primary-darker disabled:hover:bg-primary`
         }
       }
@@ -41,6 +44,9 @@ const Styled_ = styled(Button)`
           case 'danger': {
             return tw`text-danger bg-white border border-solid border-danger disabled:hover:bg-white`
           }
+          case 'neutral': {
+            return tw`text-gray bg-white border border-solid border-gray disabled:hover:bg-white`
+          }
           default: return tw`text-primary bg-white border border-solid border-primary disabled:hover:bg-white`
         }
       }
@@ -54,6 +60,9 @@ const Styled_ = styled(Button)`
           }
           case 'danger': {
             return tw`text-danger hover:opacity-100 disabled:hover:opacity-75`
+          }
+          case 'neutral': {
+            return tw`text-gray hover:opacity-100 disabled:hover:opacity-75`
           }
           default: return tw`text-primary hover:opacity-100 disabled:hover:opacity-75`
         }
@@ -80,7 +89,7 @@ _.propTypes = {
   /** Sets no background or border */
   minimal: PropTypes.bool,
   /** Sets intention of the button */
-  intent: PropTypes.oneOf(['primary', 'warning', 'danger']),
+  intent: PropTypes.oneOf(['primary', 'warning', 'danger', 'neutral']),
   /** Sets button to its hover behavior */
   active: PropTypes.bool,
   /** If button is disabled */

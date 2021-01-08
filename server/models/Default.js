@@ -1,9 +1,8 @@
 const mongoose = require('mongoose')
-const HabitatModel = require('./Habitat')
 
 const { Schema } = mongoose
 
-const Feeder = new Schema({
+const Default = new Schema({
   name: {
     type: String,
     required: true,
@@ -12,22 +11,16 @@ const Feeder = new Schema({
   description: {
     type: String
   },
-  status: {
+  type: {
     type: String,
     required: true
   },
-  habitat: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: HabitatModel,
+  value: {
+    type: Schema.Types.Mixed,
     required: true
-  },
-  remaining_percentage: {
-    type: Number,
-    required: true,
-    default: 1
   }
 }, {
   timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
 
-module.exports = mongoose.model('feeder', Feeder)
+module.exports = mongoose.model('default', Default)

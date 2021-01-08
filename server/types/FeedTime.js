@@ -7,6 +7,7 @@ const FeedTime = gql`
     feeder: Feeder
     timestamp: DateTime
     quantity: Float
+    user_set: Boolean
     created_at: DateTime
     updated_at: DateTime
   }
@@ -18,6 +19,7 @@ const FeedTime = gql`
     updateFeedTime(_id: String!, feeder: String, timestamp: DateTime, quantity: Float): FeedTime
     deleteFeedTime(_id: String!): FeedTime
     deleteAllUpcomingFeedTimes: Boolean
+    createDailySchedule(debug: Boolean): [FeedTime]
   }
 `
 

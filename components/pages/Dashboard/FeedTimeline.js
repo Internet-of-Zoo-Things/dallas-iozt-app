@@ -70,7 +70,7 @@ const _ = ({ schedule }) => {
           },
           series,
           hAxis: { minValue: (new Date()), maxValue: moment().add(23, 'hours').toDate() },
-          vAxis: { title: 'Feed (lbs)', minValue: 0 },
+          vAxis: { title: 'Feed Duration (s)', minValue: 0 },
           axes
         }}
       />

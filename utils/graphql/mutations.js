@@ -7,19 +7,23 @@ export const CREATE_ANIMAL = gql`
       name
       type
       intake
-      onExhibit
+      habitat {
+        _id
+      }
     }
   }
 `
 
 export const UPDATE_ANIMAL = gql`
-  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float, $onExhibit: Boolean) {
-    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, onExhibit: $onExhibit) {
+  mutation updateAnimal($_id: String!, $name: String, $type: String, $intake: Float, $habitat: String) {
+    updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, habitat: $habitat) {
       _id
       name
       type
       intake
-      onExhibit
+      habitat {
+        _id
+      }
     }
   }
 `
@@ -33,23 +37,31 @@ export const DELETE_ANIMAL = gql`
 `
 
 export const CREATE_FEEDER = gql`
-  mutation createFeeder($name: String!, $description: String) {
-    createFeeder(name: $name, description: $description) {
+  mutation createFeeder($name: String!, $description: String, $habitat: String!) {
+    createFeeder(name: $name, description: $description, habitat: $habitat) {
       _id
       name
       description
       status
+      habitat {
+        name
+      }
+      remaining_percentage
     }
   }
 `
 
 export const UPDATE_FEEDER = gql`
-  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String) {
-    updateFeeder(_id: $_id, name: $name, description: $description, status: $status) {
+  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String, $habitat: String, $remaining_percentage: Float) {
+    updateFeeder(_id: $_id, name: $name, description: $description, status: $status, habitat: $habitat, remaining_percentage: $remaining_percentage) {
       _id
       name
       description
       status
+      habitat {
+        name
+      }
+      remaining_percentage
     }
   }
 `
@@ -101,5 +113,41 @@ export const DELETE_FEED_TIME = gql`
 export const DELETE_ALL_FEED_TIMES = gql`
   mutation deleteAllUpcomingFeedTimes {
     deleteAllUpcomingFeedTimes
+  }
+`
+
+export const CREATE_HABITAT = gql`
+  mutation createHabitat($name: String!, $description: String) {
+    createHabitat(name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`
+
+export const UPDATE_HABITAT = gql`
+  mutation updateHabitat($_id: String!, $name: String, $description: String) {
+    updateHabitat(_id: $_id, name: $name, description: $description) {
+      _id
+      name
+      description
+    }
+  }
+`
+
+export const DELETE_HABITAT = gql`
+  mutation deleteHabitat($_id: String!) {
+    deleteHabitat(_id: $_id) {
+      _id
+    }
+  }
+`
+
+export const UPDATE_DEFAULT = gql`
+  mutation updateDefault($_id: String!, $value: Any!) {
+    updateDefault(_id: $_id, value: $value) {
+      _id
+    }
   }
 `

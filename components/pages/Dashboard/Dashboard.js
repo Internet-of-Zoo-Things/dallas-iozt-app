@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Elevation } from '@blueprintjs/core'
+import { Elevation, Overlay } from '@blueprintjs/core'
 import {
   Typography, Button, Card, TextInput
 } from '../../primitives'
@@ -8,7 +8,7 @@ import FeederCard from './FeederCard'
 import FeedTimeCard from './FeedTimeCard'
 import FeedTimeline from './FeedTimeline'
 import {
-  AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog
+  AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog, AddHabitatDialog
 } from './Dialogs'
 import { GET_ANIMALS } from '../../../utils/graphql/queries'
 import AnimalsBoard from './AnimalsBoard'
@@ -22,6 +22,8 @@ const Dashboard = ({
   animalSearch,
   setAnimalSearch,
   animalsLoading,
+  habitats,
+  habitatsLoading,
   client
 }) => {
   /* dialogs */
@@ -29,6 +31,12 @@ const Dashboard = ({
   const [showAddAnimalDialog, setShowAddAnimalDialog] = useState(false)
   const [showAddFeedTimeDialog, setShowAddFeedTimeDialog] = useState(false)
   const [showDeleteAllFeedTimesDialog, setShowDeleteAllFeedTimesDialog] = useState(false)
+  const [firstTimeOverlay, setFirstTimeOverlay] = useState(false)
+  const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
+
+  useEffect(() => {
+    if (habitats && !habitats.length) setFirstTimeOverlay(true)
+  }, [habitats])
 
   return (
     <div className="flex flex-col md:flex-col lg:flex-row xl:flex-row w-full">
@@ -39,10 +47,10 @@ const Dashboard = ({
           className="w-full mb-8"
         >
           <div className="w-full flex flex-col">
-            <Button className="my-1" icon="add" fill>
+            <Button className="my-1" icon="add" fill disabled={!feeders.length}>
               <Typography variant="body">Create Daily Schedule</Typography>
             </Button>
-            <Button className="my-1" icon="time" fill onClick={() => setShowAddFeedTimeDialog(true)}>
+            <Button className="my-1" icon="time" fill disabled={!feeders.length} onClick={() => setShowAddFeedTimeDialog(true)}>
               <Typography variant="body">Schedule a Feed</Typography>
             </Button>
           </div>
@@ -83,7 +91,7 @@ const Dashboard = ({
                 <Typography variant="h4" className="text-dark-gray">Feeders</Typography>
               </div>
               <div className="flex justify-center items-center">
-                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)}>
+                <Button className="mx-6" icon="add" onClick={() => setShowAddFeederDialog(true)} disabled={habitats && !habitats.length}>
                   <Typography variant="body">Add Feeder</Typography>
                 </Button>
               </div>
@@ -128,24 +136,21 @@ const Dashboard = ({
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          {
-            animals.length !== 0 || animalsLoading
-              ? <div className={animalsLoading ? 'bp3-skeleton h-32' : ''}>
-                <AnimalsBoard
-                  animals={animals}
-                  onDelete={(id) => {
-                    client.writeQuery({
-                      query: GET_ANIMALS,
-                      variables: { filter: animalSearch },
-                      data: {
-                        animals: animals.filter((t) => t._id !== id)
-                      }
-                    })
-                  }}
-                />
-              </div>
-              : <Typography variant="h6" className="flex w-full justify-center text-gray">No animals found...</Typography>
-          }
+          <div className={`px-2 ${animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}`}>
+            <AnimalsBoard
+              animals={animals}
+              habitats={habitats || []}
+              onDelete={(id) => {
+                client.writeQuery({
+                  query: GET_ANIMALS,
+                  variables: { filter: animalSearch },
+                  data: {
+                    animals: animals.filter((t) => t._id !== id)
+                  }
+                })
+              }}
+            />
+          </div>
         </Card>
       </div>
       {/* Dialogs */}
@@ -172,6 +177,21 @@ const Dashboard = ({
         feeders={feeders}
       />
       <DeleteAllFeedTimesDialog isOpen={showDeleteAllFeedTimesDialog} close={() => setShowDeleteAllFeedTimesDialog(false)} />
+      <Overlay isOpen={firstTimeOverlay} onClose={() => setFirstTimeOverlay(false)}>
+        <div className="flex w-screen h-screen justify-center items-center">
+          <div className="flex flex-col items-center bg-background rounded p-8 w-1/3">
+            <Typography variant="h3">Hello there!</Typography>
+            <Typography variant="body" className="mt-2 text-center">
+              It looks like this is your first time setting up this application! Please create a habitat to get started.
+            </Typography>
+            <div className="mt-4"><Button onClick={() => {
+              setShowAddHabitatDialog(true)
+              setFirstTimeOverlay(false)
+            }}>Create a Habitat</Button></div>
+          </div>
+        </div>
+      </Overlay>
+      <AddHabitatDialog isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
     </div>
   )
 }
@@ -184,6 +204,8 @@ Dashboard.propTypes = {
   animalSearch: PropTypes.string,
   setAnimalSearch: PropTypes.func,
   animalsLoading: PropTypes.bool,
+  habitats: PropTypes.array,
+  habitatsLoading: PropTypes.bool,
   client: PropTypes.any
 }
 Dashboard.defaultProps = {

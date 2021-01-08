@@ -4,17 +4,28 @@ import {
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
-import { Typography, toast } from '../../primitives'
+import { Typography, toast, Button } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
+import { AddHabitatDialog, UpdateHabitatDialog } from './Dialogs'
 
-const constructState = (animals) => ({
-  on: animals.filter((a) => a.onExhibit).map((a) => ({ id: a._id, content: a })),
-  off: animals.filter((a) => !a.onExhibit).map((a) => ({ id: a._id, content: a }))
-})
+const constructState = (animals, habitats) => {
+  const cols = { off: [] }
+  habitats.forEach(({ _id }) => {
+    cols[_id] = []
+  })
+  animals.forEach((a) => {
+    if (!a.habitat) cols.off.push({ id: a._id, content: a })
+    else if (a.habitat._id in cols) cols[a.habitat._id].push({ id: a._id, content: a })
+    else console.warn(`Animal in nonexistent habitat ${a.habitat._id}`)
+  })
+  return cols
+}
 
-const AnimalsBoard = ({ animals, onDelete }) => {
-  const [animalsState, setAnimals] = useState(constructState(animals))
+const AnimalsBoard = ({ animals, habitats, onDelete }) => {
+  const [animalsState, setAnimals] = useState(constructState(animals, habitats))
+  const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
+  const [updateHabitat, setUpdateHabitat] = useState(null)
 
   const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
@@ -26,8 +37,8 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   })
 
   useEffect(() => {
-    setAnimals(constructState(animals))
-  }, [animals])
+    setAnimals(constructState(animals, habitats))
+  }, [animals, habitats])
 
   const move = (source, destination, droppableSource, droppableDestination) => {
     const sourceClone = Array.from(source)
@@ -39,7 +50,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
     updateAnimal({
       variables: {
         _id: removed.id,
-        onExhibit: droppableDestination.droppableId === 'on'
+        habitat: droppableDestination.droppableId === 'off' ? null : droppableDestination.droppableId
       }
     })
 
@@ -59,7 +70,7 @@ const AnimalsBoard = ({ animals, onDelete }) => {
         source,
         destination
       )
-      setAnimals(res)
+      setAnimals((prev) => ({ ...prev, ...res }))
     }
   }
 
@@ -68,8 +79,9 @@ const AnimalsBoard = ({ animals, onDelete }) => {
       {...provided.droppableProps}
       ref={provided.innerRef}
       className={`flex flex-col w-full h-full p-2 rounded-lg ${snapshot.isDraggingOver ? 'bg-primary-transparent' : 'bg-background'}`}
+      style={{ minHeight: '8rem' }}
     >
-      {list.map((item, index) => (
+      {(list || []).map((item, index) => (
         <Draggable
           key={item.id}
           draggableId={item.id}
@@ -95,24 +107,33 @@ const AnimalsBoard = ({ animals, onDelete }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row mx-4">
-        <div className="flex flex-col items-center w-1/2 mx-2">
-          <Typography variant="h6" className="mb-2">On Exhibit</Typography>
-          <Droppable droppableId="on">
-            {(provided, snapshot) => renderList(provided, snapshot, animalsState.on)}
-          </Droppable>
-        </div>
-        <div className="flex flex-col items-center w-1/2 mx-2">
+        {
+          habitats.map((h, i) => (
+            <div className="flex flex-col items-center flex-1 mx-2" key={i}>
+              <Typography variant="h6" className="mb-2">{h.name}</Typography>
+              <Droppable droppableId={h._id}>
+                {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
+              </Droppable>
+              <Button minimal className="mt-2" onClick={() => setUpdateHabitat(h)}>Edit Habitat</Button>
+            </div>
+          ))
+        }
+        <div className="flex flex-col items-center flex-1 mx-2">
           <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
           <Droppable droppableId="off">
             {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
           </Droppable>
+          <Button minimal className="mt-2" onClick={() => setShowAddHabitatDialog(true)}>Create Habitat</Button>
         </div>
       </div>
+      <AddHabitatDialog isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
+      <UpdateHabitatDialog isOpen={updateHabitat !== null} close={() => setUpdateHabitat(null)} data={updateHabitat} />
     </DragDropContext>
   )
 }
 AnimalsBoard.propTypes = {
   animals: PropTypes.array.isRequired,
+  habitats: PropTypes.array.isRequired,
   onDelete: PropTypes.func.isRequired
 }
 

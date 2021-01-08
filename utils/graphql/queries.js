@@ -1,5 +1,36 @@
 import gql from 'graphql-tag'
 
+export const CHECK_SOFTWARE_VERSION = gql`
+  query checkSoftwareVersion {
+    checkSoftwareVersion {
+      version
+      date
+    }
+  }
+`
+
+export const CHECK_FOR_UPDATE = gql`
+  query checkForUpdate {
+    checkForUpdate {
+      update
+      latestVersion {
+        version
+        date
+      }
+    }
+  }
+`
+
+export const GET_VERSION_HISTORY = gql`
+  query getVersionHistory {
+    getVersionHistory {
+      version
+      date
+      changes
+    }
+  }
+`
+
 export const GET_LOGS = gql`
   query logs($tag: String, $limit: Int, $skip: Int) {
     logs(tag: $tag, limit: $limit, skip: $skip) {
@@ -24,7 +55,9 @@ export const GET_ANIMALS = gql`
       name
       type
       intake
-      onExhibit
+      habitat {
+        _id
+      }
     }
   }
 `
@@ -36,6 +69,10 @@ export const GET_FEEDERS = gql`
       name
       description
       status
+      habitat {
+        name
+      }
+      remaining_percentage
     }
   }
 `
@@ -50,6 +87,43 @@ export const GET_FEED_TIMES = gql`
       }
       timestamp
       quantity
+    }
+  }
+`
+
+export const GET_HABITATS = gql`
+  query habitats {
+    habitats {
+      _id
+      name
+      description
+    }
+  }
+`
+
+export const GET_INTAKE_DEFAULTS = gql`
+  query defaults {
+    defaults(type: "intake") {
+      name
+      value
+    }
+  }
+`
+
+export const GET_UPTIME = gql`
+  query uptime {
+    uptime
+  }
+`
+
+export const GET_DEFAULTS = gql`
+  query defaults($type: String) {
+    defaults(type: $type) {
+      _id
+      name
+      type
+      description
+      value
     }
   }
 `

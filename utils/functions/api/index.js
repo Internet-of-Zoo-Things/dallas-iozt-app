@@ -1,3 +1,5 @@
+const axios = require('axios')
+const fs = require('fs')
 const { Log } = require('../../../server/models')
 
 const isEmail = (str) => {
@@ -19,8 +21,40 @@ const writeLog = async (message, tag = 'general') => {
 
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
+const checkLatestVersion = async () => {
+  return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/develop/version', {
+    timeout: 1000
+  })
+    .then(({ data }) => {
+      return data
+    })
+    .catch((err) => { throw err })
+}
+
+const checkCurrentVersion = () => {
+  try {
+    return fs.readFileSync('version', 'utf8')
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+const getVersionData = (version) => {
+  try {
+    const data = JSON.parse(fs.readFileSync('changelog.json'))
+    return version ? data[version] : data
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
 module.exports = {
   isEmail,
   writeLog,
-  ensureCapitalized
+  ensureCapitalized,
+  checkLatestVersion,
+  checkCurrentVersion,
+  getVersionData
 }
