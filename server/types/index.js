@@ -1,6 +1,7 @@
 const { gql } = require('apollo-server-express')
 const Log = require('./Log')
 const Animal = require('./Animal')
+const AnimalTaxon = require('./AnimalTaxon')
 const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
 const Habitat = require('./Habitat')
@@ -20,6 +21,7 @@ const types = gql`
   }
   ${Log}
   ${Animal}
+  ${AnimalTaxon}
   ${Feeder}
   ${FeedTime}
   ${Habitat}
