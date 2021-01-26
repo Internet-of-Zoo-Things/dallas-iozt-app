@@ -1,6 +1,7 @@
 const lodash = require('lodash')
 const Log = require('./Log')
 const Animal = require('./Animal')
+const AnimalTaxon = require('./AnimalTaxon')
 const Feeder = require('./Feeder')
 const FeedTime = require('./FeedTime')
 const Habitat = require('./Habitat')
@@ -11,6 +12,7 @@ const Pi = require('./Pi')
 const resolvers = lodash.merge(
   Log,
   Animal,
+  AnimalTaxon,
   Feeder,
   FeedTime,
   Habitat,
