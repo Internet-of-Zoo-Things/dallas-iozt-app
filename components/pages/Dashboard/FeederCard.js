@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
 import { Position } from '@blueprintjs/core'
 import {
-  Typography, Button, Card, Tooltip, Tag
+  Typography, Button, Card, Tooltip, Tag, toast
 } from '../../primitives'
 import { FeederStatuses } from '../../../utils/models'
 import { capitalize } from '../../../utils/functions/ui'
@@ -95,7 +95,12 @@ const FeederCard = ({
                   : null
             }
             <Button icon="edit" minimal onClick={() => setShowUpdateFeederDialog(true)} />
-            <Button icon="cell-tower" minimal tooltip="Ping the feeder to check its connection" />
+            <Button
+              icon="cell-tower"
+              minimal
+              tooltip="Ping the feeder to check its connection"
+              onClick={() => toast.warning({ message: 'Feeder ping functionality is coming soon!' })}
+            />
             <Button icon="trash" intent="danger" minimal onClick={() => setShowDeleteFeederDialog(true)} />
           </div>
         </div>
