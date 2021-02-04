@@ -157,3 +157,33 @@ export const UPDATE_DEFAULT = gql`
     }
   }
 `
+
+export const CREATE_ANIMAL_TAXON = gql`
+  mutation createAnimalTaxon($name: String!, $defaultIntake: Float!) {
+    createAnimalTaxon(name: $name, defaultIntake: $defaultIntake) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`
+
+export const UPDATE_ANIMAL_TAXON = gql`
+  mutation updateAnimalTaxon($_id: String!, $name: String, $defaultIntake: Float) {
+    updateAnimalTaxon(_id: $_id, name: $name, defaultIntake: $defaultIntake) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`
+
+export const DELETE_ANIMAL_TAXON = gql`
+  mutation deleteAnimalTaxon($_id: String!) {
+    deleteAnimalTaxon(_id: $_id) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`

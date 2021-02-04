@@ -10,9 +10,10 @@ import {
 } from '../../../utils/graphql/queries'
 import { UPDATE_DEFAULT } from '../../../utils/graphql/mutations'
 import EditableTable from './EditableTable'
+import AnimalTaxons from './AnimalTaxons'
 
 const Admin = () => {
-  const [data, setData] = useState({})
+  const [defaults, setDefaults] = useState({})
 
   const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
     onError: (err) => toast.error(err)
@@ -44,7 +45,7 @@ const Admin = () => {
       calibration.defaults.forEach((d) => {
         dict[d.name] = d.value
       })
-      setData((prev) => ({ ...prev, ...dict }))
+      setDefaults((prev) => ({ ...prev, ...dict }))
     }
   }, [calibration])
 
@@ -162,9 +163,8 @@ const Admin = () => {
           className="w-full mb-8"
         >
           <div className="flex flex-col items-center">
-            <div className="flex mb-2">
-              <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
-              {/* This will be for updating animal types, alogrithm constants, etc */}
+            <div className="flex mb-2 px-4 w-full">
+              <AnimalTaxons />
             </div>
           </div>
         </Card>
@@ -184,7 +184,13 @@ const Admin = () => {
               </Typography>
               {
                 calibration
-                  ? <EditableTable updateFunc={updateDefault} updating={updating} state={data} listData={calibration.defaults} setState={setData} />
+                  ? <EditableTable
+                    updateFunc={updateDefault}
+                    updating={updating}
+                    state={defaults}
+                    listData={calibration.defaults}
+                    setState={setDefaults}
+                  />
                   : <Spinner className="m-auto" />
               }
             </div>
