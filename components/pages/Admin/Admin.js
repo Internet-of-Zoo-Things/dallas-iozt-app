@@ -17,7 +17,7 @@ const Admin = () => {
   const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
     onError: (err) => toast.error(err)
   })
-  const { data: webUpdate } = useQuery(CHECK_FOR_UPDATE, {
+  const { data: webUpdate, error: webUpdateError } = useQuery(CHECK_FOR_UPDATE, {
     onError: (err) => toast.error(err)
   })
   const { data: versionHistory } = useQuery(GET_VERSION_HISTORY, {
@@ -101,7 +101,10 @@ const Admin = () => {
                           IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
                         </Typography>
                         {/* todo: update software somehow */}
-                        <Button className="mt-2">
+                        <Button
+                          className="mt-2"
+                          onClick={() => toast.warning({ message: 'Updating through the web interface is not yet supported!' })}
+                        >
                           Download Update
                         </Button>
                       </div>
@@ -110,7 +113,9 @@ const Admin = () => {
                       </Typography>
                   }
                 </>
-                : <Spinner />
+                : webUpdateError
+                  ? 'There was an error checking for software updates.'
+                  : <Spinner />
             }
           </div>
           <div className="flex flex-col items-center w-full">

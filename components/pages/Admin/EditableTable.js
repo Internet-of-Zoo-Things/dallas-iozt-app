@@ -37,7 +37,7 @@ const _ = ({
                   value={state[c.name]}
                 />
                 {
-                  state[c.name] !== c.value && (
+                  (typeof c.value === 'number' ? parseFloat(state[c.name]) !== c.value : state[c.name] !== c.value) && (
                     <Button
                       minimal
                       className="mt-2"
