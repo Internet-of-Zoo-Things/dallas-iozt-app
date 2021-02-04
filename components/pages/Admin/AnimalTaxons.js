@@ -4,7 +4,7 @@ import { useQuery, useMutation } from 'react-apollo'
 import { Spinner, NumericInput } from '@blueprintjs/core'
 import { GET_ANIMAL_TAXONS } from '../../../utils/graphql/queries'
 import { TextInput, Button } from '../../primitives'
-import { UPDATE_ANIMAL_TAXON, CREATE_ANIMAL_TAXON } from '../../../utils/graphql/mutations'
+import { UPDATE_ANIMAL_TAXON } from '../../../utils/graphql/mutations'
 import { DeleteAnimalTaxonDialog, CreateAnimalTaxonDialog } from './Dialogs'
 
 const _ = ({ className }) => {

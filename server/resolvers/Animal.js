@@ -36,6 +36,7 @@ const Animal = {
           return data
             .populate('habitat')
             .populate('type')
+            .execPopulate()
         })
     },
     async updateAnimal(parent, { _id, ...args }, { models }) {
@@ -48,6 +49,7 @@ const Animal = {
           return data
             .populate('habitat')
             .populate('type')
+            .execPopulate()
         })
     },
     async deleteAnimal(parent, { _id }, { models }) {
