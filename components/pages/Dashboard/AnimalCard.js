@@ -25,7 +25,7 @@ const AnimalCard = ({
       <div className="flex flex-row items-center w-full overflow-hidden outline-none" {...props}>
         <div className="flex flex-grow justify-start">
           <Typography variant="subtitle" className="pl-3">
-            {type}
+            {type.name}
           </Typography>
           <Typography variant="subtitle" weight="thin" className="px-1 truncate">
             ({intake}s/day)

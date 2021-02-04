@@ -53,7 +53,10 @@ export const GET_ANIMALS = gql`
     animals(filter: $filter) {
       _id
       name
-      type
+      type {
+        _id
+        name
+      }
       intake
       habitat {
         _id
@@ -124,6 +127,16 @@ export const GET_DEFAULTS = gql`
       type
       description
       value
+    }
+  }
+`
+
+export const GET_ANIMAL_TAXONS = gql`
+  query animalTaxons {
+    animalTaxons {
+      _id
+      name
+      defaultIntake
     }
   }
 `

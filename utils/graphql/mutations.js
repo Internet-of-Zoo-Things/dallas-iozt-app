@@ -1,11 +1,14 @@
 import gql from 'graphql-tag'
 
 export const CREATE_ANIMAL = gql`
-  mutation createAnimal($name: String!, $type: String!, $intake: Float!) {
+  mutation createAnimal($name: String!, $type: String!, $intake: Float) {
     createAnimal(name: $name, type: $type, intake: $intake) {
       _id
       name
-      type
+      type {
+        _id
+        name
+      }
       intake
       habitat {
         _id
@@ -19,7 +22,10 @@ export const UPDATE_ANIMAL = gql`
     updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, habitat: $habitat) {
       _id
       name
-      type
+      type {
+        _id
+        name
+      }
       intake
       habitat {
         _id
