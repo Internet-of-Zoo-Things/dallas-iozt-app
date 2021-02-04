@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const HabitatModel = require('./Habitat')
+const AnimalTaxonModel = require('./AnimalTaxon')
 
 const { Schema } = mongoose
 
@@ -9,7 +10,9 @@ const Animal = new Schema({
     required: true
   },
   type: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId,
+    ref: AnimalTaxonModel,
+    required: true
   },
   intake: {
     type: Number,
