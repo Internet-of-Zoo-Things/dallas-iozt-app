@@ -11,9 +11,7 @@ const _ = ({ isOpen, close }) => {
   /* api interaction */
   const [createAnimalTaxon, { loading }] = useMutation(CREATE_ANIMAL_TAXON, {
     onError: (e) => console.error(JSON.stringify(e)),
-    onCompleted: (d) => {
-      close()
-    },
+    onCompleted: close,
     refetchQueries: [{ query: GET_ANIMAL_TAXONS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
