@@ -4,7 +4,7 @@ import { Dialog, Classes } from '@blueprintjs/core'
 import { useMutation } from 'react-apollo'
 import { DELETE_ANIMAL_TAXON } from '../../../../utils/graphql/mutations'
 import { Button } from '../../../primitives'
-import { GET_ANIMAL_TAXONS } from '../../../../utils/graphql/queries'
+import { GET_ANIMAL_TAXONS, GET_ANIMALS } from '../../../../utils/graphql/queries'
 
 const _ = ({
   isOpen, close, data
@@ -15,7 +15,7 @@ const _ = ({
     onCompleted: () => {
       close()
     },
-    refetchQueries: () => [{ query: GET_ANIMAL_TAXONS }],
+    refetchQueries: () => [{ query: GET_ANIMAL_TAXONS }, { query: GET_ANIMALS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
   })

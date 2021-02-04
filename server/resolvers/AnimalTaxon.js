@@ -30,6 +30,8 @@ const AnimalTaxon = {
         })
     },
     async deleteAnimalTaxon(parent, { _id }, { models }) {
+      await models.Animal.deleteMany({ type: _id })
+        .catch((err) => { throw new ApolloError(err) })
       return models.AnimalTaxon.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {

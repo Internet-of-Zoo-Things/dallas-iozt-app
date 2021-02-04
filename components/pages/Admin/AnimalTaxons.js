@@ -4,8 +4,8 @@ import { useQuery, useMutation } from 'react-apollo'
 import { Spinner, NumericInput } from '@blueprintjs/core'
 import { GET_ANIMAL_TAXONS } from '../../../utils/graphql/queries'
 import { TextInput, Button } from '../../primitives'
-import { UPDATE_ANIMAL_TAXON, CREATE_ANIMAL_TAXON, DELETE_ANIMAL_TAXON } from '../../../utils/graphql/mutations'
-import { DeleteAnimalTaxonDialog } from './Dialogs'
+import { UPDATE_ANIMAL_TAXON, CREATE_ANIMAL_TAXON } from '../../../utils/graphql/mutations'
+import { DeleteAnimalTaxonDialog, CreateAnimalTaxonDialog } from './Dialogs'
 
 const _ = ({ className }) => {
   const [state, setState] = useState()
@@ -19,13 +19,12 @@ const _ = ({ className }) => {
       setState(tmp)
     }
   })
-  const [createAnimalTaxon, { loading: createLoading }] = useMutation(CREATE_ANIMAL_TAXON)
   const [updateAnimalTaxon, { loading: updateLoading }] = useMutation(UPDATE_ANIMAL_TAXON)
-  const [deleteAnimalTaxon, { loading: deleteLoading }] = useMutation(DELETE_ANIMAL_TAXON)
   const [taxonToDelete, setTaxonToDelete] = useState(null)
+  const [createTaxonDialog, setCreateTaxonDialog] = useState(false)
 
   return (
-    <div className={`flex justify-center w-full ${className}`}>
+    <div className={`flex flex-col items-center w-full ${className}`}>
       {
         data && state
           ? <table className="bp3-html-table .modifier w-full">
@@ -50,10 +49,10 @@ const _ = ({ className }) => {
                             const name = e.target.value
                             setState((prev) => ({ ...prev, [c._id]: { ...prev[c._id], name } }))
                           }}
-                          value={state[c._id].name}
+                          value={state[c._id]?.name}
                         />
                         {
-                          state[c._id].name !== c.name && (
+                          state[c._id] && state[c._id].name !== c.name && (
                             <Button
                               minimal
                               className="mt-2"
@@ -80,13 +79,13 @@ const _ = ({ className }) => {
                             const defaultIntake = Number.isNaN(e) ? 0 : e
                             setState((prev) => ({ ...prev, [c._id]: { ...prev[c._id], defaultIntake } }))
                           }}
-                          value={state[c._id].defaultIntake}
+                          value={state[c._id]?.defaultIntake}
                           fill
                           min={1}
                           max={30}
                         />
                         {
-                          parseFloat(state[c._id].defaultIntake) !== c.defaultIntake && (
+                          state[c._id] && parseFloat(state[c._id].defaultIntake) !== c.defaultIntake && (
                             <Button
                               minimal
                               className="mt-2"
@@ -116,6 +115,10 @@ const _ = ({ className }) => {
           : <Spinner />
       }
       { taxonToDelete && <DeleteAnimalTaxonDialog data={taxonToDelete} isOpen={taxonToDelete !== null} close={() => setTaxonToDelete(null)} /> }
+      <CreateAnimalTaxonDialog isOpen={createTaxonDialog} close={() => setCreateTaxonDialog(null)} />
+      <div className="mt-2">
+        <Button outline onClick={() => setCreateTaxonDialog(true)}>Create New Animal Taxon</Button>
+      </div>
     </div>
   )
 }
