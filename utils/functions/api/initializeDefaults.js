@@ -1,4 +1,4 @@
-const { Default } = require('../../../server/models')
+const { Default, AnimalTaxon } = require('../../../server/models')
 const { writeLog } = require('.')
 
 console.warn('* Checking for required defaults...')
@@ -55,6 +55,27 @@ Default.find()
         })
         .then(() => {
           writeLog(`Some defaults were missing, automatically added ${missing.length} values to the db`)
+        })
+    }
+  })
+
+/** ensure that at least the "elephant" taxon exists */
+AnimalTaxon.count()
+  .catch((err) => {
+    console.error('Could not access database to fetch application defaults')
+    console.error(err)
+    process.exit(1)
+  })
+  .then((count) => {
+    if (!count) {
+      AnimalTaxon.create({ name: 'Elephant', defaultIntake: 5 })
+        .catch((err) => {
+          console.error('Unable to insert missing required default values into database')
+          console.error(err)
+          process.exit(1)
+        })
+        .then(() => {
+          writeLog('No animal taxons existed, automatically added "Elephant"')
         })
     }
   })

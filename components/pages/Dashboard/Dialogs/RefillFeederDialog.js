@@ -37,9 +37,9 @@ const _ = ({ isOpen, close, data }) => {
               required: true,
               type: InputTypes.NUMERIC,
               placeholder: 'Enter a percentage value...',
-              helperText: 'Enter a percentage value (0-100) estimating how full the feeder is after refilling',
+              helperText: 'Enter a percentage value (20-100) estimating how full the feeder is after refilling',
               defaultValue: 100,
-              validator: (v) => parseFloat(v) > 20 && parseFloat(v) <= 100
+              validator: (v) => parseFloat(v) >= 20 && parseFloat(v) <= 100
             }
           ]}
         />

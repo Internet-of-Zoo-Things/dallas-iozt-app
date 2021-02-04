@@ -240,6 +240,7 @@ const _ = ({
           text="Submit"
           disabled={!validate()}
           loading={submitLoading}
+          type="submit"
         />
       </div>
     </form>
