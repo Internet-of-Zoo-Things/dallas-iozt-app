@@ -34,6 +34,9 @@ const Dashboard = ({
   const [firstTimeOverlay, setFirstTimeOverlay] = useState(false)
   const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
 
+  /** disable some buttons if there are no feeders currently enabled */
+  const enabledFeeders = feeders ? feeders?.filter(({ status }) => status !== 'disabled') : []
+
   useEffect(() => {
     if (habitats && !habitats.length) setFirstTimeOverlay(true)
   }, [habitats])
@@ -46,11 +49,12 @@ const Dashboard = ({
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          <div className="w-full flex flex-col">
-            <Button className="my-1" icon="add" fill disabled={!feeders.length}>
+          <div className="w-full flex flex-col items-center">
+            { !enabledFeeders.length && (<Typography variant="body" className="text-gray">There are no enabled feeders!</Typography>) }
+            <Button className="my-1" icon="add" fill disabled={!enabledFeeders.length}>
               <Typography variant="body">Create Daily Schedule</Typography>
             </Button>
-            <Button className="my-1" icon="time" fill disabled={!feeders.length} onClick={() => setShowAddFeedTimeDialog(true)}>
+            <Button className="my-1" icon="time" fill disabled={!enabledFeeders.length} onClick={() => setShowAddFeedTimeDialog(true)}>
               <Typography variant="body">Schedule a Feed</Typography>
             </Button>
           </div>
@@ -105,7 +109,7 @@ const Dashboard = ({
               ? <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4 ${feedersLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   feeders.map((f, i) => (
-                    <FeederCard {...f} key={i} client={client} />
+                    <FeederCard {...f} key={i} client={client} enabledCount={enabledFeeders.length} />
                   ))
                 }
               </div>

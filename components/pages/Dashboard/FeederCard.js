@@ -12,7 +12,7 @@ import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import { DeleteFeederDialog, UpdateFeederDialog, RefillFeederDialog } from './Dialogs'
 
 const FeederCard = ({
-  name, status, _id, description, habitat, remaining_percentage, ...props
+  name, status, _id, description, habitat, remaining_percentage, enabledCount, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
@@ -22,7 +22,16 @@ const FeederCard = ({
     onError: (e) => console.error(JSON.stringify(e)),
     refetchQueries: [{ query: GET_FEEDERS }],
     awaitRefetchQueries: true,
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (d) => {
+      if (!enabledCount && d.updateFeeder.status === 'disabled') {
+        toast.warning({
+          message: 'All of the feeders are disabled! No more feeds will occur until a feeder is re-enabled.',
+          action: { text: 'OK', className: 'text-semi-transparent' },
+          timeout: 0
+        })
+      }
+    }
   })
 
   return (
@@ -124,7 +133,9 @@ FeederCard.propTypes = {
   _id: PropTypes.string,
   habitat: PropTypes.object,
   remaining_percentage: PropTypes.number,
-  client: PropTypes.any
+  client: PropTypes.any,
+  /** number of currently enabled feeders */
+  enabledCount: PropTypes.number
 }
 
 export default FeederCard
