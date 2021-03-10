@@ -139,7 +139,7 @@ const Dashboard = ({
           <div className={`px-2 ${animalsLoading || habitatsLoading ? 'bp3-skeleton h-32' : ''}`}>
             <AnimalsBoard
               animals={animals}
-              habitats={habitats || []}
+              habitats={habitats}
               onDelete={(id) => {
                 client.writeQuery({
                   query: GET_ANIMALS,

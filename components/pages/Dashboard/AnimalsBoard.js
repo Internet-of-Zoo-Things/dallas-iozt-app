@@ -23,7 +23,7 @@ const constructState = (animals, habitats) => {
 }
 
 const AnimalsBoard = ({ animals, habitats, onDelete }) => {
-  const [animalsState, setAnimals] = useState(constructState(animals, habitats))
+  const [animalsState, setAnimals] = useState(null)
   const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
   const [updateHabitat, setUpdateHabitat] = useState(null)
 
@@ -37,7 +37,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
   })
 
   useEffect(() => {
-    setAnimals(constructState(animals, habitats))
+    if (animals && habitats) setAnimals(constructState(animals, habitats))
   }, [animals, habitats])
 
   const move = (source, destination, droppableSource, droppableDestination) => {
@@ -108,23 +108,29 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-row mx-4">
         {
-          habitats.map((h, i) => (
-            <div className="flex flex-col items-center flex-1 mx-2" key={i}>
-              <Typography variant="h6" className="mb-2">{h.name}</Typography>
-              <Droppable droppableId={h._id}>
-                {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
-              </Droppable>
-              <Button minimal className="mt-2" onClick={() => setUpdateHabitat(h)}>Edit Habitat</Button>
-            </div>
-          ))
+          animalsState && (
+            <>
+              {
+                habitats.map((h, i) => (
+                  <div className="flex flex-col items-center flex-1 mx-2" key={i}>
+                    <Typography variant="h6" className="mb-2">{h.name}</Typography>
+                    <Droppable droppableId={h._id}>
+                      {(provided, snapshot) => renderList(provided, snapshot, animalsState[h._id])}
+                    </Droppable>
+                    <Button minimal className="mt-2" onClick={() => setUpdateHabitat(h)}>Edit Habitat</Button>
+                  </div>
+                ))
+              }
+              <div className="flex flex-col items-center flex-1 mx-2">
+                <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
+                <Droppable droppableId="off">
+                  {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
+                </Droppable>
+                <Button minimal className="mt-2" onClick={() => setShowAddHabitatDialog(true)}>Create Habitat</Button>
+              </div>
+            </>
+          )
         }
-        <div className="flex flex-col items-center flex-1 mx-2">
-          <Typography variant="h6" className="mb-2">Off Exhibit</Typography>
-          <Droppable droppableId="off">
-            {(provided, snapshot) => renderList(provided, snapshot, animalsState.off)}
-          </Droppable>
-          <Button minimal className="mt-2" onClick={() => setShowAddHabitatDialog(true)}>Create Habitat</Button>
-        </div>
       </div>
       <AddHabitatDialog isOpen={showAddHabitatDialog} close={() => setShowAddHabitatDialog(false)} />
       <UpdateHabitatDialog isOpen={updateHabitat !== null} close={() => setUpdateHabitat(null)} data={updateHabitat} />
@@ -133,7 +139,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
 }
 AnimalsBoard.propTypes = {
   animals: PropTypes.array.isRequired,
-  habitats: PropTypes.array.isRequired,
+  habitats: PropTypes.array,
   onDelete: PropTypes.func.isRequired
 }
 
