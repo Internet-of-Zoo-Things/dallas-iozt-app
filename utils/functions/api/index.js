@@ -23,7 +23,8 @@ const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slic
 
 const checkLatestVersion = async () => {
   return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/master/version', {
-    timeout: 1000
+    timeout: 1000,
+    proxy: false
   })
     .then(({ data }) => {
       return data
