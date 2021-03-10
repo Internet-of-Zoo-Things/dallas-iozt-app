@@ -69,7 +69,7 @@ AnimalCard.propTypes = {
   /** Name of the animal */
   name: PropTypes.string.isRequired,
   /** Species of animal */
-  type: PropTypes.string.isRequired,
+  type: PropTypes.object.isRequired,
   /** Daily food intake in s */
   intake: PropTypes.number.isRequired,
   /** id of animal in database */

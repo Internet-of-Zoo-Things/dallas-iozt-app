@@ -31,7 +31,7 @@ const Log = () => {
         allTags={allTags ? allTags.logTags : undefined}
         currentPage={page}
         changePage={setPage}
-        totalPages={data ? Math.ceil(data.logCount / PAGE_SIZE) : undefined}
+        totalPages={data ? Math.ceil(data.logCount / PAGE_SIZE) : 0}
       />
     </Layout>
   )
