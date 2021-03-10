@@ -14,5 +14,6 @@ module.exports = {
     return config
   },
   env: {
+    PORT: process.env.PORT
   }
 }

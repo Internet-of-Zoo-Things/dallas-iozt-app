@@ -1,12 +1,31 @@
 const scheduler = require('node-schedule')
+const axios = require('axios')
 const { FeedTime, Default, Feeder } = require('../../../server/models')
 const { writeLog } = require('./index')
+
+if (!process.env.LORA_CONTROLLER_SERVER) {
+  console.error('! No lora controller server specified')
+  if (process.env.NODE_ENV === 'production') {
+    throw Error('Lora controller server must be specified in environment variables to run in production mode')
+  }
+}
 
 const sendToPython = async (feeder, quantity) => {
   return new Promise((resolve, reject) => {
     if (!feeder || !quantity) reject(Error('Missing data in job execution!'))
     console.warn(`Run feed for feeder "${feeder}" for ${quantity}s`)
-    resolve(true)
+    axios.post(`${process.env.LORA_CONTROLLER_SERVERS}/feeds/${feeder}`, { runtime: quantity })
+      .catch((err) => {
+        // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
+        console.warn(`Failed to execute feed: ${err}`)
+        if (err.response.status === 404) {
+          console.warn(`Are you sure you're running the lora controller server at ${process.env.LORA_CONTROLLER_SERVER}?`)
+        }
+        resolve(false)
+      })
+      .then(() => {
+        resolve(true)
+      })
   })
 }
 
@@ -28,7 +47,8 @@ const scheduleJob = (feedTime, schedule) => {
   schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
     /** the job itself */
     sendToPython(feeder.name, quantity)
-      .then(() => {
+      .then((success) => {
+        if (!success) throw Error()
         /** remove job from list, since it's done */
         delete schedule[_id]
         /** remove feedtime from db */
@@ -81,8 +101,7 @@ const scheduleJob = (feedTime, schedule) => {
             console.error(err)
           })
       })
-      .catch((err) => {
-        console.error(err)
+      .catch(() => {
         // todo: reschedule job for a later time?
         writeLog(`Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
           .catch((e) => {
