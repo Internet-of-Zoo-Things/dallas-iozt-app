@@ -60,7 +60,7 @@ Default.find()
   })
 
 /** ensure that at least the "elephant" taxon exists */
-AnimalTaxon.count()
+AnimalTaxon.countDocuments()
   .catch((err) => {
     console.error('Could not access database to fetch application defaults')
     console.error(err)
