@@ -14,6 +14,5 @@ module.exports = {
     return config
   },
   env: {
-    URL: process.env.URL
   }
 }
