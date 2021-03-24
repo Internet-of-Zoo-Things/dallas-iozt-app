@@ -67,13 +67,8 @@ const apolloServer = new ApolloServer({
     return {
       req, res, models, schedule, start_time
     }
-  },
-  playground: { version: '1.7.25' }
+  }
 })
-const corsOptions = {
-  origin: true,
-  credentials: true
-}
 
 /* set up cron job to automatically create daily schedule */
 const cron_schedule = '* 6 * * *'
@@ -90,7 +85,7 @@ const job = cron.schedule(cron_schedule, () => { // 6 am daily
   //   })
 })
 
-if (process.env.NODE_ENV !== 'development') {
+if (!dev) {
   /* check app versioning and look for updates */
   const curr_version = checkCurrentVersion()
   console.warn(`* Currently running webapp version ${curr_version}`)
@@ -110,7 +105,10 @@ app.prepare()
   .then(() => {
     const server = express()
 
-    server.use(cors(corsOptions))
+    server.use(cors({
+      origin: true,
+      credentials: true
+    }))
     server.use(apolloServer.getMiddleware({ cors: false }))
 
     server.get('*', (req, res) => {
@@ -119,8 +117,8 @@ app.prepare()
 
     server.listen(port, (err) => {
       if (err) throw err
-      console.warn(`> UI ready on ${`http://localhost:${process.env.PORT}`}`)
-      console.warn(`> GraphQL API ready on ${`http://localhost:${process.env.PORT}${apolloServer.graphqlPath}`}`)
+      console.warn(`> UI ready on http://localhost:${port}`)
+      console.warn(`> GraphQL API ready on http://localhost:${port}${apolloServer.graphqlPath}`)
     })
   })
   .catch((ex) => {
