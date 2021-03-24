@@ -8,8 +8,8 @@ const Feeder = gql`
     status: String
     habitat: Habitat
     remaining_percentage: Float
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     feeders: [Feeder]

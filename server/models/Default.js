@@ -20,7 +20,7 @@ const Default = new Schema({
     required: true
   }
 }, {
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }
 })
 
 module.exports = mongoose.model('default', Default)

@@ -5,8 +5,8 @@ const AnimalTaxon = gql`
     _id: String
     name: String
     defaultIntake: Float
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     animalTaxons(_id: String, name: String, defaultIntake: Float): [AnimalTaxon]

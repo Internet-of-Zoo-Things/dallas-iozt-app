@@ -8,8 +8,8 @@ const FeedTime = gql`
     timestamp: DateTime
     quantity: Float
     user_set: Boolean
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     feedTimes(includePrevious: Boolean): [FeedTime]

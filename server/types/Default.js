@@ -8,8 +8,8 @@ const Default = gql`
     description: String
     type: String
     value: Any
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     defaults(_id: String, name: String, type: String): [Default]

@@ -5,8 +5,8 @@ const Habitat = gql`
     _id: String
     name: String
     description: String
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     habitats: [Habitat]

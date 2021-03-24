@@ -24,7 +24,7 @@ const Animal = new Schema({
     default: null
   }
 }, {
-  timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
+  timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' }
 })
 
 module.exports = mongoose.model('animal', Animal)

@@ -7,8 +7,8 @@ const Animal = gql`
     type: AnimalTaxon
     intake: Float
     habitat: Habitat
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     animals(filter: String): [Animal]
