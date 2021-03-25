@@ -7,12 +7,13 @@ import { Button } from '../../../primitives'
 import { GET_ANIMAL_TAXONS, GET_ANIMALS } from '../../../../utils/graphql/queries'
 
 const _ = ({
-  isOpen, close, data
+  isOpen, close, data, onDelete
 }) => {
   /* api interaction */
   const [deleteAnimalTaxon, { loading }] = useMutation(DELETE_ANIMAL_TAXON, {
     onError: (e) => console.error(JSON.stringify(e)),
     onCompleted: () => {
+      onDelete(data._id)
       close()
     },
     refetchQueries: () => [{ query: GET_ANIMAL_TAXONS }, { query: GET_ANIMALS }],
@@ -43,7 +44,8 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   /** Existing data for animal taxon */
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  onDelete: PropTypes.func.isRequired
 }
 
 export default _

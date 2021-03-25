@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useQuery, useMutation } from 'react-apollo'
 import { Spinner, NumericInput } from '@blueprintjs/core'
@@ -10,20 +10,22 @@ import { DeleteAnimalTaxonDialog, CreateAnimalTaxonDialog } from './Dialogs'
 const _ = ({ className }) => {
   const [state, setState] = useState()
   const [updatingId, setUpdatingId] = useState(null)
-  const { data } = useQuery(GET_ANIMAL_TAXONS, {
-    onCompleted: (d) => {
-      const tmp = {}
-      d.animalTaxons.forEach((a) => {
-        tmp[a._id] = a
-      })
-      setState(tmp)
-    }
-  })
+  const { data, client } = useQuery(GET_ANIMAL_TAXONS)
   const [updateAnimalTaxon, { loading: updateLoading }] = useMutation(UPDATE_ANIMAL_TAXON, {
     refetchQueries: [{ query: GET_ANIMAL_TAXONS }]
   })
   const [taxonToDelete, setTaxonToDelete] = useState(null)
   const [createTaxonDialog, setCreateTaxonDialog] = useState(false)
+
+  useEffect(() => {
+    if (data) {
+      const tmp = {}
+      data.animalTaxons.forEach((a) => {
+        tmp[a._id] = a
+      })
+      setState(tmp)
+    }
+  }, [data])
 
   return (
     <div className={`flex flex-col items-center w-full ${className}`}>
@@ -116,8 +118,39 @@ const _ = ({ className }) => {
           </table>
           : <Spinner />
       }
-      { taxonToDelete && <DeleteAnimalTaxonDialog data={taxonToDelete} isOpen={taxonToDelete !== null} close={() => setTaxonToDelete(null)} /> }
-      <CreateAnimalTaxonDialog isOpen={createTaxonDialog} close={() => setCreateTaxonDialog(null)} />
+      {
+        taxonToDelete && (
+          <DeleteAnimalTaxonDialog
+            data={taxonToDelete}
+            isOpen={taxonToDelete !== null}
+            close={() => setTaxonToDelete(null)}
+            onDelete={(id) => {
+              client.writeQuery({
+                query: GET_ANIMAL_TAXONS,
+                data: {
+                  animalTaxons: data?.animalTaxons.filter((a) => a._id !== id)
+                }
+              })
+              const tmp = { ...state }
+              delete tmp[id]
+              setState(tmp)
+            }}
+          />
+        )
+      }
+      <CreateAnimalTaxonDialog
+        isOpen={createTaxonDialog}
+        close={() => setCreateTaxonDialog(null)}
+        onCreate={(d) => {
+          client.writeQuery({
+            query: GET_ANIMAL_TAXONS,
+            data: {
+              animalTaxons: [...data?.animalTaxons, d]
+            }
+          })
+          setState((prev) => ({ ...prev, [d._id]: d }))
+        }}
+      />
       <div className="mt-2">
         <Button outline onClick={() => setCreateTaxonDialog(true)}>Create New Animal Taxon</Button>
       </div>

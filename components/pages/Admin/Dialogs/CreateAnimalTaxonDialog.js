@@ -7,11 +7,14 @@ import { Form } from '../../../primitives'
 import { InputTypes } from '../../../../utils/models'
 import { GET_ANIMAL_TAXONS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close }) => {
+const _ = ({ isOpen, close, onCreate }) => {
   /* api interaction */
   const [createAnimalTaxon, { loading }] = useMutation(CREATE_ANIMAL_TAXON, {
     onError: (e) => console.error(JSON.stringify(e)),
-    onCompleted: close,
+    onCompleted: (d) => {
+      onCreate(d)
+      close()
+    },
     refetchQueries: [{ query: GET_ANIMAL_TAXONS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
@@ -58,7 +61,8 @@ const _ = ({ isOpen, close }) => {
 }
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired
+  close: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired
 }
 
 export default _

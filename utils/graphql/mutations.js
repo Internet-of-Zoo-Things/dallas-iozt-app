@@ -50,6 +50,7 @@ export const CREATE_FEEDER = gql`
       description
       status
       habitat {
+        _id
         name
       }
       remaining_percentage
@@ -65,6 +66,7 @@ export const UPDATE_FEEDER = gql`
       description
       status
       habitat {
+        _id
         name
       }
       remaining_percentage
