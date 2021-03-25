@@ -77,7 +77,7 @@ const Animal = {
     async updateAnimal(parent, { _id, ...args }, { models }) {
       return new Promise((resolve, reject) => {
         if (args.name) args.name = ensureCapitalized(args.name)
-        models.Animal.update({ _id }, { $set: args }, { multi: false, new: true }, (err1) => {
+        models.Animal.update({ _id }, { $set: args }, { multi: false }, (err1) => {
           if (err1) reject(err1)
           /** refetch the animal */
           models.Animal.findOne({ _id }, (err2, animal) => {
