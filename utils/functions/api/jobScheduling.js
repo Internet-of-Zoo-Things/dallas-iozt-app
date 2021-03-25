@@ -47,76 +47,76 @@ const scheduleJob = (models, feedTime, schedule) => {
   if (_id in schedule) {
     schedule[_id].cancel()
   }
-  schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
-    /** the job itself */
-    sendToPython(feeder.name, quantity)
-      .then(() => {
-        try {
-          /** remove job from list, since it's done */
-          delete schedule[_id]
-          /** remove feedtime from db */
-          models.FeedTime.remove({ _id }, { multi: false }, (removeErr) => {
-            if (removeErr) {
-              console.error(removeErr)
-              throw Error(`Unable to delete feedtime ${_id}`)
-            } else {
-              writeLog(models, `Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
-                .catch((err) => {
-                  console.error(err)
-                  throw Error('Could not write to log')
-                })
-                .then(() => {
-                  /** modify the remaining feed percentage on the feeder */
-                  models.Default.findOne({ name: 'feeder_capacity' }, (err1, { value: capacity }) => {
-                    if (err1) {
-                      console.error(err1)
-                      throw Error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
-                    } else {
-                      models.Default.findOne({ name: 'feeder_disable_capacity' }, (err2, { value: disable_trigger }) => {
-                        if (err2) {
-                          console.error(err2)
-                          throw Error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
-                        } else {
-                          models.Feeder.findOne({ _id: feeder._id }, (err3, feederDoc) => {
-                            if (err3) {
-                              console.error(err3)
-                              throw Error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
-                            } else {
-                              const remaining_prev = feederDoc.remaining_percentage
-                              const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
-                              feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
-                              if (remaining_next < disable_trigger) {
-                                /** disable feeder from being scheduled since it's nearly out of feed */
-                                feederDoc.status = 'disabled'
-                              }
-                              models.Feeder.update({ _id: feeder._id }, feederDoc, { multi: false }, (err4) => {
-                                if (err4) {
-                                  console.error(err4)
-                                  throw Error('Unable to save feeder doc')
-                                }
-                              })
-                            }
-                          })
-                        }
-                      })
-                    }
-                  })
-                })
-            }
-          })
-        } catch (err) {
-          console.error(err)
-        }
-      })
-      .catch(() => {
-        // todo: reschedule job for a later time?
-        writeLog(models, `Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
-          .catch((e) => {
-            console.error('Could not write to log:')
-            console.error(e)
-          })
-      })
-  })
+  // schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
+  //   /** the job itself */
+  //   sendToPython(feeder.name, quantity)
+  //     .then(() => {
+  //       try {
+  //         /** remove job from list, since it's done */
+  //         delete schedule[_id]
+  //         /** remove feedtime from db */
+  //         models.FeedTime.remove({ _id }, { multi: false }, (removeErr) => {
+  //           if (removeErr) {
+  //             console.error(removeErr)
+  //             throw Error(`Unable to delete feedtime ${_id}`)
+  //           } else {
+  //             writeLog(models, `Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
+  //               .catch((err) => {
+  //                 console.error(err)
+  //                 throw Error('Could not write to log')
+  //               })
+  //               .then(() => {
+  //                 /** modify the remaining feed percentage on the feeder */
+  //                 models.Default.findOne({ name: 'feeder_capacity' }, (err1, { value: capacity }) => {
+  //                   if (err1) {
+  //                     console.error(err1)
+  //                     throw Error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
+  //                   } else {
+  //                     models.Default.findOne({ name: 'feeder_disable_capacity' }, (err2, { value: disable_trigger }) => {
+  //                       if (err2) {
+  //                         console.error(err2)
+  //                         throw Error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
+  //                       } else {
+  //                         models.Feeder.findOne({ _id: feeder._id }, (err3, feederDoc) => {
+  //                           if (err3) {
+  //                             console.error(err3)
+  //                             throw Error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
+  //                           } else {
+  //                             const remaining_prev = feederDoc.remaining_percentage
+  //                             const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
+  //                             feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
+  //                             if (remaining_next < disable_trigger) {
+  //                               /** disable feeder from being scheduled since it's nearly out of feed */
+  //                               feederDoc.status = 'disabled'
+  //                             }
+  //                             models.Feeder.update({ _id: feeder._id }, feederDoc, { multi: false }, (err4) => {
+  //                               if (err4) {
+  //                                 console.error(err4)
+  //                                 throw Error('Unable to save feeder doc')
+  //                               }
+  //                             })
+  //                           }
+  //                         })
+  //                       }
+  //                     })
+  //                   }
+  //                 })
+  //               })
+  //           }
+  //         })
+  //       } catch (err) {
+  //         console.error(err)
+  //       }
+  //     })
+  //     .catch(() => {
+  //       // todo: reschedule job for a later time?
+  //       writeLog(models, `Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
+  //         .catch((e) => {
+  //           console.error('Could not write to log:')
+  //           console.error(e)
+  //         })
+  //     })
+  // })
 }
 
 const deleteJob = ({ _id }, schedule) => {

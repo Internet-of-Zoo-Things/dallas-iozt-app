@@ -19,7 +19,9 @@ const _ = ({ className }) => {
       setState(tmp)
     }
   })
-  const [updateAnimalTaxon, { loading: updateLoading }] = useMutation(UPDATE_ANIMAL_TAXON)
+  const [updateAnimalTaxon, { loading: updateLoading }] = useMutation(UPDATE_ANIMAL_TAXON, {
+    refetchQueries: [{ query: GET_ANIMAL_TAXONS }]
+  })
   const [taxonToDelete, setTaxonToDelete] = useState(null)
   const [createTaxonDialog, setCreateTaxonDialog] = useState(false)
 

@@ -29,7 +29,14 @@ const _ = ({
       <div className="w-full p-6">
         <Form
           onSubmit={(d) => {
-            updateFeedTime({ variables: { _id: data._id, ...d, feeder: d.feeder.id } })
+            updateFeedTime({
+              variables: {
+                _id: data._id,
+                ...d,
+                feeder: d.feeder.id,
+                timestamp: d.timestamp.getTime()
+              }
+            })
           }}
           submitLoading={loading}
           fields={[

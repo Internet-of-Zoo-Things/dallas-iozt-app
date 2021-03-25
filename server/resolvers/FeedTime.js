@@ -21,7 +21,7 @@ const Feeder = {
   Query: {
     async feedTimes(parent, { includePrevious = false }, { models }) {
       return new Promise((resolve, reject) => {
-        models.FeedTime.find(includePrevious ? {} : { timestamp: { $gte: new Date() } }, (err, feedtimes) => {
+        models.FeedTime.find(includePrevious ? {} : { timestamp: { $gte: Date.now() } }, (err, feedtimes) => {
           if (err) reject(err)
           else resolve(populateFeedTimes(models, feedtimes))
         })
@@ -116,7 +116,7 @@ const Feeder = {
     },
     async deleteAllUpcomingFeedTimes(parent, _, { models, schedule }) {
       return new Promise((resolve, reject) => {
-        models.FeedTime.remove({ timestamp: { $gte: new Date() } }, { multi: true }, (err) => {
+        models.FeedTime.remove({ timestamp: { $gte: Date.now() } }, { multi: true }, (err) => {
           if (err) reject(err)
           else {
             deleteAllJobs(schedule)
@@ -129,7 +129,7 @@ const Feeder = {
     }
     // async createDailySchedule(parent, { debug }, { models }) {
     //   return createSchedule(debug).then(() => {
-    //     return models.FeedTime.find({ timestamp: { $gte: new Date() } })
+    //     return models.FeedTime.find({ timestamp: { $gte: Date.now() } })
     //       .populate('feeder')
     //       .catch((err) => { throw new ApolloError(err) })
     //   }).catch((err) => { throw new ApolloError(err) })

@@ -27,7 +27,13 @@ const _ = ({ isOpen, close, feeders }) => {
       <div className="w-full p-6">
         <Form
           onSubmit={(d) => {
-            createFeedTime({ variables: { ...d, feeder: d.feeder.id } })
+            createFeedTime({
+              variables: {
+                ...d,
+                feeder: d.feeder.id,
+                timestamp: d.timestamp.getTime()
+              }
+            })
           }}
           submitLoading={loading}
           fields={[
