@@ -52,11 +52,17 @@ const Habitat = {
           if (err1) reject(err1)
           if (!habitat) reject(Error('Habitat does not exist!'))
           else {
-            models.Habitat.remove({ _id }, { multi: false }, (err2) => {
+            /** delete all feeders in this habitat */
+            models.Feeder.remove({ habitat: _id }, { multi: true }, (err2) => {
               if (err2) reject(err2)
               else {
-                writeLog(models, `Deleted habitat "${habitat.name}"`, 'habitat')
-                  .then(() => { resolve(habitat) })
+                models.Habitat.remove({ _id }, { multi: false }, (err3) => {
+                  if (err3) reject(err3)
+                  else {
+                    writeLog(models, `Deleted habitat "${habitat.name}"`, 'habitat')
+                      .then(() => { resolve(habitat) })
+                  }
+                })
               }
             })
           }

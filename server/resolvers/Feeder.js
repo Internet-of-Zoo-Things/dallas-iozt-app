@@ -81,6 +81,7 @@ const Feeder = {
         .catch((err) => { throw new ApolloError(err) })
     },
     async deleteFeeder(parent, { _id }, { models }) {
+      // TODO: when a feeder is deleted, divert all feed times to other feeders
       return new Promise((resolve, reject) => {
         models.Feeder.findOne({ _id }, (err1, feeder) => {
           if (err1) reject(err1)
