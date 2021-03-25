@@ -14,6 +14,7 @@ const AnimalCard = ({
   type,
   intake,
   onDelete,
+  onUpdate,
   ...props
 }) => {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false)
@@ -53,6 +54,7 @@ const AnimalCard = ({
         data={{
           _id, name, type, intake
         }}
+        onSubmit={onUpdate}
       />
       <DeleteAnimalDialog
         isOpen={showDeleteDialog}
@@ -75,6 +77,7 @@ AnimalCard.propTypes = {
   /** id of animal in database */
   _id: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   habitat: PropTypes.object
 }
 

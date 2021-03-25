@@ -8,6 +8,7 @@ import { Typography, toast, Button } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'
 import { AddHabitatDialog, UpdateHabitatDialog } from './Dialogs'
+import { GET_ANIMALS } from '../../../utils/graphql/queries'
 
 const constructState = (animals, habitats) => {
   const cols = { off: [] }
@@ -27,7 +28,7 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
   const [showAddHabitatDialog, setShowAddHabitatDialog] = useState(false)
   const [updateHabitat, setUpdateHabitat] = useState(null)
 
-  const [updateAnimal] = useMutation(UPDATE_ANIMAL, {
+  const [updateAnimal, { client }] = useMutation(UPDATE_ANIMAL, {
     onError: (err) => {
       toast.error({
         message: 'There was an error trying to move this animal!'
@@ -95,7 +96,19 @@ const AnimalsBoard = ({ animals, habitats, onDelete }) => {
               style={{ ...draggableProvided.draggableProps.style }}
               className={`mb-2 rounded-lg bg-white outline-none transition duration-150 ${draggableSnapshot.isDragging ? 'border border-primary' : 'shadow hover:shadow-md'}`}
             >
-              <AnimalCard {...item.content} onDelete={() => onDelete(item.id)} />
+              <AnimalCard
+                {...item.content}
+                onDelete={() => onDelete(item.id)}
+                onUpdate={(d) => {
+                  client.writeQuery({
+                    query: GET_ANIMALS,
+                    variables: { filter: '' },
+                    data: {
+                      animals: animals.map((a) => (a._id === d._id ? d : a))
+                    }
+                  })
+                }}
+              />
             </div>
           )}
         </Draggable>
