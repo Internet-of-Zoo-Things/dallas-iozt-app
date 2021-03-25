@@ -4,7 +4,12 @@ const { ensureCapitalized, writeLog } = require('../../utils/functions/api')
 const AnimalTaxon = {
   Query: {
     async animalTaxons(parent, filter, { models }) {
-      return models.AnimalTaxon.find(filter)
+      return new Promise((resolve, reject) => {
+        models.AnimalTaxon.find(filter, (err, data) => {
+          if (err) reject(err)
+          resolve(data)
+        })
+      })
         .catch((err) => { throw new ApolloError(err) })
     }
   },

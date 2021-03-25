@@ -10,13 +10,16 @@ const isEmail = (str) => {
 
 /* writes a log entry to the database */
 const writeLog = async (models, message, tag = 'general') => {
-  if (!models || !(typeof models === 'object')) throw Error('models dictionary not provided')
-  return models.Log.insert({
-    timestamp: new Date(),
-    message,
-    tag
-  }, (err) => {
-    if (err) throw Error(err)
+  return new Promise((resolve, reject) => {
+    if (!models || !(typeof models === 'object')) reject(Error('models dictionary not provided'))
+    models.Log.insert({
+      timestamp: new Date(),
+      message,
+      tag
+    }, (err, log) => {
+      if (err) throw reject(err)
+      resolve(log)
+    })
   })
 }
 
