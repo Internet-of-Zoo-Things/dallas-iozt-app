@@ -25,7 +25,7 @@ const Log = ({
             <Typography variant="h4" className="text-dark-gray">Log</Typography>
           </div>
           <div className="mx-6 flex justify-end items-center flex-wrap">
-            <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
+            <Typography variant="subtitle" className="mr-2 text-disabled">Filter logs:</Typography>
             {
               allTags && allTags.map((tag, i) => (
                 <Tag
