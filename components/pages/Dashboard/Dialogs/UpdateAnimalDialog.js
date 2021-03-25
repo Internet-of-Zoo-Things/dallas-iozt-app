@@ -57,9 +57,8 @@ const _ = ({ isOpen, close, data }) => {
                   required: true,
                   type: InputTypes.SELECT,
                   placeholder: 'Select the animal\'s species...',
-                  // fixme: use dynamic list of possible animals from db
                   items: animalTaxons ? animalTaxons.animalTaxons.map((a) => ({ label: a.name, value: a._id })) : [],
-                  defaultValue: data.type
+                  defaultValue: { label: data.type.name, value: data.type._id }
                 },
                 {
                   label: 'Daily Food Intake (s)',

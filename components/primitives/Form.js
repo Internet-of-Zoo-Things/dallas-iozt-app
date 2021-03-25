@@ -33,7 +33,7 @@ const _ = ({
     fields.forEach((f) => {
       if (f.defaultValue) {
         if (f.type === InputTypes.SELECT) {
-          const vals = f.items.filter((item) => item.label === f.defaultValue)
+          const vals = f.items.filter((item) => item.value === (typeof f.defaultValue === 'object' ? f.defaultValue.value : f.defaultValue))
           tmp[f.id] = vals.length === 1
             ? vals[0]
             : undefined && console.error(`Unknown value ${f.defaultValue} of options ${f.items.map((item) => item.label)}`)
