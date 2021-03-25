@@ -6,8 +6,8 @@
     "dev": "nodemon server",
     "storybook": "start-storybook",
     "lint": "eslint \"components/**/*.js\" \"pages/**/*.js\" \"server/**/*.js\" \"utils/**/*.js\"",
-    "build": "next build",
-    "start": "node server",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production node server",
     "forever": "forever start server",
     "forever-kill": "forever stopall"
   },

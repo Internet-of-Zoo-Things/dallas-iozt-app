@@ -4,7 +4,7 @@ const { writeLog } = require('./index')
 
 if (!process.env.LORA_CONTROLLER_SERVER) {
   console.error('! No lora controller server specified')
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !process.env.HEROKU) {
     throw Error('Lora controller server must be specified in environment variables to run in production mode')
   }
 }
