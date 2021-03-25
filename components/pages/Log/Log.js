@@ -72,6 +72,7 @@ const Log = ({
                       generateColor
                       clickable
                       onClick={() => setFilter(log.tag)}
+                      salt="hey wanna hear a udp joke? i don't care if you don't get it"
                     >
                       {log.tag}
                     </Tag>
