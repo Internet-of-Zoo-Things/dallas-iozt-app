@@ -13,18 +13,23 @@ const sendToPython = async (feeder, quantity) => {
   return new Promise((resolve, reject) => {
     if (!feeder || !quantity) reject(Error('Missing data in job execution!'))
     console.warn(`Run feed for feeder "${feeder}" for ${quantity}s`)
-    axios.post(`${process.env.LORA_CONTROLLER_SERVERS}/feeds/${feeder}`, { runtime: quantity })
-      .catch((err) => {
-        // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
-        console.warn(`Failed to execute feed: ${err}`)
-        if (err.response.status === 404) {
-          console.warn(`Are you sure you're running the lora controller server at ${process.env.LORA_CONTROLLER_SERVER}?`)
-        }
-        reject(err)
-      })
-      .then(() => {
-        resolve(true)
-      })
+    if (!process.env.LORA_CONTROLLER_SERVERS) {
+      console.warn('No lora controller server specified, skipping feed')
+      resolve(true)
+    } else {
+      axios.post(`${process.env.LORA_CONTROLLER_SERVERS}/feeds/${feeder}`, { runtime: quantity })
+        .catch((err) => {
+          // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
+          console.warn(`Failed to execute feed: ${err}`)
+          if (err.response.status === 404) {
+            console.warn(`Are you sure you're running the lora controller server at ${process.env.LORA_CONTROLLER_SERVER}?`)
+          }
+          reject(err)
+        })
+        .then(() => {
+          resolve(true)
+        })
+    }
   })
 }
 

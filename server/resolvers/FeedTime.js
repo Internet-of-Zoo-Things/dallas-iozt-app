@@ -42,9 +42,10 @@ const Feeder = {
             }, (err2, feedtime) => {
               if (err2) reject(err2)
               else {
+                feedtime = { ...feedtime, feeder }
                 scheduleJob(models, feedtime, schedule)
                 writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
-                  .then(() => { resolve({ ...feedtime, feeder }) })
+                  .then(() => { resolve(feedtime) })
               }
             })
           }
@@ -73,9 +74,10 @@ const Feeder = {
                 }, (err3) => {
                   if (err3) reject(err3)
                   else {
+                    feedtime = { ...feedtime, feeder }
                     scheduleJob(models, feedtime, schedule)
                     writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
-                      .then(() => { resolve({ ...feedtime, feeder }) })
+                      .then(() => { resolve(feedtime) })
                   }
                 })
               }

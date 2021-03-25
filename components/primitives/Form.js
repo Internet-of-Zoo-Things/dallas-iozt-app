@@ -180,11 +180,11 @@ const _ = ({
       return (
         <div className="flex w-full justify-between">
           {
-            intakeDefaultsLoading
+            intakeDefaultsLoading || !intakeDefaults
               ? <Spinner />
               : <>
                 {
-                  intakeDefaults.defaults.sort((a, b) => a.value - b.value).map((d, i) => (
+                  [...intakeDefaults.defaults].sort((a, b) => a.value - b.value).map((d, i) => (
                     <Button
                       key={i}
                       onClick={() => setData((prev) => ({ ...prev, [field.id]: d.value }))}

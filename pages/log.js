@@ -13,7 +13,7 @@ const Log = () => {
 
   const { data, error, loading } = useQuery(GET_LOGS, {
     variables: { tag, limit: PAGE_SIZE, skip: (PAGE_SIZE * page) },
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'cache-first',
     onError: (e) => console.error(e)
   })
 

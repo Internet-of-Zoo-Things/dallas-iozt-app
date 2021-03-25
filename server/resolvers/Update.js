@@ -14,7 +14,7 @@ const Update = {
     async checkForUpdate() {
       const latest = await checkLatestVersion()
         .catch((err) => {
-          console.error(err)
+          console.error(err.message)
           throw new ApolloError('Unable to access repository')
         })
       const current = checkCurrentVersion()

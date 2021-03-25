@@ -15,13 +15,14 @@ import AnimalTaxons from './AnimalTaxons'
 const Admin = () => {
   const [defaults, setDefaults] = useState({})
 
-  const { data: webVersion } = useQuery(CHECK_SOFTWARE_VERSION, {
+  const { data: webVersion, loading: webVersionLoading } = useQuery(CHECK_SOFTWARE_VERSION, {
     onError: (err) => toast.error(err),
     fetchPolicy: 'cache-first'
   })
-  const { data: webUpdate, error: webUpdateError } = useQuery(CHECK_FOR_UPDATE, {
+  const { data: webUpdate, loading: webUpdateLoading, error: webUpdateError } = useQuery(CHECK_FOR_UPDATE, {
     onError: (err) => toast.error(err),
-    fetchPolicy: 'cache-first'
+    fetchPolicy: 'cache-first',
+    errorPolicy: 'all'
   })
   const { data: versionHistory } = useQuery(GET_VERSION_HISTORY, {
     onError: (err) => toast.error(err),
@@ -84,42 +85,42 @@ const Admin = () => {
           <div className="flex flex-col w-full">
             <Typography variant="h6" className="mb-4 text-center">Web Application</Typography>
             {
-              webVersion && webUpdate
-                ? <>
-                  <div className="flex flex-wrap">
-                    <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
-                    <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
-                  </div>
-                  <div className="flex flex-wrap mb-4">
-                    <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
-                    <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
-                    <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
-                  </div>
-                  {
-                    webUpdate.checkForUpdate.update
-                      ? <div className="flex flex-col items-center w-full">
-                        <Typography variant="h6" weight="bold" className="text-primary mb-2">
-                          A software update is available!
-                        </Typography>
-                        <Typography variant="subtitle">
-                          IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
-                        </Typography>
-                        {/* todo: update software somehow */}
-                        <Button
-                          className="mt-2"
-                          onClick={() => toast.warning({ message: 'Updating through the web interface is not yet supported!' })}
-                        >
-                          Download Update
-                        </Button>
-                      </div>
-                      : <Typography variant="body" className="text-center">
-                        There is no software update available at this time.
-                      </Typography>
-                  }
-                </>
+              webVersionLoading || webUpdateLoading
+                ? <Spinner />
                 : webUpdateError
                   ? 'There was an error checking for software updates.'
-                  : <Spinner />
+                  : <>
+                    <div className="flex flex-wrap">
+                      <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
+                      <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
+                    </div>
+                    <div className="flex flex-wrap mb-4">
+                      <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
+                      <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
+                      <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
+                    </div>
+                    {
+                      webUpdate.checkForUpdate.update
+                        ? <div className="flex flex-col items-center w-full">
+                          <Typography variant="h6" weight="bold" className="text-primary mb-2">
+                            A software update is available!
+                          </Typography>
+                          <Typography variant="subtitle">
+                            IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
+                          </Typography>
+                          {/* todo: update software somehow */}
+                          <Button
+                            className="mt-2"
+                            onClick={() => toast.warning({ message: 'Updating through the web interface is not yet supported!' })}
+                          >
+                            Download Update
+                          </Button>
+                        </div>
+                        : <Typography variant="body" className="text-center">
+                          There is no software update available at this time.
+                        </Typography>
+                    }
+                  </>
             }
           </div>
           <div className="flex flex-col items-center w-full">
