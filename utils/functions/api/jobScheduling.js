@@ -13,11 +13,11 @@ const sendToPython = async (feeder, quantity) => {
   return new Promise((resolve, reject) => {
     if (!feeder || !quantity) reject(Error('Missing data in job execution!'))
     console.warn(`Run feed for feeder "${feeder}" for ${quantity}s`)
-    if (!process.env.LORA_CONTROLLER_SERVERS) {
+    if (!process.env.LORA_CONTROLLER_SERVER) {
       console.warn('No lora controller server specified, skipping feed')
       resolve(true)
     } else {
-      axios.post(`${process.env.LORA_CONTROLLER_SERVERS}/feeds/${feeder}`, { runtime: quantity })
+      axios.post(`${process.env.LORA_CONTROLLER_SERVER}/feed/${feeder}`, { runtime: quantity })
         .catch((err) => {
           // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
           console.warn(`Failed to execute feed: ${err}`)
@@ -49,7 +49,7 @@ const scheduleJob = (models, feedTime, schedule) => {
   }
   schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
     /** the job itself */
-    sendToPython(feeder.name, quantity)
+    sendToPython(feeder._id, quantity)
       .then(() => {
         try {
           /** remove job from list, since it's done */
@@ -135,14 +135,14 @@ const deleteAllJobs = (schedule) => {
 const initializeSchedule = async (models, schedule) => {
   /** grab all upcoming feedtimes */
   return new Promise((resolve, reject) => {
-    models.FeedTime.find({ timestamp: { $gte: new Date() } }, (err1, feedtimes) => {
+    models.FeedTime.find({ timestamp: { $gte: Date.now() } }, (err1, feedtimes) => {
       if (err1) reject(err1)
       else {
         models.Feeder.find({}, (err2, feeders) => {
           if (err2) reject(err2)
           else {
             const feedersDict = feeders.reduce((dict, curr) => { dict[curr._id] = curr; return dict }, {})
-            Promise.all(feedtimes.map(async (f) => scheduleJob({ ...f, feeder: feedersDict[f.feeder] }, schedule)))
+            Promise.all(feedtimes.map(async (f) => scheduleJob(models, { ...f, feeder: feedersDict[f.feeder] }, schedule)))
               .then(() => resolve(true))
           }
         })

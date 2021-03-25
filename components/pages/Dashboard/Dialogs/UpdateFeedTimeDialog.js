@@ -33,7 +33,7 @@ const _ = ({
               variables: {
                 _id: data._id,
                 ...d,
-                feeder: d.feeder.id,
+                feeder: d.feeder.value,
                 timestamp: d.timestamp.getTime()
               }
             })
@@ -48,8 +48,8 @@ const _ = ({
               placeholder: 'Select Feeder',
               items:
                 // Only list feeders that are online
-                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, id: f._id })),
-              defaultValue: data.feeder.name
+                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, value: f._id })),
+              defaultValue: data.feeder._id
             },
             {
               label: 'Food Quantity (s)',

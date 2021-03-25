@@ -77,7 +77,7 @@ const Feeder = {
                     populateFeedTime(models, feedtime)
                       .then((populated) => {
                         scheduleJob(models, populated, schedule)
-                        writeLog(models, `Created feed time "${moment(populated.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${populated.name}"`, 'feed time')
+                        writeLog(models, `Updated feed time for "${moment(populated.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${populated.feeder.name}"`, 'feed time')
                           .then(() => { resolve(populated) })
                       })
                   }
