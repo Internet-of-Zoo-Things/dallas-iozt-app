@@ -4,66 +4,135 @@ const mongoose = require('mongoose')
 const { writeLog, createSchedule } = require('../../utils/functions/api')
 const { scheduleJob, deleteJob, deleteAllJobs } = require('../../utils/functions/api/jobScheduling')
 
+const populateFeedTime = async (models, feedtime) => {
+  return new Promise((resolve, reject) => {
+    models.Feeder.findOne({ _id: feedtime.feeder }, (err1, feeder) => {
+      if (err1) reject(err1)
+      else resolve({ ...feedtime, feeder })
+    })
+  })
+}
+const populateFeedTimes = async (models, feedtimes) => {
+  return Promise.all(
+    feedtimes.map((f) => populateFeedTime(models, f))
+  )
+}
+
 const Feeder = {
   Query: {
     async feedTimes(parent, { includePrevious = false }, { models }) {
-      return models.FeedTime.find(includePrevious ? {} : { timestamp: { $gte: new Date() } })
-        .populate('feeder')
+      return new Promise((resolve, reject) => {
+        models.FeedTime.find(includePrevious ? {} : { timestamp: { $gte: new Date() } }, (err, feedtimes) => {
+          if (err) reject(err)
+          else resolve(populateFeedTimes(models, feedtimes))
+        })
+      })
         .catch((err) => { throw new ApolloError(err) })
     }
   },
   Mutation: {
     async createFeedTime(parent, args, { models, schedule }) {
-      return models.FeedTime.findOneAndUpdate({ _id: mongoose.Types.ObjectId(), user_set: true }, args, {
-        new: true,
-        upsert: true
-      })
-        .populate('feeder')
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          scheduleJob(models, data, schedule)
-          await writeLog(models, `Created feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
-          return data
+      return new Promise((resolve, reject) => {
+        models.Feeder.findOne({ _id: args.feeder }, (err1, feeder) => {
+          if (err1) reject(err1)
+          if (!feeder) reject(Error('Feeder does not exist!'))
+          else {
+            models.FeedTime.insert({
+              ...args,
+              user_set: true
+            }, (err2, feedtime) => {
+              if (err2) reject(err2)
+              else {
+                scheduleJob(models, feedtime, schedule)
+                writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
+                  .then(() => { resolve({ ...feedtime, feeder }) })
+              }
+            })
+          }
         })
+      })
+        .catch((err) => { throw new ApolloError(err) })
     },
     async updateFeedTime(parent, { _id, ...args }, { models, schedule }) {
-      return models.FeedTime.findByIdAndUpdate(_id, args, {
-        new: true
-      })
-        .populate('feeder')
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          scheduleJob(models, data, schedule)
-          await writeLog(models, `Edited feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
-          return data
+      return new Promise((resolve, reject) => {
+        /** check feeder */
+        models.Feeder.findOne({ _id: args.feeder }, (err1, feeder) => {
+          if (err1) reject(err1)
+          if (!feeder) reject(Error('Feeder does not exist!'))
+          else {
+            /** check feed time */
+            models.FeedTime.findOne({ _id }, (err2, feedtime) => {
+              if (err2) reject(err2)
+              else if (!feedtime) reject(Error('Feed time does not exist!'))
+              else {
+                /** update feed time */
+                models.FeedTime.update({ _id }, {
+                  $set: {
+                    ...args,
+                    user_set: true
+                  }
+                }, (err3) => {
+                  if (err3) reject(err3)
+                  else {
+                    scheduleJob(models, feedtime, schedule)
+                    writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
+                      .then(() => { resolve({ ...feedtime, feeder }) })
+                  }
+                })
+              }
+            })
+          }
         })
+      })
+        .catch((err) => { throw new ApolloError(err) })
     },
     async deleteFeedTime(parent, { _id }, { models, schedule }) {
-      return models.FeedTime.findByIdAndDelete(_id)
-        .populate('feeder')
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          deleteJob(_id, schedule)
-          await writeLog(models, `Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
-          return data
+      return new Promise((resolve, reject) => {
+        /** check feed time */
+        models.FeedTime.findOne({ _id }, (err1, feedtime) => {
+          if (err1) reject(err1)
+          if (!feedtime) reject(Error('Feedtime does not exist!'))
+          else {
+            /** check feeder */
+            models.Feeder.findOne({ _id: feedtime.feeder }, (err2, feeder = {}) => {
+              if (err2) reject(err2)
+              else {
+                /** remove feed time */
+                models.FeedTime.remove({ _id }, { multi: false }, (err3) => {
+                  if (err3) reject(err3)
+                  else {
+                    deleteJob(_id, schedule)
+                    writeLog(models, `Deleted feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder ? feeder.name : 'undefined'}"`, 'feed time')
+                      .then(() => { resolve({ ...feedtime, feeder }) })
+                  }
+                })
+              }
+            })
+          }
         })
+      })
+        .catch((err) => { throw new ApolloError(err) })
     },
     async deleteAllUpcomingFeedTimes(parent, _, { models, schedule }) {
-      return models.FeedTime.deleteMany({ timestamp: { $gte: new Date() } })
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async () => {
-          deleteAllJobs(schedule)
-          await writeLog(models, 'Deleted all upcoming feed times', 'feed time')
-          return true
+      return new Promise((resolve, reject) => {
+        models.FeedTime.remove({ timestamp: { $gte: new Date() } }, { multi: true }, (err) => {
+          if (err) reject(err)
+          else {
+            deleteAllJobs(schedule)
+            writeLog(models, 'Deleted all upcoming feed times', 'feed time')
+              .then(() => { resolve(true) })
+          }
         })
-    },
-    async createDailySchedule(parent, { debug }, { models }) {
-      return createSchedule(debug).then(() => {
-        return models.FeedTime.find({ timestamp: { $gte: new Date() } })
-          .populate('feeder')
-          .catch((err) => { throw new ApolloError(err) })
-      }).catch((err) => { throw new ApolloError(err) })
+      })
+        .catch((err) => { throw new ApolloError(err) })
     }
+    // async createDailySchedule(parent, { debug }, { models }) {
+    //   return createSchedule(debug).then(() => {
+    //     return models.FeedTime.find({ timestamp: { $gte: new Date() } })
+    //       .populate('feeder')
+    //       .catch((err) => { throw new ApolloError(err) })
+    //   }).catch((err) => { throw new ApolloError(err) })
+    // }
   }
 }
 

@@ -1,6 +1,5 @@
 const scheduler = require('node-schedule')
 const axios = require('axios')
-const { FeedTime, Default, Feeder } = require('../../../server/models')
 const { writeLog } = require('./index')
 
 if (!process.env.LORA_CONTROLLER_SERVER) {
@@ -21,7 +20,7 @@ const sendToPython = async (feeder, quantity) => {
         if (err.response.status === 404) {
           console.warn(`Are you sure you're running the lora controller server at ${process.env.LORA_CONTROLLER_SERVER}?`)
         }
-        resolve(false)
+        reject(err)
       })
       .then(() => {
         resolve(true)
@@ -34,7 +33,6 @@ const sendToPython = async (feeder, quantity) => {
  * each scheduled job can be access using the FeedTime
  * _id as its key.
  */
-
 const scheduleJob = (models, feedTime, schedule) => {
   if (!feedTime || !schedule) throw Error('Missing data when scheduling job!')
   const {
@@ -47,59 +45,63 @@ const scheduleJob = (models, feedTime, schedule) => {
   schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
     /** the job itself */
     sendToPython(feeder.name, quantity)
-      .then((success) => {
-        if (!success) throw Error()
-        /** remove job from list, since it's done */
-        delete schedule[_id]
-        /** remove feedtime from db */
-        FeedTime.findByIdAndDelete(_id)
-          .then(() => {
-            writeLog(models, `Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
-              .catch((err) => {
-                console.error('Could not write to log:')
-                console.error(err)
-              })
-              .then(() => {
-                /** modify the remaining feed percentage on the feeder */
-                Default.findOne({ name: 'feeder_capacity' })
-                  .catch((err) => {
-                    console.error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
-                    console.error(err)
-                  })
-                  .then(({ value: capacity }) => {
-                    Default.findOne({ name: 'feeder_disable_capacity' })
-                      .catch((err) => {
-                        console.error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
-                        console.error(err)
-                      })
-                      .then(({ value: disable_trigger }) => {
-                        Feeder.findOne({ _id: feeder._id })
-                          .catch((err) => {
-                            console.error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
-                            console.error(err)
-                          })
-                          .then((feederDoc) => {
-                            const remaining_prev = feederDoc.remaining_percentage
-                            const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
-                            feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
-                            /** disable feeder from being scheduled since it's nearly out of feed */
-                            if (remaining_next < disable_trigger) {
-                              feederDoc.status = 'disabled'
-                            }
-                            feederDoc.save()
-                              .catch((err) => {
-                                console.error('Unable to save feeder document')
-                                console.error(err)
+      .then(() => {
+        try {
+          /** remove job from list, since it's done */
+          delete schedule[_id]
+          /** remove feedtime from db */
+          models.FeedTime.remove({ _id }, { multi: false }, (removeErr) => {
+            if (removeErr) {
+              console.error(removeErr)
+              throw Error(`Unable to delete feedtime ${_id}`)
+            } else {
+              writeLog(models, `Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
+                .catch((err) => {
+                  console.error(err)
+                  throw Error('Could not write to log')
+                })
+                .then(() => {
+                  /** modify the remaining feed percentage on the feeder */
+                  models.Default.findOne({ name: 'feeder_capacity' }, (err1, { value: capacity }) => {
+                    if (err1) {
+                      console.error(err1)
+                      throw Error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
+                    } else {
+                      models.Default.findOne({ name: 'feeder_disable_capacity' }, (err2, { value: disable_trigger }) => {
+                        if (err2) {
+                          console.error(err2)
+                          throw Error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
+                        } else {
+                          models.Feeder.findOne({ _id: feeder._id }, (err3, feederDoc) => {
+                            if (err3) {
+                              console.error(err3)
+                              throw Error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
+                            } else {
+                              const remaining_prev = feederDoc.remaining_percentage
+                              const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
+                              feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
+                              if (remaining_next < disable_trigger) {
+                                /** disable feeder from being scheduled since it's nearly out of feed */
+                                feederDoc.status = 'disabled'
+                              }
+                              models.Feeder.update({ _id: feeder._id }, feederDoc, { multi: false }, (err4) => {
+                                if (err4) {
+                                  console.error(err4)
+                                  throw Error('Unable to save feeder doc')
+                                }
                               })
+                            }
                           })
+                        }
                       })
+                    }
                   })
-              })
+                })
+            }
           })
-          .catch((err) => {
-            console.error(`Unable to delete feedtime ${_id}`)
-            console.error(err)
-          })
+        } catch (err) {
+          console.error(err)
+        }
       })
       .catch(() => {
         // todo: reschedule job for a later time?
@@ -115,21 +117,34 @@ const scheduleJob = (models, feedTime, schedule) => {
 const deleteJob = ({ _id }, schedule) => {
   if (!_id || !schedule) throw Error('Missing data when cancelling job!')
   delete schedule[_id]
+  return schedule
 }
 
 const deleteAllJobs = (schedule) => {
   Object.keys(schedule).forEach((k) => {
     delete schedule[k]
   })
+  return schedule
 }
 
-const initializeSchedule = async (schedule) => {
-  return FeedTime.find({ timestamp: { $gte: new Date() } })
-    .populate('feeder')
-    .catch((err) => { throw err })
-    .then((feedtimes) => {
-      feedtimes.forEach((f) => scheduleJob(f, schedule))
+const initializeSchedule = async (models, schedule) => {
+  /** grab all upcoming feedtimes */
+  return new Promise((resolve, reject) => {
+    models.FeedTime.find({ timestamp: { $gte: new Date() } }, (err1, feedtimes) => {
+      if (err1) reject(err1)
+      else {
+        models.Feeder.find({}, (err2, feeders) => {
+          if (err2) reject(err2)
+          else {
+            const feedersDict = feeders.reduce((dict, curr) => { dict[curr._id] = curr; return dict }, {})
+            Promise.all(feedtimes.map(async (f) => scheduleJob({ ...f, feeder: feedersDict[f.feeder] }, schedule)))
+              .then(() => resolve(true))
+          }
+        })
+      }
     })
+  })
+    .catch((err) => { throw err })
 }
 
 module.exports = {

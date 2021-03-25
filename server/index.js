@@ -43,7 +43,7 @@ initializeDefaults(models)
     /* configure one-time job scheduling dict for feedings, animal habitat transitions */
     const schedule = {}
     /* initialize schedule based on existing feed times */
-    initializeSchedule(schedule)
+    initializeSchedule(models, schedule)
       .catch((err) => {
         console.error('Unable to initialize feeding schedule:')
         console.error(err)
