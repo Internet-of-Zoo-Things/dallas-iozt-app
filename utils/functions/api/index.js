@@ -55,11 +55,20 @@ const getVersionData = (version) => {
   }
 }
 
+/** https://github.com/louischatriot/nedb#persistence */
+const compactDatabase = (models) => {
+  Object.keys(models).forEach((key) => {
+    models[key].persistence.compactDatafile()
+  })
+  return true
+}
+
 module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
   checkLatestVersion,
   checkCurrentVersion,
-  getVersionData
+  getVersionData,
+  compactDatabase
 }

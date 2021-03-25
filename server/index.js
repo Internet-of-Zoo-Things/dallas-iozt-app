@@ -11,7 +11,8 @@ const resolvers = require('./resolvers')
 const {
   // createSchedule,
   checkCurrentVersion,
-  checkLatestVersion
+  checkLatestVersion,
+  compactDatabase
 } = require('../utils/functions/api')
 const { initializeSchedule } = require('../utils/functions/api/jobScheduling')
 const initializeDefaults = require('../utils/functions/api/initializeDefaults')
@@ -66,6 +67,9 @@ initializeDefaults(models)
         }
       }
     })
+
+    /* set up cron job to compact database every night at midnight */
+    cron.schedule('0 0 * * *', () => compactDatabase(models))
 
     /* set up cron job to automatically create daily schedule */
     const cron_schedule = '* 6 * * *'
