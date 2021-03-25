@@ -35,7 +35,7 @@ const sendToPython = async (feeder, quantity) => {
  * _id as its key.
  */
 
-const scheduleJob = (feedTime, schedule) => {
+const scheduleJob = (models, feedTime, schedule) => {
   if (!feedTime || !schedule) throw Error('Missing data when scheduling job!')
   const {
     _id, feeder, quantity, timestamp
@@ -54,7 +54,7 @@ const scheduleJob = (feedTime, schedule) => {
         /** remove feedtime from db */
         FeedTime.findByIdAndDelete(_id)
           .then(() => {
-            writeLog(`Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
+            writeLog(models, `Successfully dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'feed time')
               .catch((err) => {
                 console.error('Could not write to log:')
                 console.error(err)
@@ -103,7 +103,7 @@ const scheduleJob = (feedTime, schedule) => {
       })
       .catch(() => {
         // todo: reschedule job for a later time?
-        writeLog(`Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
+        writeLog(models, `Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
           .catch((e) => {
             console.error('Could not write to log:')
             console.error(e)

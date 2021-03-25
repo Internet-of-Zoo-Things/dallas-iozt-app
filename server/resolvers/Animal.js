@@ -32,7 +32,7 @@ const Animal = {
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Created animal "${name}"`, 'animal')
+          await writeLog(models, `Created animal "${name}"`, 'animal')
           return data
             .populate('habitat')
             .populate('type')
@@ -45,7 +45,7 @@ const Animal = {
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           // write to the log for changes other than switching between habitats
-          if (!(Object.keys(args).length === 1 && args.habitat)) await writeLog(`Updated animal "${data.name}"`, 'animal')
+          if (!(Object.keys(args).length === 1 && args.habitat)) await writeLog(models, `Updated animal "${data.name}"`, 'animal')
           return data
             .populate('habitat')
             .populate('type')
@@ -56,7 +56,7 @@ const Animal = {
       return models.Animal.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Deleted animal "${data.name}"`, 'animal')
+          await writeLog(models, `Deleted animal "${data.name}"`, 'animal')
           return data
         })
     }

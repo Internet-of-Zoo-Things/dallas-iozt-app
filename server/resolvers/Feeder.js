@@ -19,7 +19,7 @@ const Feeder = {
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Created feeder "${name}"`, 'feeder')
+          await writeLog(models, `Created feeder "${name}"`, 'feeder')
           return data.populate('habitat')
         })
     },
@@ -36,7 +36,7 @@ const Feeder = {
       return models.Feeder.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Updated feeder "${data.name}"`, 'feeder')
+          await writeLog(models, `Updated feeder "${data.name}"`, 'feeder')
           return data.populate('habitat')
         })
     },
@@ -44,7 +44,7 @@ const Feeder = {
       return models.Feeder.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Deleted feeder "${data.name}"`, 'feeder')
+          await writeLog(models, `Deleted feeder "${data.name}"`, 'feeder')
           return data
         })
     }

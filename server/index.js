@@ -14,6 +14,7 @@ const {
   checkLatestVersion
 } = require('../utils/functions/api')
 const { initializeSchedule } = require('../utils/functions/api/jobScheduling')
+const initializeDefaults = require('../utils/functions/api/initializeDefaults')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -37,88 +38,89 @@ collections.forEach((name) => {
 })
 
 /* initialize defaults in mongo if they don't already exist */
-require('../utils/functions/api/initializeDefaults')
-
-/* configure one-time job scheduling dict for feedings, animal habitat transitions */
-const schedule = {}
-/* initialize schedule based on existing feed times */
-initializeSchedule(schedule)
-  .catch((err) => {
-    console.error('Unable to initialize feeding schedule:')
-    console.error(err)
-    process.exit(1)
-  })
+initializeDefaults(models)
   .then(() => {
-    console.warn(`Initialized feeding schedule based on ${Object.keys(schedule).length} existing feed times.`)
-  })
+    /* configure one-time job scheduling dict for feedings, animal habitat transitions */
+    const schedule = {}
+    /* initialize schedule based on existing feed times */
+    initializeSchedule(schedule)
+      .catch((err) => {
+        console.error('Unable to initialize feeding schedule:')
+        console.error(err)
+        process.exit(1)
+      })
+      .then(() => {
+        console.warn(`Initialized feeding schedule based on ${Object.keys(schedule).length} existing feed times.`)
+      })
 
-/* set up apollo graphql */
-const app = next({ dev })
-const handle = app.getRequestHandler()
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: ({ req, res }) => {
-    // here, the database connection could be passed in, and any cookies/JWT can be read
-    return {
-      req, res, models, schedule, start_time
+    /* set up apollo graphql */
+    const app = next({ dev })
+    const handle = app.getRequestHandler()
+    const apolloServer = new ApolloServer({
+      typeDefs,
+      resolvers,
+      context: ({ req, res }) => {
+        // here, the database connection could be passed in, and any cookies/JWT can be read
+        return {
+          req, res, models, schedule, start_time
+        }
+      }
+    })
+
+    /* set up cron job to automatically create daily schedule */
+    const cron_schedule = '* 6 * * *'
+    console.warn(`* Initializing automatic daily scheduling (${cron_schedule})`)
+    const job = cron.schedule(cron_schedule, () => { // 6 am daily
+      console.warn('CRON: Creating daily schedule')
+      // createSchedule()
+      //   .catch((err) => {
+      //     console.error('Could not create daily schedule!')
+      //     console.error(err)
+      //   })
+      //   .then(() => {
+      //     // todo: expire old feedtimes (past 1 week)
+      //   })
+    })
+
+    if (!dev) {
+      /* check app versioning and look for updates */
+      const curr_version = checkCurrentVersion()
+      console.warn(`* Currently running webapp version ${curr_version}`)
+      checkLatestVersion()
+        .then((d) => {
+          if (curr_version === d) console.warn('* Webapp software is up-to-date')
+          else console.warn(`* UPDATE NEEDED: ${curr_version} -> ${d}\n* Go to the Admin page to perform this update`)
+        })
+        .catch((err) => {
+          console.error('! Could not access GitHub to check for software updates')
+          console.error(`Error: ${err.message}`)
+        })
     }
-  }
-})
 
-/* set up cron job to automatically create daily schedule */
-const cron_schedule = '* 6 * * *'
-console.warn(`* Initializing automatic daily scheduling (${cron_schedule})`)
-const job = cron.schedule(cron_schedule, () => { // 6 am daily
-  console.warn('CRON: Creating daily schedule')
-  // createSchedule()
-  //   .catch((err) => {
-  //     console.error('Could not create daily schedule!')
-  //     console.error(err)
-  //   })
-  //   .then(() => {
-  //     // todo: expire old feedtimes (past 1 week)
-  //   })
-})
+    /* prepare the api */
+    app.prepare()
+      .then(() => {
+        const server = express()
 
-if (!dev) {
-  /* check app versioning and look for updates */
-  const curr_version = checkCurrentVersion()
-  console.warn(`* Currently running webapp version ${curr_version}`)
-  checkLatestVersion()
-    .then((d) => {
-      if (curr_version === d) console.warn('* Webapp software is up-to-date')
-      else console.warn(`* UPDATE NEEDED: ${curr_version} -> ${d}\n* Go to the Admin page to perform this update`)
-    })
-    .catch((err) => {
-      console.error('! Could not access GitHub to check for software updates')
-      console.error(`Error: ${err.message}`)
-    })
-}
+        server.use(cors({
+          origin: true,
+          credentials: true
+        }))
+        server.use(apolloServer.getMiddleware({ cors: false }))
 
-/* prepare the api */
-app.prepare()
-  .then(() => {
-    const server = express()
+        server.get('*', (req, res) => {
+          return handle(req, res)
+        })
 
-    server.use(cors({
-      origin: true,
-      credentials: true
-    }))
-    server.use(apolloServer.getMiddleware({ cors: false }))
-
-    server.get('*', (req, res) => {
-      return handle(req, res)
-    })
-
-    server.listen(port, (err) => {
-      if (err) throw err
-      console.warn(`> UI ready on http://localhost:${port}`)
-      console.warn(`> GraphQL API ready on http://localhost:${port}${apolloServer.graphqlPath}`)
-    })
-  })
-  .catch((ex) => {
-    console.error(ex.stack)
-    job.destroy()
-    process.exit(1)
+        server.listen(port, (err) => {
+          if (err) throw err
+          console.warn(`> UI ready on http://localhost:${port}`)
+          console.warn(`> GraphQL API ready on http://localhost:${port}${apolloServer.graphqlPath}`)
+        })
+      })
+      .catch((ex) => {
+        console.error(ex.stack)
+        job.destroy()
+        process.exit(1)
+      })
   })

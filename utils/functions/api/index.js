@@ -1,6 +1,5 @@
 const axios = require('axios')
 const fs = require('fs')
-const { Log } = require('../../../server/models')
 
 const isEmail = (str) => {
   // eslint-disable-next-line no-control-regex
@@ -10,13 +9,15 @@ const isEmail = (str) => {
 }
 
 /* writes a log entry to the database */
-const writeLog = async (message, tag = 'general') => {
-  return Log.create({
+const writeLog = async (models, message, tag = 'general') => {
+  if (!models || !(typeof models === 'object')) throw Error('models dictionary not provided')
+  return models.Log.insert({
     timestamp: new Date(),
     message,
     tag
+  }, (err) => {
+    if (err) throw Error(err)
   })
-    .catch((err) => { throw Error(err) })
 }
 
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')

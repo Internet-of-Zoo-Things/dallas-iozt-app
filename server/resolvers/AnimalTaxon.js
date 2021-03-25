@@ -16,7 +16,7 @@ const AnimalTaxon = {
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Created animal taxon "${name}"`, 'animal taxon')
+          await writeLog(models, `Created animal taxon "${name}"`, 'animal taxon')
           return data
         })
     },
@@ -25,7 +25,7 @@ const AnimalTaxon = {
       return models.AnimalTaxon.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Updated animal taxon "${data.name}"`, 'animal taxon')
+          await writeLog(models, `Updated animal taxon "${data.name}"`, 'animal taxon')
           return data
         })
     },
@@ -35,7 +35,7 @@ const AnimalTaxon = {
       return models.AnimalTaxon.findByIdAndDelete(_id)
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Deleted animal taxon "${data.name}"`, 'animal taxon')
+          await writeLog(models, `Deleted animal taxon "${data.name}"`, 'animal taxon')
           return data
         })
     }

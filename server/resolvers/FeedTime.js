@@ -21,8 +21,8 @@ const Feeder = {
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          scheduleJob(data, schedule)
-          await writeLog(`Created feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          scheduleJob(models, data, schedule)
+          await writeLog(models, `Created feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
           return data
         })
     },
@@ -33,8 +33,8 @@ const Feeder = {
         .populate('feeder')
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          scheduleJob(data, schedule)
-          await writeLog(`Edited feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          scheduleJob(models, data, schedule)
+          await writeLog(models, `Edited feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
           return data
         })
     },
@@ -44,7 +44,7 @@ const Feeder = {
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           deleteJob(_id, schedule)
-          await writeLog(`Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
+          await writeLog(models, `Deleted feed time "${moment(data.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${data.feeder.name}"`, 'feed time')
           return data
         })
     },
@@ -53,7 +53,7 @@ const Feeder = {
         .catch((err) => { throw new ApolloError(err) })
         .then(async () => {
           deleteAllJobs(schedule)
-          await writeLog('Deleted all upcoming feed times', 'feed time')
+          await writeLog(models, 'Deleted all upcoming feed times', 'feed time')
           return true
         })
     },

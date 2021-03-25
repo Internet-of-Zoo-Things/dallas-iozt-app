@@ -16,7 +16,7 @@ const Habitat = {
       })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Created new habitat "${name}"`, 'habitat')
+          await writeLog(models, `Created new habitat "${name}"`, 'habitat')
           return data
         })
     },
@@ -26,7 +26,7 @@ const Habitat = {
       return models.Habitat.findByIdAndUpdate(_id, args, { new: true })
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
-          await writeLog(`Updated habitat "${data.name}"`, 'habitat')
+          await writeLog(models, `Updated habitat "${data.name}"`, 'habitat')
           return data
         })
     },
@@ -35,7 +35,7 @@ const Habitat = {
         .catch((err) => { throw new ApolloError(err) })
         .then(async (data) => {
           await models.Animal.updateMany({ habitat: _id }, { habitat: null })
-          await writeLog(`Deleted habitat "${data.name}"`, 'habitat')
+          await writeLog(models, `Deleted habitat "${data.name}"`, 'habitat')
           return data
         })
     }
