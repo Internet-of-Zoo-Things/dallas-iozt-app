@@ -51,7 +51,7 @@ const Dashboard = ({
         >
           <div className="w-full flex flex-col items-center">
             { !enabledFeeders.length && (<Typography variant="body" className="text-gray">There are no enabled feeders!</Typography>) }
-            <Button className="my-1" icon="add" fill disabled={!enabledFeeders.length}>
+            <Button className="my-1" icon="add" fill disabled={!enabledFeeders.length || true}>
               <Typography variant="body">Create Daily Schedule</Typography>
             </Button>
             <Button className="my-1" icon="time" fill disabled={!enabledFeeders.length} onClick={() => setShowAddFeedTimeDialog(true)}>

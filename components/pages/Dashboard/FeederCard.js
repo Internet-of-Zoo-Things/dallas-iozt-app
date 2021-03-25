@@ -12,7 +12,7 @@ import { GET_FEEDERS } from '../../../utils/graphql/queries'
 import { DeleteFeederDialog, UpdateFeederDialog, RefillFeederDialog } from './Dialogs'
 
 const FeederCard = ({
-  name, status, _id, description, habitat, remaining_percentage, enabledCount, ...props
+  name, status, _id, description, habitat, remaining_percentage, enabledCount, onUpdate, ...props
 }) => {
   const [showDeleteFeederDialog, setShowDeleteFeederDialog] = useState(false)
   const [showUpdateFeederDialog, setShowUpdateFeederDialog] = useState(false)
@@ -118,7 +118,7 @@ const FeederCard = ({
       <DeleteFeederDialog isOpen={showDeleteFeederDialog} close={() => setShowDeleteFeederDialog(false)} data={{ name, _id }} />
       <UpdateFeederDialog isOpen={showUpdateFeederDialog} close={() => setShowUpdateFeederDialog(false)} data={{
         _id, name, description, habitat
-      }} />
+      }} onUpdate={onUpdate} />
       <RefillFeederDialog isOpen={showRefillFeederDialog} close={() => setShowRefillFeederDialog(false)} data={{ name, _id }} />
     </>
   )
@@ -134,7 +134,8 @@ FeederCard.propTypes = {
   habitat: PropTypes.object,
   remaining_percentage: PropTypes.number,
   /** number of currently enabled feeders */
-  enabledCount: PropTypes.number
+  enabledCount: PropTypes.number,
+  onUpdate: PropTypes.func.isRequired
 }
 
 export default FeederCard

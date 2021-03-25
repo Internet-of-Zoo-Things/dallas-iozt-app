@@ -7,11 +7,16 @@ import { InputTypes } from '../../../../utils/models'
 import { UPDATE_FEEDER } from '../../../../utils/graphql/mutations'
 import { GET_FEEDERS, GET_HABITATS } from '../../../../utils/graphql/queries'
 
-const _ = ({ isOpen, close, data }) => {
+const _ = ({
+  isOpen, close, data, onUpdate
+}) => {
   /* api interaction */
   const [updateFeeder, { loading }] = useMutation(UPDATE_FEEDER, {
     onError: (e) => console.error(JSON.stringify(e)),
-    onCompleted: close,
+    onCompleted: (d) => {
+      onUpdate(d)
+      close()
+    },
     refetchQueries: [{ query: GET_FEEDERS }],
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
@@ -79,7 +84,8 @@ const _ = ({ isOpen, close, data }) => {
 _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object.isRequired,
+  onUpdate: PropTypes.func.isRequired
 }
 
 export default _
