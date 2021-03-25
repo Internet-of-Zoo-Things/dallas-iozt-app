@@ -74,10 +74,12 @@ const Feeder = {
                 }, (err3) => {
                   if (err3) reject(err3)
                   else {
-                    feedtime = { ...feedtime, feeder }
-                    scheduleJob(models, feedtime, schedule)
-                    writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
-                      .then(() => { resolve(feedtime) })
+                    populateFeedTime(models, feedtime)
+                      .then((populated) => {
+                        scheduleJob(models, populated, schedule)
+                        writeLog(models, `Created feed time "${moment(populated.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${populated.name}"`, 'feed time')
+                          .then(() => { resolve(populated) })
+                      })
                   }
                 })
               }

@@ -62,7 +62,7 @@ const FeedTimeCard = ({ data, feeders }) => {
                         updateFeedTime({
                           variables: {
                             _id: data._id,
-                            timestamp: moment(data.timestamp).add(time, 'minutes').toDate()
+                            timestamp: moment(data.timestamp).add(time, 'minutes').toDate().getTime()
                           }
                         })
                       }} loading={loading && time === snoozeAmount}>{time} min</Button>
