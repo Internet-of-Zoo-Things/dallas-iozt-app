@@ -34,6 +34,7 @@ const Feeder = {
           name: ensureCapitalized(name),
           description: ensureCapitalized(description),
           habitat,
+          remaining_percentage: 1,
           status: 'online'
         }, (err, feeder) => {
           if (err) reject(err)

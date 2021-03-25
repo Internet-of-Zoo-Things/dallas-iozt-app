@@ -1,7 +1,6 @@
 const { ApolloError } = require('apollo-server-express')
 const moment = require('moment')
-const mongoose = require('mongoose')
-const { writeLog, createSchedule } = require('../../utils/functions/api')
+const { writeLog } = require('../../utils/functions/api')
 const { scheduleJob, deleteJob, deleteAllJobs } = require('../../utils/functions/api/jobScheduling')
 
 const populateFeedTime = async (models, feedtime) => {
