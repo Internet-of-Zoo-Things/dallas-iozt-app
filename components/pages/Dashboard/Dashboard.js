@@ -10,7 +10,7 @@ import FeedTimeline from './FeedTimeline'
 import {
   AddAnimalDialog, AddFeederDialog, AddFeedTimeDialog, DeleteAllFeedTimesDialog, AddHabitatDialog
 } from './Dialogs'
-import { GET_ANIMALS } from '../../../utils/graphql/queries'
+import { GET_ANIMALS, GET_FEEDERS } from '../../../utils/graphql/queries'
 import AnimalsBoard from './AnimalsBoard'
 
 const Dashboard = ({
@@ -109,7 +109,19 @@ const Dashboard = ({
               ? <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-4 ${feedersLoading ? 'bp3-skeleton h-32' : ''}`}>
                 {
                   feeders.map((f, i) => (
-                    <FeederCard {...f} key={i} client={client} enabledCount={enabledFeeders.length} />
+                    <FeederCard
+                      {...f}
+                      key={i}
+                      enabledCount={enabledFeeders.length}
+                      onUpdate={(d) => {
+                        client.writeQuery({
+                          query: GET_FEEDERS,
+                          data: {
+                            feeders: feeders.map((x) => (x._id === d._id ? d : x))
+                          }
+                        })
+                      }}
+                    />
                   ))
                 }
               </div>

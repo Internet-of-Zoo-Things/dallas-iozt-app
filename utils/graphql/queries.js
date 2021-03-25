@@ -73,6 +73,7 @@ export const GET_FEEDERS = gql`
       description
       status
       habitat {
+        _id
         name
       }
       remaining_percentage
@@ -107,6 +108,7 @@ export const GET_HABITATS = gql`
 export const GET_INTAKE_DEFAULTS = gql`
   query defaults {
     defaults(type: "intake") {
+      _id
       name
       value
     }

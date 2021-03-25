@@ -133,7 +133,6 @@ FeederCard.propTypes = {
   _id: PropTypes.string,
   habitat: PropTypes.object,
   remaining_percentage: PropTypes.number,
-  client: PropTypes.any,
   /** number of currently enabled feeders */
   enabledCount: PropTypes.number
 }

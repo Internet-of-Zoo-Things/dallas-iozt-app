@@ -64,10 +64,10 @@ const _ = ({ isOpen, close, data }) => {
                   type: InputTypes.SELECT,
                   items: habitats && habitats.habitats.map((h) => ({
                     label: h.name,
-                    id: h._id
+                    value: h._id
                   })),
                   placeholder: 'Select a habitat...',
-                  defaultValue: data.habitat.id
+                  defaultValue: data.habitat._id
                 }
               ]}
             />
