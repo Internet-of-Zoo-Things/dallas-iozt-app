@@ -8,7 +8,7 @@ import {
 import {
   CHECK_SOFTWARE_VERSION, CHECK_FOR_UPDATE, GET_VERSION_HISTORY, GET_UPTIME, GET_DEFAULTS
 } from '../../../utils/graphql/queries'
-import { UPDATE_DEFAULT } from '../../../utils/graphql/mutations'
+import { UPDATE_DEFAULT, COMPACT_DATABASE } from '../../../utils/graphql/mutations'
 import EditableTable from './EditableTable'
 import AnimalTaxons from './AnimalTaxons'
 
@@ -42,6 +42,7 @@ const Admin = () => {
     awaitRefetchQueries: true,
     notifyOnNetworkStatusChange: true
   })
+  const [compactDatabase, { loading: compacting }] = useMutation(COMPACT_DATABASE)
 
   useEffect(() => {
     if (calibration) {
@@ -65,7 +66,7 @@ const Admin = () => {
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center px-6">
             <div className="flex flex-wrap">
               <Typography variant="body" weight="bold" className="mr-2">Raspberry Pi Uptime:</Typography>
               <Typography variant="body" className="mr-2">{uptime && (moment().diff(uptime.uptime, 'days'))} days</Typography>
@@ -100,7 +101,7 @@ const Admin = () => {
                       <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
                     </div>
                     {
-                      webUpdate.checkForUpdate.update
+                      webUpdate?.checkForUpdate?.update
                         ? <div className="flex flex-col items-center w-full">
                           <Typography variant="h6" weight="bold" className="text-primary mb-2">
                             A software update is available!
@@ -131,29 +132,18 @@ const Admin = () => {
         <Card
           header={
             <div className="flex w-full py-3 px-2 justify-center text-center">
-              <Typography variant="h4" className="text-dark-gray">Web Application Version History</Typography>
+              <Typography variant="h4" className="text-dark-gray">Additional Controls</Typography>
             </div>
           }
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          {
-            versionHistory
-              ? versionHistory.getVersionHistory.map((v, i) => (
-                <div key={i} className="flex flex-col w-full">
-                  <Typography variant="h6" className="text-center">{v.version}</Typography>
-                  <Typography variant="subtitle" className="text-center text-disabled">{moment(v.date).format('MMM Do, hh:mm:ss a')}</Typography>
-                  <ul className="list-disc ml-4 mt-2">
-                    {
-                      v.changes.map((c, j) => (
-                        <li key={j}>{c}</li>
-                      ))
-                    }
-                  </ul>
-                </div>
-              ))
-              : <Spinner />
-          }
+          <div className="flex flex-col items-center px-6">
+            <div>
+              <Button loading={compacting} onClick={compactDatabase}>Compact Database</Button>
+            </div>
+            <Typography variant="subtitle" className="text-disabled mt-2 text-center">Database compaction can improve the performance of the web application database. Compaction is already scheduled to occur nightly at midnight, but can be manually triggered using the button above. While the database is compacting, no other operations can be performed, so a manual trigger should be avoided if possible.</Typography>
+          </div>
         </Card>
       </div>
       <div className="flex flex-col items-center w-full lg:w-2/3 xl:w-2/3">
@@ -199,6 +189,33 @@ const Admin = () => {
               }
             </div>
           </div>
+        </Card>
+        <Card
+          header={
+            <div className="flex w-full py-3 px-2 justify-center text-center">
+              <Typography variant="h4" className="text-dark-gray">Web Application Version History</Typography>
+            </div>
+          }
+          elevation={Elevation.TWO}
+          className="w-full mb-8"
+        >
+          {
+            versionHistory
+              ? versionHistory.getVersionHistory.map((v, i) => (
+                <div key={i} className="flex flex-col w-full">
+                  <Typography variant="h6" className="text-center">{v.version}</Typography>
+                  <Typography variant="subtitle" className="text-center text-disabled">{moment(v.date).format('MMM Do, hh:mm:ss a')}</Typography>
+                  <ul className="list-disc ml-4 mt-2">
+                    {
+                      v.changes.map((c, j) => (
+                        <li key={j}>{c}</li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              ))
+              : <Spinner />
+          }
         </Card>
       </div>
     </div>

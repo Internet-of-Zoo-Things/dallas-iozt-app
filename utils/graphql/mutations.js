@@ -189,3 +189,9 @@ export const DELETE_ANIMAL_TAXON = gql`
     }
   }
 `
+
+export const COMPACT_DATABASE = gql`
+  mutation compactDatabase {
+    compactDatabase
+  }
+`
