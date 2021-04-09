@@ -11,13 +11,14 @@ if (!process.env.LORA_CONTROLLER_SERVER) {
 
 const sendToPython = async (feeder, quantity) => {
   return new Promise((resolve, reject) => {
-    if (!feeder || !quantity) reject(Error('Missing data in job execution!'))
-    console.warn(`Run feed for feeder "${feeder}" for ${quantity}s`)
+    if (!feeder || !feeder.connectivity_id || !quantity) reject(Error('Missing data in job execution!'))
+    console.warn(`Run feed for feeder "${feeder.name}" for ${quantity}s`)
     if (!process.env.LORA_CONTROLLER_SERVER) {
       console.warn('No lora controller server specified, skipping feed')
       resolve(true)
     } else {
-      axios.post(`${process.env.LORA_CONTROLLER_SERVER}/feed/${feeder}`, { runtime: quantity })
+      /** fixme: build in connectivity ids to handle multipl feeders */
+      axios.post(`${process.env.LORA_CONTROLLER_SERVER}/feed/${feeder.connectivity_id}`, { runtime: quantity })
         .catch((err) => {
           // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
           console.warn(`Failed to execute feed: ${err}`)
@@ -49,7 +50,7 @@ const scheduleJob = (models, feedTime, schedule) => {
   }
   schedule[_id] = scheduler.scheduleJob(new Date(timestamp), () => {
     /** the job itself */
-    sendToPython(feeder._id, quantity)
+    sendToPython(feeder, quantity)
       .then(() => {
         try {
           /** remove job from list, since it's done */

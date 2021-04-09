@@ -28,14 +28,17 @@ const Feeder = {
     }
   },
   Mutation: {
-    async createFeeder(parent, { name, description, habitat }, { models }) {
+    async createFeeder(parent, {
+      name, description, habitat, connectivity_id
+    }, { models }) {
       return new Promise((resolve, reject) => {
         models.Feeder.insert({
           name: ensureCapitalized(name),
           description: ensureCapitalized(description),
           habitat,
           remaining_percentage: 1,
-          status: 'online'
+          status: 'online',
+          connectivity_id
         }, (err, feeder) => {
           if (err) reject(err)
           else {

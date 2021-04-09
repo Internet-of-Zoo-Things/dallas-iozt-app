@@ -8,6 +8,7 @@ const Feeder = gql`
     status: String
     habitat: Habitat
     remaining_percentage: Float
+    connectivity_id: Int
     createdAt: DateTime
     updatedAt: DateTime
   }
@@ -15,7 +16,7 @@ const Feeder = gql`
     feeders: [Feeder]
   }
   extend type Mutation {
-    createFeeder(name: String!, description: String, habitat: String!): Feeder
+    createFeeder(name: String!, description: String, habitat: String!, connectivity_id: Int!): Feeder
     updateFeeder(_id: String!, name: String, description: String, status: String, habitat: String, remaining_percentage: Float): Feeder
     deleteFeeder(_id: String!): Feeder
   }
