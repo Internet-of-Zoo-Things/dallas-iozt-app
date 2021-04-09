@@ -22,7 +22,7 @@ const sendToPython = async (feeder, quantity) => {
         .catch((err) => {
           // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
           console.warn(`Failed to execute feed: ${err}`)
-          if (err.response.status === 404) {
+          if (!err.response || err.response.status === 404) {
             console.warn(`Are you sure you're running the lora controller server at ${process.env.LORA_CONTROLLER_SERVER}?`)
           }
           reject(err)
