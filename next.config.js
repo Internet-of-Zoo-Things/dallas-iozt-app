@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 module.exports = {
-  exportTrailingSlash: false,
+  trailingSlash: false,
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -14,6 +14,6 @@ module.exports = {
     return config
   },
   env: {
-    URL: process.env.URL
+    PORT: process.env.PORT
   }
 }

@@ -31,3 +31,5 @@ yarn-error.log*
 .env
 .npmrc
 package-lock.json
+
+data

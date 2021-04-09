@@ -27,7 +27,13 @@ const _ = ({ isOpen, close, feeders }) => {
       <div className="w-full p-6">
         <Form
           onSubmit={(d) => {
-            createFeedTime({ variables: { ...d, feeder: d.feeder.id } })
+            createFeedTime({
+              variables: {
+                ...d,
+                feeder: d.feeder.id,
+                timestamp: d.timestamp.getTime()
+              }
+            })
           }}
           submitLoading={loading}
           fields={[
@@ -42,11 +48,11 @@ const _ = ({ isOpen, close, feeders }) => {
                 feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, id: f._id }))
             },
             {
-              label: 'Food Quantity (lbs)',
+              label: 'Food Quantity (s)',
               id: 'quantity',
               required: true,
-              type: InputTypes.NUMERIC,
-              placeholder: 'Enter amount of food to dispense in lbs',
+              type: InputTypes.INTAKE,
+              placeholder: 'Enter amount of seconds to dispense food',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0
             },
             {

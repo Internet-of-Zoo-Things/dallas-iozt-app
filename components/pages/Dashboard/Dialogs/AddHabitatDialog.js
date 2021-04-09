@@ -21,7 +21,7 @@ const _ = ({ isOpen, close }) => {
     <Dialog
       icon="plus"
       onClose={() => close()}
-      title="Add an Animal"
+      title="Create a Habitat"
       isOpen={isOpen}
     >
       <div className="w-full p-6">

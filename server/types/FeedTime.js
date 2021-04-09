@@ -8,8 +8,8 @@ const FeedTime = gql`
     timestamp: DateTime
     quantity: Float
     user_set: Boolean
-    created_at: DateTime
-    updated_at: DateTime
+    createdAt: DateTime
+    updatedAt: DateTime
   }
   extend type Query {
     feedTimes(includePrevious: Boolean): [FeedTime]
@@ -19,7 +19,7 @@ const FeedTime = gql`
     updateFeedTime(_id: String!, feeder: String, timestamp: DateTime, quantity: Float): FeedTime
     deleteFeedTime(_id: String!): FeedTime
     deleteAllUpcomingFeedTimes: Boolean
-    createDailySchedule(debug: Boolean): [FeedTime]
+    # createDailySchedule(debug: Boolean): [FeedTime]
   }
 `
 

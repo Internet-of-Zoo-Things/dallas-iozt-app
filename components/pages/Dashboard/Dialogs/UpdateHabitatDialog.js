@@ -24,7 +24,7 @@ const _ = ({ isOpen, close, data }) => {
     <Dialog
       icon="plus"
       onClose={() => close()}
-      title="Add an Animal"
+      title="Update Habitat"
       isOpen={isOpen}
     >
       <div className="w-full p-6 flex flex-col justify-center">
@@ -63,7 +63,7 @@ _.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   close: PropTypes.func.isRequired,
   updateCache: PropTypes.func,
-  data: PropTypes.object.isRequired
+  data: PropTypes.object
 }
 
 export default _

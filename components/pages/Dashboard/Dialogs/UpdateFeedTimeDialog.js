@@ -29,7 +29,14 @@ const _ = ({
       <div className="w-full p-6">
         <Form
           onSubmit={(d) => {
-            updateFeedTime({ variables: { _id: data._id, ...d, feeder: d.feeder.id } })
+            updateFeedTime({
+              variables: {
+                _id: data._id,
+                ...d,
+                feeder: d.feeder.value,
+                timestamp: d.timestamp.getTime()
+              }
+            })
           }}
           submitLoading={loading}
           fields={[
@@ -41,15 +48,15 @@ const _ = ({
               placeholder: 'Select Feeder',
               items:
                 // Only list feeders that are online
-                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, id: f._id })),
-              defaultValue: data.feeder.name
+                feeders.filter((f) => f.status === FeederStatuses.ONLINE).map((f) => ({ label: f.name, value: f._id })),
+              defaultValue: data.feeder._id
             },
             {
-              label: 'Food Quantity (lbs)',
+              label: 'Food Quantity (s)',
               id: 'quantity',
               required: true,
-              type: InputTypes.NUMERIC,
-              placeholder: 'Enter amount of food to dispense in lbs',
+              type: InputTypes.INTAKE,
+              placeholder: 'Enter amount of food to dispense in s',
               validator: (val) => /^-?\d+\.?\d*$/.test(val) && val > 0,
               defaultValue: data.quantity
             },

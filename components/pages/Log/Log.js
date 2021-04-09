@@ -25,7 +25,7 @@ const Log = ({
             <Typography variant="h4" className="text-dark-gray">Log</Typography>
           </div>
           <div className="mx-6 flex justify-end items-center flex-wrap">
-            <Typography variant="subtitle" weight="thin" className="mr-2">Filter logs:</Typography>
+            <Typography variant="subtitle" className="mr-2 text-disabled">Filter logs:</Typography>
             {
               allTags && allTags.map((tag, i) => (
                 <Tag
@@ -35,6 +35,7 @@ const Log = ({
                   onClick={filter === tag ? undefined : () => setFilter(tag)}
                   onRemove={filter === tag ? () => setFilter(undefined) : undefined}
                   key={i}
+                  salt="hey wanna hear a udp joke? i don't care if you don't get it"
                 >
                   {tag}
                 </Tag>
@@ -71,6 +72,7 @@ const Log = ({
                       generateColor
                       clickable
                       onClick={() => setFilter(log.tag)}
+                      salt="hey wanna hear a udp joke? i don't care if you don't get it"
                     >
                       {log.tag}
                     </Tag>

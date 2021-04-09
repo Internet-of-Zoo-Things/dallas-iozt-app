@@ -9,7 +9,7 @@ const makeDarker = (val) => ((val - 70 > 0) ? val - 70 : 0)
 
 const Styled_ = styled(Tag)`
   ${({ color }) => color && css`
-      background-color: rgb(${color.r}, ${color.g}, ${color.b}, 0.3);
+      background-color: rgb(${color.r}, ${color.g}, ${color.b}, 0.25);
       color: rgb(${makeDarker(color.r)}, ${makeDarker(color.g)}, ${makeDarker(color.b)}, 1) !important;
       /* background-image: linear-gradient(141deg, rgba(${color.r}, ${color.g}, ${color.b}, .3) 0%, rgba(${color.r}, ${color.g}, ${color.b}, .5) 51%, rgba(${color.r}, ${color.g}, ${color.b}, .8) 75%); */
   `}
@@ -20,10 +20,11 @@ const _ = ({
   children,
   clickable,
   className,
+  salt,
   ...props
 }) => (
   <Styled_
-    color={generateColor ? generateColorObj(`${children} hey wanna hear a udp joke? i don't care if you don't get it`) : undefined}
+    color={generateColor ? generateColorObj(salt ? `${children} ${salt}` : children) : undefined}
     className={`whitespace-no-wrap ${clickable ? 'cursor-pointer' : ''} ${className}`}
     {...props}
   >
@@ -38,7 +39,9 @@ _.propTypes = {
   /** if the tag can be clicked/removed */
   clickable: PropTypes.bool,
   /** function to run when tag is removed */
-  onRemove: PropTypes.func
+  onRemove: PropTypes.func,
+  /** string to be appended to the color generator input */
+  salt: PropTypes.string
 }
 
 export default _

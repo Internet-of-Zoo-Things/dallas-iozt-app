@@ -42,7 +42,7 @@ const Styled_ = styled(Select)`
 
 const _ = (props) => <Styled_ {...props} />
 _.ItemPredicate = (query, item) => {
-  return item.label.toLowerCase().indexOf(query.toLowerCase()) >= 0
+  return item.label?.toLowerCase().indexOf(query.toLowerCase()) >= 0
 }
 _.ItemRenderer = (item, { handleClick, modifiers }) => {
   if (!modifiers.matchesPredicate) {

@@ -13,7 +13,6 @@ const Log = () => {
 
   const { data, error, loading } = useQuery(GET_LOGS, {
     variables: { tag, limit: PAGE_SIZE, skip: (PAGE_SIZE * page) },
-    fetchPolicy: 'no-cache',
     onError: (e) => console.error(e)
   })
 
@@ -31,7 +30,7 @@ const Log = () => {
         allTags={allTags ? allTags.logTags : undefined}
         currentPage={page}
         changePage={setPage}
-        totalPages={data ? Math.ceil(data.logCount / PAGE_SIZE) : undefined}
+        totalPages={data ? Math.ceil(data.logCount / PAGE_SIZE) : 0}
       />
     </Layout>
   )

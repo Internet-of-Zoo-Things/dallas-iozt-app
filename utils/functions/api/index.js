@@ -1,6 +1,5 @@
 const axios = require('axios')
-const { Log } = require('../../../server/models')
-const { createSchedule } = require('./createSchedule')
+const fs = require('fs')
 
 const isEmail = (str) => {
   // eslint-disable-next-line no-control-regex
@@ -10,33 +9,66 @@ const isEmail = (str) => {
 }
 
 /* writes a log entry to the database */
-const writeLog = async (message, tag = 'general') => {
-  return Log.create({
-    timestamp: new Date(),
-    message,
-    tag
+const writeLog = async (models, message, tag = 'general') => {
+  return new Promise((resolve, reject) => {
+    if (!models || !(typeof models === 'object')) reject(Error('models dictionary not provided'))
+    models.Log.insert({
+      timestamp: new Date(),
+      message,
+      tag
+    }, (err, log) => {
+      if (err) throw reject(err)
+      resolve(log)
+    })
   })
-    .catch((err) => { throw Error(err) })
 }
 
 const ensureCapitalized = (str) => (str ? str.charAt(0).toUpperCase() + str.slice(1) : '')
 
-const version = '0.1.0'
-
 const checkLatestVersion = async () => {
-  return axios.get('https://api.github.com/repos/Internet-of-Zoo-Things/dallas-iozt-app/commits/master')
+  return axios.get('https://raw.githubusercontent.com/Internet-of-Zoo-Things/dallas-iozt-app/master/version', {
+    timeout: 1000,
+    proxy: false
+  })
     .then(({ data }) => {
-      return {
-        latestVersion: '',
-        datePublished: new Date(data.commit.committer.date)
-      }
+      return data
     })
+    .catch((err) => { throw err })
+}
+
+const checkCurrentVersion = () => {
+  try {
+    return fs.readFileSync('version', 'utf8')
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+const getVersionData = (version) => {
+  try {
+    const data = JSON.parse(fs.readFileSync('changelog.json'))
+    return version ? data[version] : data
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
+}
+
+/** https://github.com/louischatriot/nedb#persistence */
+const compactDatabase = (models) => {
+  Object.keys(models).forEach((key) => {
+    models[key].persistence.compactDatafile()
+  })
+  return true
 }
 
 module.exports = {
   isEmail,
   writeLog,
   ensureCapitalized,
-  createSchedule,
-  checkLatestVersion
+  checkLatestVersion,
+  checkCurrentVersion,
+  getVersionData,
+  compactDatabase
 }

@@ -1,8 +1,23 @@
-# Dallas IoZT
+# Dallas IoZT 🐘 <a name="1_Dallas_IoZT_"></a>
 
 ![screenshot](images/screenshot.png)
 
-## Developer Overview
+## Contents <a name="contents"></a>
+
+1. [Developer Overview 🚀](#2_Developer_Overview_)
+2. [Developer Setup ⚙️](#3_Developer_Setup_)
+    1. [Ensure you have the following downloaded:](#4_Ensure_you_have_the_following_downloaded)
+    2. [Clone this repository](#5_Clone_this_repository)
+    3. [Install all dependencies](#6_Install_all_dependencies)
+    4. [Create a .env file](#7_Create_a_env_file)
+3. [Developer Tools Included 🛠](#8_Developer_Tools_Included_)
+    1. [ESLint](#9_ESLint)
+    2. [Storybook](#10_Storybook)
+4. [How to run 🏃‍♀️](#11_How_to_run_)
+5. [Codebase Architecture 🏗](#12_Codebase_Architecture_)
+6. [Deployment ⤴️](#13_Deployment_)
+
+## Developer Overview 🚀 <a name="2_Developer_Overview_"></a>
 
 As a quick overview, here's the architecture of the web app:
 
@@ -18,67 +33,49 @@ As a quick overview, here's the architecture of the web app:
   * Node.js/Express.js: Creates a server using JavaScript
   * [Apollo GraphQL](https://www.apollographql.com/docs/): Allows interaction between the client and server using a data graph rather than a REST API
 * Database
-  * [MongoDB](https://www.mongodb.com/): NoSQL database solution
+  * [NeDB](https://github.com/louischatriot/nedb): NoSQL lite database solution
+    * Functionally similar to older versions of MongoDB. Check the documentation for further information.
 
-## Developer Setup
+## Developer Setup ⚙️ <a name="3_Developer_Setup_"></a>
 
-### Ensure you have the following downloaded:
+### Ensure you have the following downloaded: <a name="4_Ensure_you_have_the_following_downloaded"></a>
 
 * [Node.js/NPM](https://nodejs.org/en/)
 * [Yarn](https://yarnpkg.com/getting-started/install) (optional): Replaces `NPM` as your package manager. I prefer `Yarn` but they're very similar so it's not a huge deal. You can install `Yarn` with `npm install -g yarn`.
-* [MongoDB Community](https://www.mongodb.com/try/download/community)
-* [MongoDB Compass](https://www.mongodb.com/products/compass) (optional, but I would highly recommend): MongoDB GUI
 
-### Clone this repository
+### Clone this repository <a name="5_Clone_this_repository"></a>
 
 Get the repository `git` URL and run `git clone your-url-here` after navigating to wherever you'd like to download this codebase on your device.
 
-### Install all dependencies
+### Install all dependencies <a name="6_Install_all_dependencies"></a>
 
 Run either `npm install` or `yarn install`. You may have to configure a [proxy](https://www.jhipster.tech/configuring-a-corporate-proxy/) with your package manager if you're on the VPN.
 
-### Set up a local database
+### Create a .env file <a name="7_Create_a_env_file"></a>
 
-Run the Mongo daemon to create a MongoDB server on your local machine for testing. On MacOS, this can probably be done with `~/mongodb/bin/mongod`.
+Create a file named `.env` at the root of this project. This file will contain all of your environment variables. Check out the `.env.example` file for guidance.
 
-Once the Mongo daemon is running, connect to the server either in the command line using `mongo` or using MongoDB Compass (recommended). By default, the daemon will start the service on port 27017. Create a new database for this project (you'll have to instantiate the database with a collection so it's not empty--this can be anything; the app's backend will create the rest of the collections that you need).
-
-### Create a .env file
-
-Create a file named `.env` at the root of this project. This file will contain all of your environment variables. At the minimum, you'll need the following:
-
-```
-# one of development | test | production
-NODE_ENV=development
-# any valid unused port
-PORT=5050
-# site url
-URL=http://localhost:5050
-# mongodb connection string; here, my database is called "dallas-iozt"
-DB_URL=mongodb://localhost:27017/dallas-iozt
-```
-
-## Developer Tools Included
+## Developer Tools Included 🛠 <a name="8_Developer_Tools_Included_"></a>
 
 The following developer tools are included to make collaboration a little smoother:
 
-### ESLint
+### ESLint <a name="9_ESLint"></a>
 
 This linter will check coding style and will warn you when you've written any code that violates the code guidelines. Run `npm run lint --fix` or `yarn lint --fix` to run the linter and automatically fix anything that can be fixed by ESLint.
 
 There's also a precommit git hook which requires the code to pass the linter before allowing a commit.
 
-### Storybook
+### Storybook <a name="10_Storybook"></a>
 
 Storybook enables developers to write MDX files (markdown that can include JSX, or the HTML-esque markup used in React), which allows self-documentation of reusable modules. To view this documentation, run `npm run storybook` or `yarn storybook`. You can create and edit any component stories that exist in the `/components/stories` directory. This functionality is primarily reserved for primitives, not larger, more specific components or any components that require any API queries.
 
-## How to run
+## How to run 🏃‍♀️ <a name="11_How_to_run_"></a>
 
 `npm run dev` or `yarn dev` will start a development server and allow you to access the app in the browser, automatically reloading anytime you save a file.
 
 `npm start` or `yarn start` will do the same, but won't reload when the backend changes.
 
-## Codebase Architecture
+## Codebase Architecture 🏗 <a name="12_Codebase_Architecture_"></a>
 
 Beginning a the root directory,
 
@@ -86,10 +83,15 @@ Beginning a the root directory,
 
 * `/pages` contains the individual routed pages, such as the homepage (`index.js`) or the users page (`users.js`). Creating a new file in this directory creates a new route with the same name. Nested routes can be created using folders.
 
-* `/server` contains all the backend code for the GraphQL API. `/server/types` declare the GraphQL resolvers (like a header file). and `/server/resolvers` define those functions. When a request is made by the client, the corresponding resolver will be executed. `/server/models` define the MongoDB collection models--each one corresponds to a collection in the database.
+* `/server` contains all the backend code for the GraphQL API. `/server/types` declare the GraphQL resolvers (like a header file). and `/server/resolvers` define those functions. When a request is made by the client, the corresponding resolver will be executed.
 
 * `/utils` contains globally-utilized code segments, including helper functions, GraphQL queries to be referenced by the client, React hooks, and data models.
 
 * `.eslintrc` defines the ESLint ruleset--if any rules need to be modified or ignored altogether, that can be done here.
 
 * `tailwind.config.js` defines the configuration for the `tailwindcss` classes. This includes global theme elements, such as the primary blue color used throughout the site.
+
+## Deployment ⤴️ <a name="13_Deployment_"></a>
+
+This application is being superficially tested on Heroku, which maintains a [dev deployment](https://iozt-dev.herokuapp.com/) and a [prod deployment](https://iozt.herokuapp.com). These are simply to allow user testing of latest versions of the UI, and are not connected to any real feeder devices. When deploying to Heroku, the `HEROKU=true` environment variable must be added to bypass the requirement of having a Lora controller service URL in a production mode.
+

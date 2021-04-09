@@ -4,40 +4,70 @@ const { ensureCapitalized, writeLog } = require('../../utils/functions/api')
 const Habitat = {
   Query: {
     async habitats(parent, _, { models }) {
-      return models.Habitat.find()
+      return new Promise((resolve, reject) => {
+        models.Habitat.find({}, (err, habitats) => {
+          if (err) reject(err)
+          else resolve(habitats)
+        })
+      })
         .catch((err) => { throw new ApolloError(err) })
     }
   },
   Mutation: {
     async createHabitat(parent, { name, description }, { models }) {
-      return models.Habitat.create({
-        name: ensureCapitalized(name),
-        description: ensureCapitalized(description)
+      return new Promise((resolve, reject) => {
+        models.Habitat.insert({
+          name: ensureCapitalized(name),
+          description: ensureCapitalized(description)
+        }, (err, habitat) => {
+          if (err) reject(err)
+          else {
+            writeLog(models, `Created new habitat "${name}"`, 'habitat')
+              .then(() => { resolve(habitat) })
+          }
+        })
       })
         .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          await writeLog(`Created new habitat "${name}"`, 'habitat')
-          return data
-        })
     },
     async updateHabitat(parent, { _id, ...args }, { models }) {
-      if (args.name) args.name = ensureCapitalized(args.name)
-      if (args.description) args.description = ensureCapitalized(args.description)
-      return models.Habitat.findByIdAndUpdate(_id, args, { new: true })
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          await writeLog(`Updated habitat "${data.name}"`, 'habitat')
-          return data
+      return new Promise((resolve, reject) => {
+        models.Habitat.findOne({ _id }, (err1, habitat) => {
+          if (err1) reject(err1)
+          if (!habitat) reject(Error('Habitat does not exist!'))
+          else {
+            models.Habitat.update({ _id }, { $set: args }, { multi: false }, (err2) => {
+              if (err2) reject(err2)
+              else {
+                writeLog(models, `Updated habitat "${habitat.name}"`, 'habitat')
+                  .then(() => { resolve({ ...habitat, ...args }) })
+              }
+            })
+          }
         })
+      })
     },
     async deleteHabitat(parent, { _id }, { models }) {
-      return models.Habitat.findByIdAndDelete(_id)
-        .catch((err) => { throw new ApolloError(err) })
-        .then(async (data) => {
-          await models.Animal.updateMany({ habitat: _id }, { habitat: null })
-          await writeLog(`Deleted habitat "${data.name}"`, 'habitat')
-          return data
+      return new Promise((resolve, reject) => {
+        models.Habitat.findOne({ _id }, (err1, habitat) => {
+          if (err1) reject(err1)
+          if (!habitat) reject(Error('Habitat does not exist!'))
+          else {
+            /** delete all feeders in this habitat */
+            models.Feeder.remove({ habitat: _id }, { multi: true }, (err2) => {
+              if (err2) reject(err2)
+              else {
+                models.Habitat.remove({ _id }, { multi: false }, (err3) => {
+                  if (err3) reject(err3)
+                  else {
+                    writeLog(models, `Deleted habitat "${habitat.name}"`, 'habitat')
+                      .then(() => { resolve(habitat) })
+                  }
+                })
+              }
+            })
+          }
         })
+      })
     }
   }
 }

@@ -1,11 +1,14 @@
 import gql from 'graphql-tag'
 
 export const CREATE_ANIMAL = gql`
-  mutation createAnimal($name: String!, $type: String!, $intake: Float!) {
+  mutation createAnimal($name: String!, $type: String!, $intake: Float) {
     createAnimal(name: $name, type: $type, intake: $intake) {
       _id
       name
-      type
+      type {
+        _id
+        name
+      }
       intake
       habitat {
         _id
@@ -19,7 +22,10 @@ export const UPDATE_ANIMAL = gql`
     updateAnimal(_id: $_id, name: $name, type: $type, intake: $intake, habitat: $habitat) {
       _id
       name
-      type
+      type {
+        _id
+        name
+      }
       intake
       habitat {
         _id
@@ -37,23 +43,35 @@ export const DELETE_ANIMAL = gql`
 `
 
 export const CREATE_FEEDER = gql`
-  mutation createFeeder($name: String!, $description: String) {
-    createFeeder(name: $name, description: $description) {
+  mutation createFeeder($name: String!, $description: String, $habitat: String!, $connectivity_id: Int!) {
+    createFeeder(name: $name, description: $description, habitat: $habitat, connectivity_id: $connectivity_id) {
       _id
       name
       description
       status
+      habitat {
+        _id
+        name
+      }
+      remaining_percentage
+      connectivity_id
     }
   }
 `
 
 export const UPDATE_FEEDER = gql`
-  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String) {
-    updateFeeder(_id: $_id, name: $name, description: $description, status: $status) {
+  mutation updateFeeder($_id: String!, $name: String, $description: String, $status: String, $habitat: String, $remaining_percentage: Float) {
+    updateFeeder(_id: $_id, name: $name, description: $description, status: $status, habitat: $habitat, remaining_percentage: $remaining_percentage) {
       _id
       name
       description
       status
+      habitat {
+        _id
+        name
+      }
+      remaining_percentage
+      connectivity_id
     }
   }
 `
@@ -133,5 +151,49 @@ export const DELETE_HABITAT = gql`
     deleteHabitat(_id: $_id) {
       _id
     }
+  }
+`
+
+export const UPDATE_DEFAULT = gql`
+  mutation updateDefault($_id: String!, $value: Any!) {
+    updateDefault(_id: $_id, value: $value) {
+      _id
+    }
+  }
+`
+
+export const CREATE_ANIMAL_TAXON = gql`
+  mutation createAnimalTaxon($name: String!, $defaultIntake: Float!) {
+    createAnimalTaxon(name: $name, defaultIntake: $defaultIntake) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`
+
+export const UPDATE_ANIMAL_TAXON = gql`
+  mutation updateAnimalTaxon($_id: String!, $name: String, $defaultIntake: Float) {
+    updateAnimalTaxon(_id: $_id, name: $name, defaultIntake: $defaultIntake) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`
+
+export const DELETE_ANIMAL_TAXON = gql`
+  mutation deleteAnimalTaxon($_id: String!) {
+    deleteAnimalTaxon(_id: $_id) {
+      _id
+      name
+      defaultIntake
+    }
+  }
+`
+
+export const COMPACT_DATABASE = gql`
+  mutation compactDatabase {
+    compactDatabase
   }
 `
