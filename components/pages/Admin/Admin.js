@@ -16,16 +16,16 @@ const Admin = () => {
   const [defaults, setDefaults] = useState({})
 
   const { data: webVersion, loading: webVersionLoading } = useQuery(CHECK_SOFTWARE_VERSION, {
-    onError: (err) => toast.error(err),
+    onError: (err) => toast.error({ message: err.message }),
     fetchPolicy: 'cache-first'
   })
   const { data: webUpdate, loading: webUpdateLoading, error: webUpdateError } = useQuery(CHECK_FOR_UPDATE, {
-    onError: (err) => toast.error(err),
+    onError: (err) => toast.error({ message: err.message }),
     fetchPolicy: 'cache-first',
     errorPolicy: 'all'
   })
   const { data: versionHistory } = useQuery(GET_VERSION_HISTORY, {
-    onError: (err) => toast.error(err),
+    onError: (err) => toast.error({ message: err.message }),
     fetchPolicy: 'cache-first'
   })
   const { data: uptime } = useQuery(GET_UPTIME)

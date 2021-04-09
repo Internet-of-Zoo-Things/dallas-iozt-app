@@ -32,21 +32,28 @@ const Feeder = {
       name, description, habitat, connectivity_id
     }, { models }) {
       return new Promise((resolve, reject) => {
-        models.Feeder.insert({
-          name: ensureCapitalized(name),
-          description: ensureCapitalized(description),
-          habitat,
-          remaining_percentage: 1,
-          status: 'online',
-          connectivity_id
-        }, (err, feeder) => {
-          if (err) reject(err)
+        /** verify that connectivity_id hasn't been used yet for another feeder */
+        models.Feeder.find({ connectivity_id }, (err1, res) => {
+          if (err1) reject(err1)
+          if (!res || res.length) reject('Another feeder is already associated with this connectivity ID!')
           else {
-            writeLog(models, `Created feeder "${name}"`, 'feeder')
-              .then(() => {
-                populateFeeder(models, feeder)
-                  .then((data) => { resolve(data) })
-              })
+            models.Feeder.insert({
+              name: ensureCapitalized(name),
+              description: ensureCapitalized(description),
+              habitat,
+              remaining_percentage: 1,
+              status: 'online',
+              connectivity_id
+            }, (err2, feeder) => {
+              if (err2) reject(err2)
+              else {
+                writeLog(models, `Created feeder "${name}"`, 'feeder')
+                  .then(() => {
+                    populateFeeder(models, feeder)
+                      .then((data) => { resolve(data) })
+                  })
+              }
+            })
           }
         })
       })

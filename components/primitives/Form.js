@@ -28,23 +28,25 @@ const _ = ({
   const [showPassword, setShowPassword] = useState({})
 
   useEffect(() => {
-    // Initialize fields
-    const tmp = {}
-    fields.forEach((f) => {
-      if (f.defaultValue) {
-        if (f.type === InputTypes.SELECT) {
-          const vals = f.items.filter((item) => item.value === (typeof f.defaultValue === 'object' ? f.defaultValue.value : f.defaultValue))
-          tmp[f.id] = vals.length === 1
-            ? vals[0]
-            : undefined && console.error(`Unknown value ${f.defaultValue} of options ${f.items.map((item) => item.label)}`)
-        } else {
-          tmp[f.id] = f.defaultValue
+    if (!data) {
+      // Initialize fields
+      const tmp = {}
+      fields.forEach((f) => {
+        if (f.defaultValue) {
+          if (f.type === InputTypes.SELECT) {
+            const vals = f.items.filter((item) => item.value === (typeof f.defaultValue === 'object' ? f.defaultValue.value : f.defaultValue))
+            tmp[f.id] = vals.length === 1
+              ? vals[0]
+              : undefined && console.error(`Unknown value ${f.defaultValue} of options ${f.items.map((item) => item.label)}`)
+          } else {
+            tmp[f.id] = f.defaultValue
+          }
+        } else if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
+          tmp[f.id] = ''
         }
-      } else if ([InputTypes.TEXT, InputTypes.EMAIL, InputTypes.PASSWORD].includes(f.type)) {
-        tmp[f.id] = ''
-      }
-    })
-    setData(tmp)
+      })
+      setData(tmp)
+    }
   }, [fields])
 
   const validate = () => {

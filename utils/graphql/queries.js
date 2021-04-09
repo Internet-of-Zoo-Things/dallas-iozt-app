@@ -77,6 +77,7 @@ export const GET_FEEDERS = gql`
         name
       }
       remaining_percentage
+      connectivity_id
     }
   }
 `

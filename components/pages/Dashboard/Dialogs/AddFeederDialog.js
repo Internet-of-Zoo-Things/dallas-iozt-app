@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Spinner } from '@blueprintjs/core'
 import { useMutation, useQuery } from 'react-apollo'
-import { Form } from '../../../primitives'
+import { Form, toast } from '../../../primitives'
 import { InputTypes } from '../../../../utils/models'
 import { CREATE_FEEDER } from '../../../../utils/graphql/mutations'
 import { GET_FEEDERS, GET_HABITATS } from '../../../../utils/graphql/queries'
@@ -10,7 +10,10 @@ import { GET_FEEDERS, GET_HABITATS } from '../../../../utils/graphql/queries'
 const _ = ({ isOpen, close }) => {
   /* api interaction */
   const [createFeeder, { loading }] = useMutation(CREATE_FEEDER, {
-    onError: (e) => console.error(JSON.stringify(e)),
+    onError: (err) => {
+      console.error(JSON.stringify(err))
+      toast.error({ message: err.message })
+    },
     onCompleted: close,
     refetchQueries: [{ query: GET_FEEDERS }],
     awaitRefetchQueries: true,
@@ -64,6 +67,14 @@ const _ = ({ isOpen, close }) => {
                     id: h._id
                   })),
                   placeholder: 'Select a habitat...'
+                },
+                {
+                  label: 'Connectivity ID',
+                  id: 'connectivity_id',
+                  required: true,
+                  type: InputTypes.NUMERIC,
+                  placeholder: 'Enter a connectivity ID corresponding to a feeder...',
+                  helperText: 'This is a unique ID associated with a physical feeder controller'
                 }
               ]}
             />
