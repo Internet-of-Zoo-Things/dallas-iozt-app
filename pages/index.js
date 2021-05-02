@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery } from 'react-apollo'
+import { useQuery, useSubscription } from 'react-apollo'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'
 import {
   GET_ANIMALS, GET_FEEDERS, GET_FEED_TIMES, GET_HABITATS
 } from '../utils/graphql/queries'
+import { FEED_TIME_CREATED_SUBSCRIPTION, FEED_TIME_EXECUTED_SUBSCRIPTION } from '../utils/graphql/subscriptions'
 
 const Dashboard = ({ client }) => {
   /* searchbars */
@@ -34,6 +35,11 @@ const Dashboard = ({ client }) => {
     notifyOnNetworkStatusChange: true
     // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
   })
+  const { data: feedTimeCreated } = useSubscription(FEED_TIME_CREATED_SUBSCRIPTION)
+  const { data: feedTimeExecuted } = useSubscription(FEED_TIME_EXECUTED_SUBSCRIPTION)
+
+  console.warn(feedTimeCreated)
+  console.warn(feedTimeExecuted)
 
   return (
     <Layout title="Dashboard" error={animalsError || feedersError || feedTimesError}>
