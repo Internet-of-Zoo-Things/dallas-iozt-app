@@ -16,7 +16,7 @@ const types = gql`
   type Mutation {
     _empty: String
   }
-  type Subscriptions {
+  type Subscription {
     _empty: String
   }
   ${Log}

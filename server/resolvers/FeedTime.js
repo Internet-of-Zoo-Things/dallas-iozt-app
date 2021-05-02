@@ -2,6 +2,7 @@ const { ApolloError } = require('apollo-server-express')
 const moment = require('moment')
 const { writeLog } = require('../../utils/functions/api')
 const { scheduleJob, deleteJob, deleteAllJobs } = require('../../utils/functions/api/jobScheduling')
+const { pubsub, events } = require('../subscriptions')
 
 const populateFeedTime = async (models, feedtime) => {
   return new Promise((resolve, reject) => {
@@ -45,7 +46,13 @@ const Feeder = {
                 feedtime = { ...feedtime, feeder }
                 scheduleJob(models, feedtime, schedule)
                 writeLog(models, `Created feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder.name}"`, 'feed time')
-                  .then(() => { resolve(feedtime) })
+                  .then(() => {
+                    pubsub.publish(events.FEED_TIME_CREATED, {
+                      feedTimeAdded: feedtime
+                    })
+                      .catch((err) => reject(err))
+                      .then(() => resolve(feedtime))
+                  })
               }
             })
           }
@@ -136,6 +143,14 @@ const Feeder = {
     //       .catch((err) => { throw new ApolloError(err) })
     //   }).catch((err) => { throw new ApolloError(err) })
     // }
+  },
+  Subscription: {
+    feedTimeAdded: {
+      subscribe: () => pubsub.asyncIterator([events.FEED_TIME_CREATED])
+    },
+    feedTimeExecuted: {
+      subscribe: () => pubsub.asyncIterator([events.FEED_TIME_EXECUTED])
+    }
   }
 }
 

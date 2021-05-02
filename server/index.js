@@ -16,6 +16,7 @@ const {
 } = require('../utils/functions/api')
 const { initializeSchedule } = require('../utils/functions/api/jobScheduling')
 const initializeDefaults = require('../utils/functions/api/initializeDefaults')
+const { pubsub } = require('./subscriptions')
 
 const dev = process.env.NODE_ENV !== 'production'
 const port = process.env.PORT || 4000
@@ -60,12 +61,18 @@ initializeDefaults(models)
     const apolloServer = new ApolloServer({
       typeDefs,
       resolvers,
-      context: ({ req, res }) => {
-        // here, the database connection could be passed in, and any cookies/JWT can be read
-        return {
-          req, res, models, schedule, start_time
+      subscriptions: {
+        path: '/subscriptions',
+        onConnect: () => {
+          console.warn('Client connected to websocket')
+        },
+        onDisconnect: () => {
+          console.warn('Client disconnected from websocket')
         }
-      }
+      },
+      context: ({ req, res }) => ({
+        req, res, models, schedule, start_time, pubsub
+      })
     })
 
     /* set up cron job to compact database every night at midnight */

@@ -1,6 +1,7 @@
 const scheduler = require('node-schedule')
 const axios = require('axios')
 const { writeLog } = require('./index')
+const { pubsub, events } = require('../../../server/subscriptions')
 
 if (!process.env.LORA_CONTROLLER_SERVER) {
   console.error('! No lora controller server specified')
@@ -17,7 +18,7 @@ const sendToPython = async (feeder, quantity) => {
       console.warn('No lora controller server specified, skipping feed')
       resolve(true)
     } else {
-      /** fixme: build in connectivity ids to handle multipl feeders */
+      /** fixme: build in connectivity ids to handle multiple feeders */
       axios.post(`${process.env.LORA_CONTROLLER_SERVER}/feed/${feeder.connectivity_id}`, { runtime: quantity })
         .catch((err) => {
           // fixme: handle execution error depending on error nature (e.g. reschedule, delete, etc)
@@ -67,41 +68,49 @@ const scheduleJob = (models, feedTime, schedule) => {
                   throw Error('Could not write to log')
                 })
                 .then(() => {
-                  /** modify the remaining feed percentage on the feeder */
-                  models.Default.findOne({ name: 'feeder_capacity' }, (err1, { value: capacity }) => {
-                    if (err1) {
-                      console.error(err1)
-                      throw Error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
-                    } else {
-                      models.Default.findOne({ name: 'feeder_disable_capacity' }, (err2, { value: disable_trigger }) => {
-                        if (err2) {
-                          console.error(err2)
-                          throw Error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
+                  pubsub.publish(events.FEED_TIME_EXECUTED, {
+                    feedTimeExecuted: {
+                      feedTime,
+                      success: true
+                    }
+                  })
+                    .then(() => {
+                      /** modify the remaining feed percentage on the feeder */
+                      models.Default.findOne({ name: 'feeder_capacity' }, (err1, { value: capacity }) => {
+                        if (err1) {
+                          console.error(err1)
+                          throw Error('Could not recalculate remaining feed quantity, error pulling feeder_capacity')
                         } else {
-                          models.Feeder.findOne({ _id: feeder._id }, (err3, feederDoc) => {
-                            if (err3) {
-                              console.error(err3)
-                              throw Error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
+                          models.Default.findOne({ name: 'feeder_disable_capacity' }, (err2, { value: disable_trigger }) => {
+                            if (err2) {
+                              console.error(err2)
+                              throw Error('Could not recalculate remaining feed quantity, error pulling feeder_disable_capacity')
                             } else {
-                              const remaining_prev = feederDoc.remaining_percentage
-                              const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
-                              feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
-                              if (remaining_next < disable_trigger) {
-                                /** disable feeder from being scheduled since it's nearly out of feed */
-                                feederDoc.status = 'disabled'
-                              }
-                              models.Feeder.update({ _id: feeder._id }, feederDoc, { multi: false }, (err4) => {
-                                if (err4) {
-                                  console.error(err4)
-                                  throw Error('Unable to save feeder doc')
+                              models.Feeder.findOne({ _id: feeder._id }, (err3, feederDoc) => {
+                                if (err3) {
+                                  console.error(err3)
+                                  throw Error('Could not recalculate remaining feed quantity, error pulling feeder metadata')
+                                } else {
+                                  const remaining_prev = feederDoc.remaining_percentage
+                                  const remaining_next = ((remaining_prev * capacity) - quantity) / capacity
+                                  feederDoc.remaining_percentage = remaining_next < 0 ? 0 : remaining_next // set to 0 if less than 0
+                                  if (remaining_next < disable_trigger) {
+                                    /** disable feeder from being scheduled since it's nearly out of feed */
+                                    feederDoc.status = 'disabled'
+                                  }
+                                  models.Feeder.update({ _id: feeder._id }, feederDoc, { multi: false }, (err4) => {
+                                    if (err4) {
+                                      console.error(err4)
+                                      throw Error('Unable to save feeder doc')
+                                    }
+                                  })
                                 }
                               })
                             }
                           })
                         }
                       })
-                    }
-                  })
+                    })
                 })
             }
           })
@@ -109,12 +118,22 @@ const scheduleJob = (models, feedTime, schedule) => {
           console.error(err)
         }
       })
-      .catch(() => {
+      .catch((error) => {
         // todo: reschedule job for a later time?
         writeLog(models, `Failed to dispensed feed for ${quantity}s from feeder "${feeder.name}"`, 'error')
           .catch((e) => {
             console.error('Could not write to log:')
             console.error(e)
+          })
+          .then(() => {
+            /** update subscription */
+            pubsub.publish(events.FEED_TIME_EXECUTED, {
+              feedTimeExecuted: {
+                feedTime,
+                success: false,
+                error
+              }
+            })
           })
       })
   })

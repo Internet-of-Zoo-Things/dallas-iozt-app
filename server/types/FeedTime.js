@@ -11,6 +11,11 @@ const FeedTime = gql`
     createdAt: DateTime
     updatedAt: DateTime
   }
+  type FeedTimeExecutionResult {
+    feedTime: FeedTime
+    success: Boolean
+    error: String
+  }
   extend type Query {
     feedTimes(includePrevious: Boolean): [FeedTime]
   }
@@ -20,6 +25,10 @@ const FeedTime = gql`
     deleteFeedTime(_id: String!): FeedTime
     deleteAllUpcomingFeedTimes: Boolean
     # createDailySchedule(debug: Boolean): [FeedTime]
+  }
+  extend type Subscription {
+    feedTimeAdded: FeedTime
+    feedTimeExecuted: FeedTimeExecutionResult
   }
 `
 
