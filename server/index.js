@@ -5,6 +5,10 @@ const express = require('express')
 const next = require('next')
 const Datastore = require('nedb')
 const cron = require('node-cron')
+const { createServer } = require('http')
+const { SubscriptionServer } = require('subscriptions-transport-ws')
+const { execute, subscribe } = require('graphql')
+const { buildFederatedSchema } = require('@apollo/federation')
 
 const typeDefs = require('./types')
 const resolvers = require('./resolvers')
@@ -56,8 +60,8 @@ initializeDefaults(models)
       })
 
     /* set up apollo graphql */
-    const app = next({ dev })
-    const handle = app.getRequestHandler()
+    const nextApp = next({ dev })
+    const handle = nextApp.getRequestHandler()
     const apolloServer = new ApolloServer({
       typeDefs,
       resolvers,
@@ -109,22 +113,32 @@ initializeDefaults(models)
     }
 
     /* prepare the api */
-    app.prepare()
+    nextApp.prepare()
       .then(() => {
-        const server = express()
+        const app = express()
 
-        server.use(cors({
+        app.use(cors({
           origin: true,
           credentials: true
         }))
-        server.use(apolloServer.getMiddleware({ cors: false }))
-
-        server.get('*', (req, res) => {
+        app.get('*', (req, res) => {
           return handle(req, res)
         })
 
-        server.listen(port, (err) => {
-          if (err) throw err
+        apolloServer.applyMiddleware({ app })
+
+        const server = createServer(app)
+
+        server.listen(port, () => {
+          // eslint-disable-next-line no-new
+          new SubscriptionServer({
+            execute,
+            subscribe,
+            schema: buildFederatedSchema([{ typeDefs, resolvers }])
+          }, {
+            server,
+            path: '/subscriptions'
+          })
           console.warn(`> UI ready on http://localhost:${port}`)
           console.warn(`> GraphQL API ready on http://localhost:${port}${apolloServer.graphqlPath}`)
         })
