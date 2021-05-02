@@ -28,7 +28,7 @@ const _ = ({
   const [showPassword, setShowPassword] = useState({})
 
   useEffect(() => {
-    if (!data) {
+    if (!Object.keys(data).length) {
       // Initialize fields
       const tmp = {}
       fields.forEach((f) => {
