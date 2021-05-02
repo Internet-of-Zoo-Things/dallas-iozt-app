@@ -13,11 +13,13 @@ const Log = () => {
 
   const { data, error, loading } = useQuery(GET_LOGS, {
     variables: { tag, limit: PAGE_SIZE, skip: (PAGE_SIZE * page) },
-    onError: (e) => console.error(e)
+    onError: (e) => console.error(e),
+    pollInterval: (1000 * 60) // refetch every minute
   })
 
   const { data: allTags, error: tagsError, loading: tagsLoading } = useQuery(GET_LOG_TAGS, {
-    onError: (e) => console.error(e)
+    onError: (e) => console.error(e),
+    pollInterval: (1000 * 60) // refetch every minute
   })
 
   return (

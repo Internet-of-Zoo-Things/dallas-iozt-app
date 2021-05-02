@@ -26,8 +26,8 @@ const Dashboard = ({ client }) => {
   })
   const { data: feedTimesData, loading: feedTimesLoading, error: feedTimesError } = useQuery(GET_FEED_TIMES, {
     awaitRefetchQueries: true,
-    notifyOnNetworkStatusChange: true
-    // pollInterval: (1000 * 60) // refetch every minute -- disabled due to causing form fields to reset while user edits form
+    notifyOnNetworkStatusChange: true,
+    pollInterval: (1000 * 60) // refetch every minute
   })
   const { data: habitats, habitatsLoading } = useQuery(GET_HABITATS, {
     awaitRefetchQueries: true,
