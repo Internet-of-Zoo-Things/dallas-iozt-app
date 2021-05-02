@@ -14,6 +14,7 @@ module.exports = {
     return config
   },
   env: {
-    PORT: process.env.PORT
+    PORT: process.env.PORT,
+    INTERNET_ENABLED: process.env.INTERNET_ENABLED
   }
 }

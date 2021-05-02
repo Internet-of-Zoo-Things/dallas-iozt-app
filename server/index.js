@@ -86,7 +86,7 @@ initializeDefaults(models)
       //   })
     })
 
-    if (!dev) {
+    if (!dev && process.env.INTERNET_ENABLED) {
       /* check app versioning and look for updates */
       const curr_version = checkCurrentVersion()
       console.warn(`* Currently running webapp version ${curr_version}`)

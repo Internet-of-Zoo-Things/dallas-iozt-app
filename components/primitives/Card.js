@@ -23,7 +23,7 @@ const _ = ({
     }
     <div className={`${header && (Array.isArray(children)) ? 'pb-4' : 'py-4'} ${disabled ? 'text-disabled' : ''}`}>
       {
-        Array.isArray(children)
+        Array.isArray(children) && children.length > 1
           ? children.map((c, i) => (
             <div className={`flex ${i !== 0 ? 'border-t border-background-darker' : ''} py-3`} key={i}>
               <div className="flex w-full px-6">

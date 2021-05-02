@@ -74,61 +74,65 @@ const Admin = () => {
             <Typography variant="body" className="text-gray">(started on {uptime && moment(uptime.uptime).format('MMM Do, hh:mm:ss a')})</Typography>
           </div>
         </Card>
-        <Card
-          header={
-            <div className="flex w-full py-3 px-2 justify-center text-center">
-              <Typography variant="h4" className="text-dark-gray">Software Updates</Typography>
-            </div>
-          }
-          elevation={Elevation.TWO}
-          className="w-full mb-8"
-        >
-          <div className="flex flex-col w-full">
-            <Typography variant="h6" className="mb-4 text-center">Web Application</Typography>
-            {
-              webVersionLoading || webUpdateLoading
-                ? <Spinner />
-                : webUpdateError
-                  ? 'There was an error checking for software updates.'
-                  : <>
-                    <div className="flex flex-wrap">
-                      <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
-                      <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
-                    </div>
-                    <div className="flex flex-wrap mb-4">
-                      <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
-                      <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
-                      <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
-                    </div>
-                    {
-                      webUpdate?.checkForUpdate?.update
-                        ? <div className="flex flex-col items-center w-full">
-                          <Typography variant="h6" weight="bold" className="text-primary mb-2">
-                            A software update is available!
-                          </Typography>
-                          <Typography variant="subtitle">
-                            IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
-                          </Typography>
-                          {/* todo: update software somehow */}
-                          <Button
-                            className="mt-2"
-                            onClick={() => toast.warning({ message: 'Updating through the web interface is not yet supported!' })}
-                          >
-                            Download Update
-                          </Button>
+        {
+          process.env.INTERNET_ENABLED && (
+            <Card
+              header={
+                <div className="flex w-full py-3 px-2 justify-center text-center">
+                  <Typography variant="h4" className="text-dark-gray">Software Updates</Typography>
+                </div>
+              }
+              elevation={Elevation.TWO}
+              className="w-full mb-8"
+            >
+              <div className="flex flex-col w-full">
+                <Typography variant="h6" className="mb-4 text-center">Web Application</Typography>
+                {
+                  webVersionLoading || webUpdateLoading
+                    ? <Spinner />
+                    : webUpdateError
+                      ? 'There was an error checking for software updates.'
+                      : <>
+                        <div className="flex flex-wrap">
+                          <Typography variant="body" weight="bold" className="mr-2">Current software version:</Typography>
+                          <Typography variant="body" className="mr-2">{webVersion.checkSoftwareVersion.version}</Typography>
                         </div>
-                        : <Typography variant="body" className="text-center">
-                          There is no software update available at this time.
-                        </Typography>
-                    }
-                  </>
-            }
-          </div>
-          <div className="flex flex-col items-center w-full">
-            <Typography variant="h6" className="mb-4 text-center">Feeder Controller Service</Typography>
-            <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
-          </div>
-        </Card>
+                        <div className="flex flex-wrap mb-4">
+                          <Typography variant="body" weight="bold" className="mr-2">Latest software update:</Typography>
+                          <Typography variant="body" className="mr-2">{moment(webVersion.checkSoftwareVersion.date).format('MMM Do, hh:mm:ss a')}</Typography>
+                          <Typography variant="body" className="text-gray mr-2">({moment(webVersion.checkSoftwareVersion.date).fromNow()})</Typography>
+                        </div>
+                        {
+                          webUpdate?.checkForUpdate?.update
+                            ? <div className="flex flex-col items-center w-full">
+                              <Typography variant="h6" weight="bold" className="text-primary mb-2">
+                                A software update is available!
+                              </Typography>
+                              <Typography variant="subtitle">
+                                IoZT version {webUpdate.checkForUpdate.latestVersion.version}, published {moment(webUpdate.checkForUpdate.latestVersion.date).format('MMM Do, hh:mm:ss a')}
+                              </Typography>
+                              {/* todo: update software somehow */}
+                              <Button
+                                className="mt-2"
+                                onClick={() => toast.warning({ message: 'Updating through the web interface is not yet supported!' })}
+                              >
+                                Download Update
+                              </Button>
+                            </div>
+                            : <Typography variant="body" className="text-center">
+                              There is no software update available at this time.
+                            </Typography>
+                        }
+                      </>
+                }
+              </div>
+              <div className="flex flex-col items-center w-full">
+                <Typography variant="h6" className="mb-4 text-center">Feeder Controller Service</Typography>
+                <Typography variant="body" weight="bold" className="mr-2 text-disabled">COMING SOON</Typography>
+              </div>
+            </Card>
+          )
+        }
         <Card
           header={
             <div className="flex w-full py-3 px-2 justify-center text-center">
@@ -138,7 +142,7 @@ const Admin = () => {
           elevation={Elevation.TWO}
           className="w-full mb-8"
         >
-          <div className="flex flex-col items-center px-6">
+          <div className="flex flex-col items-center px-6 pt-4">
             <div>
               <Button loading={compacting} onClick={compactDatabase}>Compact Database</Button>
             </div>
@@ -202,7 +206,7 @@ const Admin = () => {
           {
             versionHistory
               ? versionHistory.getVersionHistory.map((v, i) => (
-                <div key={i} className="flex flex-col w-full">
+                <div key={i} className="flex flex-col w-full px-6">
                   <Typography variant="h6" className="text-center">{v.version}</Typography>
                   <Typography variant="subtitle" className="text-center text-disabled">{moment(v.date).format('MMM Do, hh:mm:ss a')}</Typography>
                   <ul className="list-disc ml-4 mt-2">
