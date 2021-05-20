@@ -104,7 +104,11 @@ const Feeder = {
                 models.FeedTime.remove({ _id }, { multi: false }, (err3) => {
                   if (err3) reject(err3)
                   else {
-                    deleteJob(_id, schedule)
+                    try {
+                      deleteJob(_id, schedule)
+                    } catch (err) {
+                      console.error(err)
+                    }
                     writeLog(models, `Deleted feed time "${moment(feedtime.timestamp).format('MMM Do, hh:mm:ss a')}" from feeder "${feeder ? feeder.name : 'undefined'}"`, 'feed time')
                       .then(() => { resolve({ ...feedtime, feeder }) })
                   }
