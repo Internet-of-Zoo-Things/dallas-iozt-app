@@ -1,0 +1,15 @@
+name: linter
+on: pull_request
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+      - name: Set up node
+        uses: actions/setup-node@v2
+      - name: Install deps
+        run: npm i
+      - name: Run linter
+        run: npm run lint
