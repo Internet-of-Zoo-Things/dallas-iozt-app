@@ -13,6 +13,7 @@
 3. [Developer Tools Included 🛠](#8_Developer_Tools_Included_)
     1. [ESLint](#9_ESLint)
     2. [Storybook](#10_Storybook)
+    3. [GitHub Actions](#14_GitHub_Actions)
 4. [How to run 🏃‍♀️](#11_How_to_run_)
 5. [Codebase Architecture 🏗](#12_Codebase_Architecture_)
 6. [Deployment ⤴️](#13_Deployment_)
@@ -68,6 +69,10 @@ There's also a precommit git hook which requires the code to pass the linter bef
 ### Storybook <a name="10_Storybook"></a>
 
 Storybook enables developers to write MDX files (markdown that can include JSX, or the HTML-esque markup used in React), which allows self-documentation of reusable modules. To view this documentation, run `npm run storybook` or `yarn storybook`. You can create and edit any component stories that exist in the `/components/stories` directory. This functionality is primarily reserved for primitives, not larger, more specific components or any components that require any API queries.
+
+### GitHub Actions <a name="#14_GitHub_Actions"></a>
+
+GitHub Actions are continuous integration checks built into the GitHub platform. You can make sure that your branch passes the lint and build checks by opening a pull request and navigating to the `Checks` tab. These checks are required to pass in order to merge in a pull request; this helps make sure buggy code doesn't end up in `develop` or `master`!
 
 ## How to run 🏃‍♀️ <a name="11_How_to_run_"></a>
 
