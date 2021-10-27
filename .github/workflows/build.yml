@@ -13,5 +13,5 @@ jobs:
         run: npm i
       - name: Create .env
         run: cp .env.example .env
-      - name: Run linter
+      - name: Run build script
         run: npm run build
