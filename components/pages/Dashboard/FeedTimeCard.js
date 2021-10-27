@@ -62,6 +62,7 @@ const FeedTimeCard = ({ data, feeders }) => {
                         updateFeedTime({
                           variables: {
                             _id: data._id,
+                            feeder: data.feeder._id,
                             timestamp: moment(data.timestamp).add(time, 'minutes').toDate().getTime()
                           }
                         })
