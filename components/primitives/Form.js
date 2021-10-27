@@ -5,7 +5,7 @@ import {
 } from '@blueprintjs/core'
 import { DatePicker } from '@blueprintjs/datetime'
 import moment from 'moment'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/client'
 import { InputTypes } from '../../utils/models'
 import { capitalize } from '../../utils/functions/ui'
 import Tooltip from './Tooltip'

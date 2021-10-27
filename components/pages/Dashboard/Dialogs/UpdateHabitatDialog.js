@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Dialog } from '@blueprintjs/core'
-import { useMutation } from 'react-apollo'
+import { useMutation } from '@apollo/client'
 import { UPDATE_HABITAT } from '../../../../utils/graphql/mutations'
 import { Form, Button } from '../../../primitives'
 import { InputTypes } from '../../../../utils/models'

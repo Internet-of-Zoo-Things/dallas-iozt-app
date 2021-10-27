@@ -3,7 +3,7 @@ import {
   DragDropContext, Droppable, Draggable
 } from 'react-beautiful-dnd'
 import PropTypes from 'prop-types'
-import { useMutation } from 'react-apollo'
+import { useMutation } from '@apollo/client'
 import { Typography, toast, Button } from '../../primitives'
 import AnimalCard from './AnimalCard'
 import { UPDATE_ANIMAL } from '../../../utils/graphql/mutations'

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Popover, Position, Classes } from '@blueprintjs/core'
-import { useMutation } from 'react-apollo'
+import { useMutation } from '@apollo/client'
 import {
   Typography, Button, Tag, Icon, toast
 } from '../../primitives'

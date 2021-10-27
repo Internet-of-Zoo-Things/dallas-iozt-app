@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Spinner } from '@blueprintjs/core'
-import { useMutation, useQuery } from 'react-apollo'
+import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_ANIMAL } from '../../../../utils/graphql/mutations'
 import { Form } from '../../../primitives'
 import { InputTypes } from '../../../../utils/models'
