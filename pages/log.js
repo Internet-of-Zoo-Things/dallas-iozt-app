@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/client'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import LogComponent from '../components/pages/Log/Log'

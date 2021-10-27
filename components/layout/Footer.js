@@ -1,6 +1,6 @@
 import React from 'react'
 import { Popover } from '@blueprintjs/core'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/client'
 import {
   Typography,
   Button,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
 import { Elevation, Spinner } from '@blueprintjs/core'
-import { useQuery, useMutation } from 'react-apollo'
+import { useQuery, useMutation } from '@apollo/client'
 import {
   Typography, Button, Card, toast
 } from '../../primitives'

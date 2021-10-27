@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery } from 'react-apollo'
+import { useQuery } from '@apollo/client'
 import withApollo from '../components/apollo'
 import Layout from '../components/layout'
 import DashboardComponent from '../components/pages/Dashboard/Dashboard'

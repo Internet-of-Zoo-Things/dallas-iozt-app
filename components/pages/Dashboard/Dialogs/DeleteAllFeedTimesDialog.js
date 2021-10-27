@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dialog, Classes } from '@blueprintjs/core'
-import { useMutation } from 'react-apollo'
+import { useMutation } from '@apollo/client'
 import { Button, Typography } from '../../../primitives'
 import { DELETE_ALL_FEED_TIMES } from '../../../../utils/graphql/mutations'
 import { GET_FEED_TIMES } from '../../../../utils/graphql/queries'

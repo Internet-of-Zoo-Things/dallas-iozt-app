@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useQuery, useMutation } from 'react-apollo'
+import { useQuery, useMutation } from '@apollo/client'
 import { Spinner, NumericInput } from '@blueprintjs/core'
 import { GET_ANIMAL_TAXONS } from '../../../utils/graphql/queries'
 import { TextInput, Button } from '../../primitives'

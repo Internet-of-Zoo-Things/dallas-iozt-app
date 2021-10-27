@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useMutation } from 'react-apollo'
+import { useMutation } from '@apollo/client'
 import { Position } from '@blueprintjs/core'
 import {
   Typography, Button, Card, Tooltip, Tag, toast
